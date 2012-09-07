@@ -59,8 +59,12 @@ class Google extends Admin_Controller {
      				
      				//is the password changed?
      				if($this->input->post($item_name) != $this->config->item($item_name)) {
+     					
      					$submitted_pwd = $this->input->post($item_name);
+
+     					//encrypt password using google util
      					$pwd = system('/usr/local/bin/gads_pwd.sh '.escapeshellarg($submitted_pwd), $retval);
+     					
      					$this->config->set_item($item_name, $pwd);
      				}
      				
