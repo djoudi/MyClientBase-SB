@@ -928,6 +928,11 @@ class Contact extends Admin_Controller {
 	        $data['ss_contact_folder_content'] = $ss_contact_folder_content;
 	        $data['ss_contact_folder_num_items'] = $ss_contact_folder_num_items;
         }
+                
+        $data['tooljar_module_is_enabled'] = false;
+        if(in_arrayi('tooljar',$this->enabled_modules['all'])) {
+        	$data['tooljar_module_is_enabled'] = true;
+        }        
         
         //loading Smarty templates
         $data['site_url'] = site_url($this->uri->uri_string());

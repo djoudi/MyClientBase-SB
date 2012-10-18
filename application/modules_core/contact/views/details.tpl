@@ -1,7 +1,8 @@
 {* focuses on the tab matching the hash and goes on the top of the page *}
+
 <script type="text/javascript">
 	$(document).ready(function() {
-
+		
 		var currentURL = window.location;
 		url_hash = currentURL.hash;
 		
@@ -18,9 +19,12 @@
 {assign 'baseurl' $baseurl}
 {assign 'invoices_html' $invoices_html}
 
+{*
 <pre>
-{* $contact|print_r *}
+$contact|print_r 
 </pre>
+*}
+
 <div class="section_wrapper" style="background-color: #ff9c00;">
 	<div>
 		{if {preg_match pattern="dueviPerson" subject=$contact->objectClass}}
@@ -36,10 +40,18 @@
 			{$contact_id = $contact->oid}
 			{$contact_id_key = "oid"}
 			{$object_type = 'organization'}
-			<h3 class="title_black">{$contact->o|ucwords}</h3>
+			<h3 class="title_black">{$contact->o|ucwords}<span id="tj_organization" style="display: none; font-size: 13px; margin-left: 20px;">{t}This is your organization{/t}</span></h3>
 		{/if}					
 	</div>
-	
+
+{if $object_type == 'organization'}
+<script type="text/javascript">
+	$(document).ready(function() {
+		get_my_tj_organization({$contact_id});
+	});
+</script>
+{/if}
+
 	<div class="content toggle" >
 		<div id="tabs" >
 		

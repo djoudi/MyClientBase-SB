@@ -101,7 +101,7 @@
 				</p>
 			</div>
 		</li>
-
+		
 		<li>
 			<a id="show_add_organization_link" href="#" >{t}Add an organization{/t}</a>
 			<div id="add_organization" title="Form" style="display: none;">
@@ -140,6 +140,7 @@
 					</div>
 				{/if}
 				
+				
 				{if $invoice_module_is_enabled}
 					<li><a href="/tasks/form/{$contact_id_key}/{$contact_id}?btn_add=true">{t}Create a task{/t}</a></li>
 				{/if}
@@ -161,4 +162,18 @@
 		</ul>
 		
 	</div>
+{/if}
+
+{if isset($contact_id)}
+	{if $tooljar_module_is_enabled && $object_type == 'organization'}
+	<div class="section_wrapper" style="clear:right; float:right; display:inline; width: 280px; background-color: #ff9c00;">
+		<h3 class="title_black">{t}ToolJar Actions{/t}</h3>
+	
+		<ul class="quicklinks content toggle" >
+
+
+				<li><a href="#" onClick="set_as_my_tj_organization({ 'oid':'{$contact_id}','hash':'set_here_the_hash' })">{t}This is my organization{/t}</a></li>
+		</ul>
+	</div>					
+	{/if}
 {/if}

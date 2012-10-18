@@ -638,4 +638,59 @@ class Ajax extends Admin_Controller {
     	echo $str.' lenght: '. strlen($str).' -> '.$str2 .' lenght: '. strlen($str2);
     	 
     }
+    
+    
+    /**
+     * Sends the oid of the organization to ToolJar to set it as the ToolJar Organization
+     * 
+     * @access		public
+     * @param		none
+     * @return		json
+     * 
+     * @author 		Damiano Venturin
+     * @copyright 	2V S.r.l.
+     * @license	GPL
+     * @since		Oct 18, 2012
+     * 
+     * @todo I need a method to extend this controller methods with the ajax optionally provided by every MCBSB module
+     */
+    public function set_as_my_tj_organization(){
+    	$params = $this->input->post('params');
+    	if(!isset($params['oid']) || empty($params['oid'])) {
+    		$this->returnError('Oid is missing. Please report an issue.');
+    	}
+    	
+    	if(!$this->mcbsb->is_module_enabled('tooljar')) {
+    		$this->returnError('Tooljar module is not enabled');
+    	}
+    	
+    	$this->mcbsb->load('tooljar/mdl_tooljar','tooljar');
+    	
+    	if($this->mcbsb->tooljar->set_as_my_tj_organization($params['oid'])) {
+    		$to_js = array();
+    		$to_js['status'] = true;
+    		$to_js['message'] = "The organization has been set as yours";
+    		$this->output($to_js);
+    	} else {
+    		$this->returnError('Something went wrong');
+    	}
+    }
+
+    public function get_my_tj_organization(){
+    	
+    	if(!$this->mcbsb->is_module_enabled('tooljar')) {
+    		$this->returnError('Tooljar module is not enabled');
+    	}
+    	 
+    	$this->mcbsb->load('tooljar/mdl_tooljar','tooljar');
+    	 
+    	if($oid = $this->mcbsb->tooljar->get_my_tj_organization()) {
+    		$to_js = array();
+    		$to_js['status'] = true;
+    		$to_js['oid'] = $oid;
+    		$this->output($to_js);
+    	} else {
+    		$this->returnError('Something went wrong');
+    	}
+    }    
 }

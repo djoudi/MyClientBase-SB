@@ -12,6 +12,8 @@ class Google extends Admin_Controller {
         parent::__construct();
 
         $this->config->load('google',false,true);
+        //TODO loads the config file from the folder "config" contained in this module
+        //$this->config->load('google', false, true, 'google');
         
         $this->enabled_modules = $this->mdl_mcb_modules->get_enabled();
         

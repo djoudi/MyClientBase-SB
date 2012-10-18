@@ -93,6 +93,14 @@ class Mcbsb  extends CI_Model {
 		return $this->_enabled_modules = $this->mdl_mcb_modules->get_enabled();		
 	}
 	
+	public function is_module_enabled($module) {
+		$this->get_enabled_modules();
+		if(in_arrayi($module,$this->_enabled_modules['all'])) {
+			return true;
+		}
+		return false;
+	}
+	
 	private function set_system_message($type, $text) {
 		
 // 		if(!is_string($text)) return false;

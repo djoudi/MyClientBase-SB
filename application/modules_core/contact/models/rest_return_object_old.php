@@ -9,6 +9,8 @@ class Rest_Return_Object extends CI_Model
 	protected $results_got_number = null; //number of items contained in the current set
 	protected $results_pages = null; //number of pages necessary to display all the data
 	protected $results_page = null; //page number of the current set	
+	protected $finished = null; //the time in which CE delivered the result
+	protected $duration = null; //the time spent by CE to process the request
 	public $has_no_errors = true;
 	public $has_errors = false;
 	
@@ -31,16 +33,16 @@ class Rest_Return_Object extends CI_Model
 	private function validateCeRestReturn($crr) 
 	{
 		$this->has_no_errors = false;
-		$this->has_errors = true;
 		if(!is_array($crr)) return false;
 		if(!isset($crr['status']) || !is_array($crr['status'])) return false;
 		if(!isset($crr['status']['results_number'])) return false;
 		if(!isset($crr['status']['results_got_number'])) return false;
 		if(!isset($crr['status']['results_pages'])) return false;
 		if(!isset($crr['status']['results_page'])) return false;
+		if(!isset($crr['status']['finished'])) return false;
+		if(!isset($crr['status']['duration'])) return false;
 		if(!isset($crr['data']) || !is_array($crr['data'])) return false;
 		$this->has_no_errors = true;
-		$this->has_errors = false;
 		return true;
 	}
 	
@@ -51,7 +53,6 @@ class Rest_Return_Object extends CI_Model
 			$CI = get_instance();
 			$CI->session->set_flashdata('custom_error', $this->http_message);
 			$this->has_no_errors = false;
-			$this->has_errors = true;
 		}	
 	}
 
@@ -64,8 +65,9 @@ class Rest_Return_Object extends CI_Model
 		$this->results_got_number = null;
 		$this->results_pages = null;
 		$this->results_page = null;
-		$this->has_no_errors = true;
-		$this->has_errors = false;
+		$this->finished = null;
+		$this->duration = null;
+		$this->has_no_errors = true;		
 	}
 	
 	public function importCeReturnObject($crr)
@@ -82,6 +84,8 @@ class Rest_Return_Object extends CI_Model
 		$this->results_got_number = $crr['status']['results_got_number'];
 		$this->results_pages = $crr['status']['results_pages'];
 		$this->results_page = $crr['status']['results_page'];
+		$this->finished = $crr['status']['finished'];
+		$this->duration = $crr['status']['duration'];
 
 		$this->checkRestError();
 		return true;
@@ -94,6 +98,8 @@ class Rest_Return_Object extends CI_Model
 						'results_got_number' => 0,
 						'results_pages' => 1,
 						'results_page' => 1,
+						'finished' => null,
+						'duration' => null,
 						'status_code' => null,
 						'message' => null,
 				),

@@ -207,6 +207,55 @@ function search(params){
 	}
 };	
 
+function set_as_my_tj_organization(params){
+	var agree=confirm("Are you sure ?");
+	if (agree)
+	{	
+		$.ajax({
+			async: true,
+			type: 'POST',
+			dataType : 'jsonp',
+			url : '/ajax/set_as_my_tj_organization',
+			data : {
+				params: params,
+			},
+			success : function(json){
+				get_my_tj_organization(params.oid);
+			}, 
+			error: errorCallback,
+		})
+		.done(function(json){
+			if(typeof json.error !== "undefined" && json.error){
+				alert(urldecode(json.error));
+			}
+		});
+	}
+}
+
+function get_my_tj_organization(current_oid){
+	
+	$.ajax({
+		async: true,
+		type: 'POST',
+		dataType : 'jsonp',
+		url : '/ajax/get_my_tj_organization',
+		success : function(json){
+			if(json.status){
+				if(current_oid == json.oid){
+					$('#tj_organization').show();
+				}
+				
+			}
+		}, 
+		error: errorCallback,
+	})
+	.done(function(json){
+		if(typeof json.error !== "undefined" && json.error){
+			alert(urldecode(json.error));
+		}
+	});
+}
+
 function jqueryForm(params) {
 //	console.log('jqueryForm');
 //	console.log(params);

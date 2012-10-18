@@ -3,7 +3,7 @@
 $config = array(
 	'module_path'			=>	'activities',
 	'module_name'			=>	'Activities',
-	'module_description'	=>	'An addition module for the task manager.',
+	'module_description'	=>	'An supplementary module for the task manager.',
 	'module_author'			=>	'Damiano Venturin',
 	'module_homepage'		=>	'http://www.mcbsb.com',
 	'module_version'		=>	'0.0.1',
