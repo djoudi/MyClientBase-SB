@@ -666,14 +666,15 @@ class Ajax extends Admin_Controller {
     	
     	$this->mcbsb->load('tooljar/mdl_tooljar','tooljar');
     	
-    	if($this->mcbsb->tooljar->set_as_my_tj_organization($params['oid'])) {
-    		$to_js = array();
+    	$to_js = array();
+    	if($a = $this->mcbsb->tooljar->set_as_my_tj_organization($params['oid'])) {
     		$to_js['status'] = true;
     		$to_js['message'] = "The organization has been set as yours";
-    		$this->output($to_js);
     	} else {
-    		$this->returnError('Something went wrong');
+    		$to_js['status'] = false;
+    		$to_js['message'] = "Something went wrong while setting this organization as your ToolJar organization";
     	}
+    	$this->output($to_js);
     }
 
     public function get_my_tj_organization(){
@@ -692,6 +693,7 @@ class Ajax extends Admin_Controller {
     	} else {
     		//TODO if I want to bother the user because of the fact he didn't set up a TJ company yet, this is the place to add code
     		$to_js['status'] = false;
+    		$to_js['message'] = 'No ToolJar organization has been set yet';
     	}
     	$this->output($to_js);
     }    

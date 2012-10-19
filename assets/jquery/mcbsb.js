@@ -220,7 +220,10 @@ function set_as_my_tj_organization(params){
 				params: params,
 			},
 			success : function(json){
-				get_my_tj_organization(params.oid);
+				alert(json.message);
+				if(json.status){
+					get_my_tj_organization(params.oid);					
+				}
 			}, 
 			error: errorCallback,
 		})
