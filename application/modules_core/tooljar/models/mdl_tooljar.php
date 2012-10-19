@@ -31,7 +31,7 @@ class Mdl_Tooljar extends MY_Model {
         $this->load->model('contact/rest_return_object');
         $this->crr = new Rest_Return_Object();
         $host_sliced = explode('.', $_SERVER['HTTP_HOST']);
-        if(count($host_sliced < 3)) {
+        if(count($host_sliced) < 3) {
         	$this->organization = 'acme';
         } else {
         	$this->organization = $host_sliced[0];
