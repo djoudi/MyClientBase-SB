@@ -244,7 +244,6 @@ function get_my_tj_organization(current_oid){
 				if(current_oid == json.oid){
 					$('#tj_organization').show();
 				}
-				
 			}
 		}, 
 		error: errorCallback,

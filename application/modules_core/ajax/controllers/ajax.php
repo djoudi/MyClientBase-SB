@@ -683,14 +683,16 @@ class Ajax extends Admin_Controller {
     	}
     	 
     	$this->mcbsb->load('tooljar/mdl_tooljar','tooljar');
+
+    	$to_js = array();
     	 
     	if($oid = $this->mcbsb->tooljar->get_my_tj_organization()) {
-    		$to_js = array();
     		$to_js['status'] = true;
     		$to_js['oid'] = $oid;
     		$this->output($to_js);
     	} else {
-    		$this->returnError('Something went wrong');
+    		//TODO if I want to bother the user because of the fact he didn't set up a TJ company yet, this is the place to add code
+    		$to_js['status'] = false;
     	}
     }    
 }
