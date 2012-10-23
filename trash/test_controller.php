@@ -15,7 +15,7 @@ class Test_Controller extends CI_Controller {
 		$this->load->library('unit_test');
 		
 		//load the rest client
-		$this->load->spark('restclient/2.0.0');		
+		$this->load->spark('restclient/2.1.0');		
 	}
 	
 	protected function arrayReturn($method, $rest_return, $note = null)

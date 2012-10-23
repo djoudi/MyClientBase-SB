@@ -10,7 +10,7 @@ class Dokumentor extends CI_Controller {
 		parent::__construct();
 
 		// Load the rest client
-		$this->load->spark('restclient/2.0.0');
+		$this->load->spark('restclient/2.1.0');
 		$this->rest->initialize(array('server' => $this->config->item('rest_server')));
 	}
 

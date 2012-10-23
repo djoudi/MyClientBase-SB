@@ -20,13 +20,13 @@ class Mdl_Tooljar extends MY_Model {
 		$this->tooljar_server = $this->config->item('tooljar_server');		
 		
 		// Load curl
-		$this->load->spark('curl/1.2.0');
+		$this->load->spark('curl/1.2.1');
 		
 		// Load the configuration file
 		$this->load->config('rest');
 				
         // Load the rest client
-        $this->load->spark('restclient/2.0.0');
+        $this->load->spark('restclient/2.1.0');
 
         $this->load->model('contact/rest_return_object');
         $this->crr = new Rest_Return_Object();

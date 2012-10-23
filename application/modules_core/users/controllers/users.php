@@ -14,6 +14,12 @@ class Users extends Admin_Controller {
 
     function index() {
 
+    	//TODO uncomment me
+/*     	if($this->mcbsb->is_module_enabled('tooljar')) {
+    		$message = 'This module is disabled because the Tooljar module is enabled';
+    		redirect(base_url());
+    	}    	
+ */    	
         $this->redir->set_last_index();
 
         $params = array(

@@ -37,13 +37,13 @@ class Mdl_Contact extends MY_Model {
         $this->possibleObjects = array('person','organization', 'contact'); //lists all the possible children for this obj
         
         // Load curl
-        $this->load->spark('curl/1.2.0');
+        $this->load->spark('curl/1.2.1');
         
         // Load the configuration file
         $a = $this->load->config('rest');
          
         // Load the rest client
-        $this->load->spark('restclient/2.0.0');
+        $this->load->spark('restclient/2.1.0');
 
         $this->load->model('contact/rest_return_object');
         $this->crr = new Rest_Return_Object();

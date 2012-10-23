@@ -24,6 +24,11 @@ class Mcbsb  extends CI_Model {
 		$this->load->model('field_descriptor');
 		$this->load->model('db_obj');
 		
+		//Contact Engine related libraries
+		//Rest client class
+		$this->load->spark('restclient/2.1.0');
+		$this->load->config('ion_auth', TRUE);		
+		
 		$this->initialize();
 		
 		//$tmp = $this->session->all_userdata();
@@ -32,9 +37,8 @@ class Mcbsb  extends CI_Model {
 		$this->_user->first_name = $this->session->userdata('first_name');
 		$this->_user->last_name = $this->session->userdata('last_name');
 		$this->_user->is_admin = $this->session->userdata('is_admin');
-		
+			
 		$this->load->model('users/mdl_users','users');  //mdl_users is loaded in $this->users
-
 	}
 	
 	private function initialize() {
@@ -102,6 +106,8 @@ class Mcbsb  extends CI_Model {
 	}
 	
 	private function set_system_message($type, $text) {
+		
+		//log_message('debug',$text);
 		
 // 		if(!is_string($text)) return false;
 		

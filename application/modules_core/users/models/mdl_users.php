@@ -6,6 +6,13 @@ class Mdl_Users extends MY_Model {
 
 		parent::__construct();
 
+		//TODO uncomment me
+/* 		$CI = get_instance();
+		if($CI->mcbsb->is_module_enabled('tooljar')) {
+			redirect('/');
+			return false;
+		} */
+				
 		$this->table_name = 'mcb_users';
 
 		$this->primary_key = 'mcb_users.user_id';

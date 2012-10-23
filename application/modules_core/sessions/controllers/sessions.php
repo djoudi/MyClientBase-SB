@@ -27,9 +27,7 @@ class Sessions extends CI_Controller {
     }
 
     function index() {
-
         redirect('sessions/login');
-
     }
 
     function login() {

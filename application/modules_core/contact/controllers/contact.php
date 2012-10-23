@@ -793,7 +793,7 @@ class Contact extends Admin_Controller {
 		$this->load->config('rest');
 		 
 		// Load the rest client
-		$this->load->spark('restclient/2.0.0');
+		$this->load->spark('restclient/2.1.0');
 		
 		$this->rest->initialize(array('server' => 'http://'.$ss_host.':'.$ss_port.'/api/'));
 		$this->rest->api_key($ss_ident, 'X-SPARKLE-IDENT');
