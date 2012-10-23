@@ -18,14 +18,19 @@
  */
 class Field_Descriptor extends CI_Model
 {
+	var $alias = '';
+	var $css_class = '';
+	var $disabled = false;
+	var $form_type = 'text';
+	var $hidden = false;
+	var $mandatory = false;
+	var $max_length = 255;
 	var $name;
 	var $type;
-	var $lenght;
+	var $size = 45;
 	
 	public function __construct(){
 		parent::__construct();
-		// 		$CI = &get_instance();
-		// 		$CI->load->database();
 	}
 	
 	public function __destruct(){

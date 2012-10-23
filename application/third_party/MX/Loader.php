@@ -154,9 +154,7 @@ class MX_Loader extends CI_Loader
 		if ($path === FALSE) {
 			$this->_ci_load_class($library, $params, $object_name);
 			$_alias = $this->_ci_classes[$class];
-
 		} else {
-
 			Modules::load_file($_library, $path);
 			$library = ucfirst($_library);
 			CI::$APP->$_alias = new $library($params);
@@ -247,11 +245,14 @@ class MX_Loader extends CI_Loader
 
 		if (is_array($model)) return $this->models($model);
 
-		($_alias = $object_name) OR $_alias = end(explode('/', $model));
+		$tmp = array_filter(explode('/', $model)); //this is to avoid the PHP thrown message "Only variables should be passed by reference"
+		($_alias = $object_name) OR $_alias = end($tmp);
 
-		if (in_array($_alias, $this->_ci_models, TRUE))
-			return CI::$APP->$_alias;
+		if (in_array($_alias, $this->_ci_models, TRUE)) return CI::$APP->$_alias;
 
+		$this->scan_spark_for_locations();
+		//$a = Modules::find(strtolower($model), $this->_module, 'models/');
+		
 		/* check module */
 		list($path, $_model) = Modules::find(strtolower($model), $this->_module, 'models/');
 
@@ -274,14 +275,6 @@ class MX_Loader extends CI_Loader
 			$model = ucfirst($_model);
 
 			CI::$APP->$_alias = new $model();
-			
-// 			try {
-//				CI::$APP->$_alias = new $model();				
-// 			} catch (Exception $e) {
-// 				$model = ucwords($_model);
-// 				CI::$APP->$_alias = new $model();
-// 			}			 
-			
 
 			$this->_ci_models[] = $_alias;
 		}

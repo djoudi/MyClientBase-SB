@@ -29,3 +29,4 @@ uploads/*
 /installation_steps.txt
 /installation_steps_dam.txt
 /captcha/*.jpg
+current_env

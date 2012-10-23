@@ -4,7 +4,7 @@ function application_title() {
 
     $CI =& get_instance();
 
-    return ($CI->mdl_mcb_data->setting('application_title')) ? $CI->mdl_mcb_data->setting('application_title') : $CI->lang->line('myclientbase');
+    return ($CI->mcbsb->settings->setting('application_title')) ? $CI->mcbsb->settings->setting('application_title') : $CI->lang->line('myclientbase');
 
 }
 

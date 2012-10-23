@@ -26,13 +26,13 @@ function format_number($num = NULL, $standardize = TRUE, $decimals = 2) {
 
 	if ($standardize) {
 
-		return number_format(standardize_number($num), $decimals, $CI->mdl_mcb_data->setting('decimal_symbol'), $CI->mdl_mcb_data->setting('thousands_separator'));
+		return number_format(standardize_number($num), $decimals, $CI->mcbsb->settings->setting('decimal_symbol'), $CI->mcbsb->settings->setting('thousands_separator'));
 		
 	}
 
 	else {
 
-		return number_format($num, $decimals, $CI->mdl_mcb_data->setting('decimal_symbol'), $CI->mdl_mcb_data->setting('thousands_separator'));
+		return number_format($num, $decimals, $CI->mcbsb->settings->setting('decimal_symbol'), $CI->mcbsb->settings->setting('thousands_separator'));
 
 	}
 
@@ -48,9 +48,9 @@ function standardize_number($num) {
 
 	}
 
-	$num_array = explode($CI->mdl_mcb_data->setting('decimal_symbol'), $num);
+	$num_array = explode($CI->mcbsb->settings->setting('decimal_symbol'), $num);
 
-	$num = str_replace($CI->mdl_mcb_data->setting('thousands_separator'), '', $num_array[0]);
+	$num = str_replace($CI->mcbsb->settings->setting('thousands_separator'), '', $num_array[0]);
 
 	if (isset($num_array[1])) {
 

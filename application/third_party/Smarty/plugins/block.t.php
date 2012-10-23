@@ -84,13 +84,13 @@ function smarty_block_t($params, $text, &$smarty)
 	$settings = setupPhpGettext();
 	
 	extract($settings);
-/*	
-	if(!defined('PROJECT_DIR')) define('PROJECT_DIR', $project_dir);
-	if(!defined('LOCALE_DIR')) define('LOCALE_DIR', $locale_dir);
-	if(!defined('DEFAULT_LOCALE')) define('DEFAULT_LOCALE', $default_locale);
-*/
+	
+	if(is_null($text) || empty($text)) return $text;
+	
 	// gettext setup
 	T_setlocale(LC_MESSAGES, $locale);
+	//T_setlocale(LC_ALL, $locale.'.utf8');
+	
 	// Set the text domain as 'messages'
 	$domain = 'messages';
 	_bindtextdomain($domain, LOCALE_DIR);
@@ -149,6 +149,18 @@ function smarty_block_t($params, $text, &$smarty)
 		}
 	}
 
+	//DAM underlines the character at position $params['u']. This is used to highlight the caracter to use as shortcut
+	if(isset($params['u']) and !empty($text)) {
+		if(is_int($params['u']) && $params['u'] > 0) {
+			if(strlen($text) >= $params['u']){
+				$characters = str_split($text);
+				$character = $characters[($params['u'] - 1)];
+				$character = '<u>'.$character.'</u>';
+				$characters[($params['u'] - 1)] = $character;
+				$text = implode('', $characters);
+			}
+		}
+	}
 	return $text;
 }
 

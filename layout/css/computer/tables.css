@@ -1,0 +1,55 @@
+table{
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	width: 98%;
+	background-color: transparent;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+tr{
+	border-bottom: 1px dashed #ccc;
+	line-height: 30px;
+}
+
+tr:hover{
+	background-color: #f3f3f3;
+}
+
+td,th {
+	padding-left: 3px;
+	padding-right: 3px;
+	vertical-align: middle;
+	font-size: 13px;
+	color: #555555;	
+}
+
+th{
+	font-weight: bold;
+	font-size: 13px;
+}
+
+tr.header{
+	background-color: #f3f3f3;
+}
+
+table.contact_search_result{
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+table.contact_profile{
+	margin-top: 15px;
+	margin-bottom: 10px;
+	margin-right: 10px;
+}
+
+td.field {
+	padding-left: 10px;
+	text-transform: capitalize;
+	font-style: italic;
+}
+
+td.value {
+	
+}

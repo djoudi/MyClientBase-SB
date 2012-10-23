@@ -109,7 +109,7 @@ class MY_Model extends CI_Model {
 		// set up the joins
 		$this->_prep_joins($params);
 
-		$this->mcbsb->_total_rows = $a = $this->_prep_pagination($params);
+		$this->mcbsb->_total_rows = $this->_prep_pagination($params);
 		
 		// execute the query
 		$query = $this->db->get($this->table_name);
@@ -602,15 +602,11 @@ class MY_Model extends CI_Model {
 	 * @see
 	 * 
 	 * @author 		Damiano Venturin
-	 * @copyright 	2V S.r.l.
-	 * @license		GPL
-	 * @link		http://www.squadrainformatica.com/en/development#mcbsb  MCB-SB official page
 	 * @since		Jun 22, 2012
 	 * 
 	 */
 	public function prep_validation($id) {
 
-		// this function 
 		$result = $this->get(array('where'=>array($this->primary_key => $id)));
 
 		foreach ($result as $key => $value) {
@@ -622,22 +618,14 @@ class MY_Model extends CI_Model {
 	public function validate($obj = NULL) {
 
 		foreach ($_POST as $key => $value) {
-
-			//TODO apply some filters to value!!
 			$this->form_values[$key] = $value;
-
 		}
 
 		if ($obj) {
-
 			return $this->form_validation->run($obj);
-
-		}
-
-		else {
+		}else {
 			//check the rules
 			return $this->form_validation->run();
-
 		}
 
 	}

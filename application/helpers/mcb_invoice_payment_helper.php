@@ -19,7 +19,7 @@ function invoice_payment_date($payment) {
 	global $CI;
 
 	/* Date of payment */
-	return date($CI->mdl_mcb_data->setting('default_date_format'), $payment->payment_date);
+	return date($CI->mcbsb->settings->setting('default_date_format'), $payment->payment_date);
 
 }
 
