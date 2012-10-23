@@ -195,7 +195,7 @@ tr.actions {
 	font-size: 11px;
 	font-color: black;
 	color: black;
-	background-color: #e8e8e8;
+	background-color: #f3f3f3;
 	height: 15px;
 	line-height : 15px;
 	border-bottom: 1px solid #d8d8d8;
@@ -210,7 +210,7 @@ td.actions a
 td.counter {
 	width: 4px;
 	text-align: right;
-	background-color: #e8e8e8;
+	background-color: #f3f3f3;
 	border-bottom: 1px solid #d8d8d8;
 }
 
@@ -284,43 +284,4 @@ div.right-block {
 	width: 385px;	
 }
 
-div.contact_search {
-	color: #fff;
-	background: url(../img/section_bg.jpg) repeat-x;
-	height: 50px;
-	line-height: 50px;
-	padding-left: 20px;
-	margin-top: 0px;
-	margin-bottom: 10px;
-	font-size: 20px;
-	font-weight: bold;
-	position: relative;
-	
-	/*--Top right rounded corner--*/
-/* 	border-top-right-radius: 5px;
-	-moz-border-radius-topright: 5px;
-	-khtml-border-radius-topright: 5px;
-	-webkit-border-top-right-radius: 5px;
- */
-	/*--Top left rounded corner--*/
-/* 	border-top-left-radius: 5px;
-	-moz-border-radius-topleft: 5px;
-	-khtml-border-radius-topleft: 5px;
-	-webkit-border-top-left-radius: 5px;
- */	
-	/*--Bottom left rounded corner--*/
-	/*
-	border-bottom-left-radius: 5px;
-	-moz-border-radius-topleft: 5px;
-	-khtml-border-radius-topleft: 5px;
-	-webkit-border-top-left-radius: 5px;
-	*/
-	
-	/*--Bottom right rounded corner--*/
-	/*
-	border-bottom-right-radius: 5px;
-	-moz-border-radius-topright: 5px;
-	-khtml-border-radius-topright: 5px;
-	-webkit-border-top-right-radius: 5px;
-	*/		
-}
+

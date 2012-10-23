@@ -1,4 +1,4 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-$config['mcbsb_version'] = '0.13.24';
+$config['mcbsb_version'] = '0.13.49';
 $config['validate_url'] = true;

@@ -52,7 +52,7 @@ $autoload['packages'] = array(APPPATH.'third_party');
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('database','session');
+$autoload['libraries'] = array('database','session','rb');
 
 
 /*
@@ -109,7 +109,7 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array('mcbsb');
+$autoload['model'] = array('mcbsb','Rb_Db_Obj');
 
 /*
 | -------------------------------------------------------------------
@@ -120,8 +120,6 @@ $autoload['model'] = array('mcbsb');
 |	$autoload['sparks'] = array('example-spark/1.0.0');
 |
 */
-// TODO this is not working properly
-//$autoload['sparks'] = array('restclient/2.0.0');
 
 /* End of file autoload.php */
 /* Location: ./application/config/autoload.php */

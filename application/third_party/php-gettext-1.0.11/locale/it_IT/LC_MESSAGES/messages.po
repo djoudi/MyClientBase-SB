@@ -83,8 +83,14 @@ msgstr "Associa organizzazione"
 msgid "Last Name"
 msgstr "Cognome"
 
+msgid "last name"
+msgstr "cognome"
+
 msgid "First Name"
 msgstr "Nome"
+
+msgid "first name"
+msgstr "nome"
 
 msgid "Name"
 msgstr "Nome"
@@ -95,20 +101,35 @@ msgstr "Indirizzo"
 msgid "Zip"
 msgstr "Cap"
 
+msgid "zip"
+msgstr "cap"
+
+msgid "city"
+msgstr "cittá"
+
 msgid "City"
-msgstr "Citta"
+msgstr "Cittá"
 
 msgid "State"
 msgstr "Provincia"
 
+msgid "state"
+msgstr "provincia"
+
 msgid "Country"
 msgstr "Nazione"
 
-msgid "Mobile"
-msgstr "Cellulare"
+msgid "country"
+msgstr "nazione"
 
-msgid "Home Phone"
-msgstr "Telefono Residenza"
+msgid "mobile"
+msgstr "cellulare"
+
+msgid "home phone"
+msgstr "telefono residenza"
+
+msgid "Home phone"
+msgstr "Telefono residenza"
 
 msgid "enabled"
 msgstr "abilitato"
@@ -185,6 +206,9 @@ msgstr "Titolo"
 msgid "Home Fax"
 msgstr "Fax Residenza"
 
+msgid "Home fax"
+msgstr "Fax residenza"
+
 msgid "Organization Phone"
 msgstr "Telefono Organizzazione"
 
@@ -215,6 +239,15 @@ msgstr "Foto"
 msgid "submit"
 msgstr "invia"
 
+msgid "save"
+msgstr "salva"
+
+msgid "Save"
+msgstr "Salva"
+
+msgid "Cancel"
+msgstr "Cancella"
+
 msgid "cancel"
 msgstr "cancella"
 
@@ -238,12 +271,6 @@ msgstr "Elimina"
 
 msgid "Larger Map"
 msgstr "Mappa Ingrandita"
-
-msgid "city"
-msgstr "citta"
-
-msgid "state"
-msgstr "provincia"
 
 msgid "statistics"
 msgstr "statistiche"
@@ -293,14 +320,14 @@ msgstr "Pannello Azioni"
 msgid "found"
 msgstr "trovati"
 
-msgid "set visible attributes"
-msgstr "scegli quali attributi mostrare"
+msgid "Set visible attributes"
+msgstr "Scegli quali attributi mostrare"
 
-msgid "set attributes order"
-msgstr "imposta ordine degli attributi"
+msgid "Set attributes order"
+msgstr "Imposta ordine degli attributi"
 
-msgid "set attributes aliases"
-msgstr "imposta gli pseudonimi degli attributi"
+msgid "Set attributes aliases"
+msgstr "Imposta gli pseudonimi degli attributi"
 
 msgid "organization"
 msgstr "organizzazione"
@@ -374,8 +401,14 @@ msgstr "Mostra Fatture"
 msgid "Last"
 msgstr "Ultimo"
 
+msgid "last"
+msgstr "ultimo"
+
 msgid "First"
 msgstr "Primo"
+
+msgid "first"
+msgstr "primo"
 
 msgid "Show Inventory Items"
 msgstr "Mostra Pezzi a Magazzino"
@@ -494,8 +527,8 @@ msgstr "Aggiungi Modello Ricevuta Pagamento"
 msgid "Confirm password"
 msgstr "Conferma password"
 
-msgid "By enabling Google Contacts synchronization, all the contacts set in MCBSB will be synchronized with you Google Account"
-msgstr "Abilitando la sincronizzazione dei Google Contacts, tutti i contatti salvati in MCBSB saranno sincronizzati con il tuo Google Account"
+msgid "By enabling Google Contacts synchronization, all the contacts will be synchronized with you Google Account"
+msgstr "Abilitando la sincronizzazione dei Contatti Google, tutti i contatti saranno sincronizzati con il tuo Google Account"
 
 msgid "for further information"
 msgstr "per ulteriori informazioni"
@@ -509,8 +542,8 @@ msgstr "qui"
 msgid "Email autocomplete when you write a new email"
 msgstr "Autocompletamento dell'email quando ne scrivi una nuova"
 
-msgid "This will provide"
-msgstr "Questo ti offrirá"
+msgid "Google Contacts synchronization will provide"
+msgstr "La sincronizzazione dei Contatti Google ti offrirá"
 
 msgid "Possibility to import any business contact into your personal contacts. Consequently you'll find all your personal contacts inside you mobile phone address book"
 msgstr "Possibilitá di importare qualunque contatto aziendale nei tuoi contatti personali. Di conseguenza troverai tutti i tuoi contatti personali nella rubrica del tuo cellulare"
@@ -530,11 +563,11 @@ msgstr "Possibilitá di usare"
 msgid "to connect gadgets, applications, and spreadsheets to your data"
 msgstr "per connettere gadgets, applicazioni e fogli di calcolo ai tuoi dati"
 
-msgid "Enable Google contacts synchronization"
-msgstr "Abilitare la sincronizzazione dei Google Contacts"
+msgid "Enable synchronization"
+msgstr "Abilitare sincronizzazione"
 
-msgid "Google business domain"
-msgstr "Dominio aziendale di Google"
+msgid "Google domain"
+msgstr "Dominio Google"
 
 msgid "Admin email"
 msgstr "Email amministratore"
@@ -641,8 +674,8 @@ msgstr "Nome dell'organizzazione"
 msgid "Organization type like INC LLC SPA"
 msgstr "Tipo di organizzazione come INC LLC SPA"
 
-msgid "Business category"
-msgstr "Categoria lavorativa"
+msgid "business category"
+msgstr "categoria lavorativa"
 
 msgid "Describes the business activities, like production, repair, sales"
 msgstr "Descrive le attivitá lavorative, es. produzione, riparazione, vendita"
@@ -869,8 +902,17 @@ msgstr "si"
 msgid "no"
 msgstr "no"
 
+msgid "category"
+msgstr "categoria"
+
 msgid "Category"
 msgstr "Categoria"
+
+msgid "Categories"
+msgstr "Categorie"
+
+msgid "categories"
+msgstr "categorie"
 
 msgid "Facebook Page"
 msgstr "Pagina Facebook"
@@ -889,3 +931,399 @@ msgstr "Accetta Comunicazioni"
 
 msgid "Fixed a bug in MCBSB contact editor preventing to update contacts in some situations"
 msgstr "Sistemato un baco nell'editor dei contatti di MCBSB che impediva l'aggiornamento dei dati in alcune situazioni"
+
+msgid "Show all people"
+msgstr "Mostra tutte le persone"
+
+msgid "Show all organizations"
+msgstr "Mostra tutte le organizzazioni"
+
+msgid "Data"
+msgstr "Dati"
+
+msgid "Summary"
+msgstr "Sommario"
+
+msgid "If you add a description for this contact then it will be displayed here"
+msgstr "Se aggiungi una descrizione a questo contatto allora verrá mostrata qui"
+
+msgid "on "
+msgstr "il "
+
+msgid "preferred language"
+msgstr "lingua preferita"
+
+msgid "Show by location"
+msgstr "Mostra per sede"
+
+msgid "Actions panel"
+msgstr "Pannello azioni"
+
+msgid "Your profile"
+msgstr "Tuo profilo"
+
+msgid "All people"
+msgstr "Tutte le persone"
+
+msgid "All organizations"
+msgstr "Tutte le organizzazioni"
+
+msgid "for"
+msgstr "per"
+
+msgid "People"
+msgstr "Persone"
+
+msgid "Orgs"
+msgstr "Org."
+
+msgid "Total"
+msgstr "Totale"
+
+msgid "See on map"
+msgstr "Guarda la mappa"
+
+msgid "showing"
+msgstr "mostro"
+
+msgid "on total of"
+msgstr "su un totale di"
+
+msgid "organization phone"
+msgstr "telefono org."
+
+msgid "organization fax"
+msgstr "fax org."
+
+msgid "address"
+msgstr "via / p.za"
+
+msgid "Organizations"
+msgstr "Organizzazioni"
+
+msgid "Info"
+msgstr "Info"
+
+msgid "Default language"
+msgstr "Lingua preimpostata"
+
+msgid "Date format"
+msgstr "Formato data"
+
+msgid "Results per page"
+msgstr "Risultati per pagina"
+
+msgid "Database backup"
+msgstr "Backup database"
+
+msgid "Run"
+msgstr "Esegui"
+
+msgid "Currency symbol"
+msgstr "Simbolo valuta"
+
+msgid "Currency symbol placement"
+msgstr "Posizionamento valuta"
+
+msgid "Decimal symbol"
+msgstr "Simbolo decimale"
+
+msgid "Thousands separator"
+msgstr "Separatore delle migliaia"
+
+msgid "Save settings"
+msgstr "Salva impostazioni"
+
+msgid "Application"
+msgstr "Applicazione"
+
+msgid "Person"
+msgstr "Persona"
+
+msgid "State or province"
+msgstr "Provincia o regione"
+
+msgid "Phone number"
+msgstr "Numero di telefono"
+
+msgid "The object"
+msgstr "L'oggetto"
+
+msgid "can have some attributes prefilled (totally or partially) so that every newly created contact will have the values specified in this form"
+msgstr "puó avere alcuni attributi precompilati (totalmente o parzialmente) in modo che ogni nuovo contatto avrá i valori specificati in questo form"
+
+msgid "Hide video"
+msgstr "Nascondi video"
+
+msgid "Go"
+msgstr "Vai"
+
+msgid "Display map"
+msgstr "Mostra mappa"
+
+msgid "Set password"
+msgstr "Imposta password"
+
+msgid "Disable"
+msgstr "Disabilita" 
+
+msgid "You are logged in as"
+msgstr "Sei autenticato come"
+
+msgid "Groups you belong to"
+msgstr "Gruppi di appartenenza"
+
+msgid "This is your organization"
+msgstr "Questa é la tua organizzazione"
+
+msgid "You have"
+msgstr "Hai"
+
+msgid "collegues"
+msgstr "colleghi"
+
+msgid "Use this tool to retrieve statistics usefull for your marketing strategy"
+msgstr "Usa questo strumento per ottenere statistiche utili alla tua strategia di marketing"
+
+msgid "You can search by city, state and country filling one or more fields in the left box"
+msgstr "Puoi cercare per citta, provincia e nazione completando uno o piú dei campi nel riquadro a sinistra"
+
+msgid "You can even search providing partial names, ex. country = ital to get all the contacts in Italy or in Italia"
+msgstr "Puoi anche cercare fornendo nomi parziali, es. nazione = ital per ottenere tutti i contatti in Italy o Italia"
+
+msgid "Task"
+msgstr "Incarico"
+
+msgid "Creation date"
+msgstr "Data creazione"
+
+msgid "Last update date"
+msgstr "Ultima modifica"
+
+msgid "Last updated by"
+msgstr "Modificato da"
+
+msgid "Start Date"
+msgstr "Inizio"
+
+msgid "Start date"
+msgstr "Inizio"
+
+msgid "Due Date"
+msgstr "Scadenza"
+
+msgid "Due date"
+msgstr "Scadenza"
+
+msgid "Complete Date"
+msgstr "Completato"
+
+msgid "Urgent"
+msgstr "Urgente"
+
+msgid "Details"
+msgstr "Dettagli"
+
+msgid "Complete message"
+msgstr "Nota di chiusura"
+
+msgid "Edit task"
+msgstr "Modifica incarico"
+
+msgid "Edit Task"
+msgstr "Modifica Incarico"
+
+msgid "Create task"
+msgstr "Crea incarico"
+
+msgid "Close task"
+msgstr "Chiudi incarico"
+
+msgid "Close Task"
+msgstr "Chiudi Incarico"
+
+msgid "Closed by"
+msgstr "Chiuso da"
+
+msgid "Closed on"
+msgstr "Chiuso il"
+
+msgid "Urgent tasks display an esclamation mark here below"
+msgstr "Gli incarichi urgenti mostrano un punto esclamativo qui sotto"
+
+msgid "Click on the rounded blue markers below to see a quick detailed view of the task"
+msgstr "Per una vista rapida e dettagliata dell'incarico clicca sull'icona rotonda blu sottostante"
+
+msgid "This field can contain multiple values"
+msgstr "Questo campo puó contenere valori multipli"
+
+msgid "it will use the comma as a separator between values"
+msgstr "utilizza la virgola per separare i valori"
+
+msgid "When you type, it will also show you values previously used for this field"
+msgstr "Mentre digiti, ti mostra anche i valori precedentemente inseriti in questo campo"
+
+msgid "If you type a new value and then save the form, the new value will be available for all the other contacts"
+msgstr "Se inserisci un nuovo valore e salvi il form, il nuovo valore sará disponibile per tutti gli altri contatti"
+
+msgid "Home Phone"
+msgstr "Telefono di casa"
+
+msgid "Mobile"
+msgstr "Cellulare"
+
+msgid "start"
+msgstr "inizio"
+
+msgid "Start"
+msgstr "Inizio"
+
+msgid "end"
+msgstr "fine"
+
+msgid "End"
+msgstr "Fine"
+
+msgid "closed"
+msgstr "chiuso"
+
+msgid "Involve"
+msgstr "Coinvolgi"
+
+msgid "Create appointment"
+msgstr "Crea appuntamento"
+
+msgid "Where"
+msgstr "Dove"
+
+msgid "Appointments"
+msgstr "Appuntamenti"
+
+msgid "Appointment"
+msgstr "Appuntamento"
+
+msgid "New Task"
+msgstr "Nuovo Incarico"
+
+msgid "Devices"
+msgstr "Dispositivi"
+
+msgid "Device"
+msgstr "Dispositivo"
+
+msgid "Create device"
+msgstr "Crea dispositivo"
+
+msgid "Products"
+msgstr "Prodotti"
+
+msgid "Registered Address"
+msgstr "Sede Legale"
+
+msgid "This is my organization"
+msgstr "Questa é la mia organizzazione"
+
+msgid "Shortcuts"
+msgstr "Scorciatoie"
+
+msgid "You can speed up your work using keyboard shortcuts" 
+msgstr "Puoi velocizzare il tuo lavoro usando le scorciatoie da tastiera"
+
+msgid "Shortcuts are a replacement for mouse click"
+msgstr "Le scorciatoie sostituiscono il click del mouse"
+
+msgid "Some of the tabs or buttons that you can see in this page have an underlined character which indicates the shortcut"
+msgstr "Alcune linguette o bottoni visibili in questa pagina hanno un carattere sottolineato che indica la scorciatoia"
+
+msgid "For the top left menu tabs, hold the SHIFT button and then press the underlined character corrisponding to the tab that you want to click"
+msgstr "Per le linguette del menu superiore, tieni premuto il tasto SHIFT e poi premi il carattere sottolineato corrispondente alla linguetta che vuoi cliccare"
+
+msgid "For the blue buttons, just hit the underlined character corrisponding to the button that you want to trigger"
+msgstr "Per i bottoni blue, premi semplicemente il carattere sotttolineato corrispondente al bottone che vuoi premere"
+
+msgid "Delivery Office"
+msgstr "Ufficio Consegne"
+
+msgid "Other Phone"
+msgstr "Altro Numero"
+
+msgid "OtherPhone"
+msgstr "AltroNumero"
+
+msgid "Autocomplete field"
+msgstr "Campo con autocompletamento"
+
+msgid "Business Category"
+msgstr "Categoria Lavorativa"
+
+msgid "PreferredDeliveryMethod"
+msgstr "Metodo Di Spedizione Preferito"
+
+msgid "SkypeID"
+msgstr "Identificativo Skype"
+
+msgid "All products"
+msgstr "Tutti i prodotti"
+
+msgid "product"
+msgstr "prodotto"
+
+msgid "Brand"
+msgstr "Marca"
+
+msgid "Model"
+msgstr "Modello"
+
+msgid "Price"
+msgstr "Prezzo"
+
+msgid "Create product"
+msgstr "Crea prodotto"
+
+msgid "Salable"
+msgstr "Vendibile"
+
+msgid "Code Number"
+msgstr "Matricola"
+
+msgid "All devices"
+msgstr "Tutti i dispositivi"
+
+msgid "Purchased"
+msgstr "Acquistato"
+
+msgid "Insurance"
+msgstr "Assicurazione"
+
+msgid "Warranty"
+msgstr "Garanzia"
+
+msgid "People involved"
+msgstr "Persone coinvolte"
+
+msgid "Time line"
+msgstr "Cronologia"
+
+msgid "ordinary"
+msgstr "ordinario"
+
+msgid "due today"
+msgstr "in scadenza oggi"
+
+msgid "completed"
+msgstr "completati"
+
+msgid "Last update"
+msgstr "Ultimo aggiornamento"
+
+msgid "This contact is disabled"
+msgstr "Questo contatto é disabilitato"
+
+msgid "This organization is disabled"
+msgstr "Questa organizzazione é disabilitata"
+
+msgid "Videos"
+msgstr "Video"
+
+msgid "Enable"
+msgstr "Abilita"

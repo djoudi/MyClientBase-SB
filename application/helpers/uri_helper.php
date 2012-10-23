@@ -42,4 +42,18 @@ function uri_assoc($var, $segment = 3) {
 
 }
 
+//dam
+function uri_find($var) {
+	
+	$CI =& get_instance();	
+	$segments = $CI->uri->segment_array();
+	foreach ($segments as $key => $value){
+		if($value == $var){
+			if(isset($segments[$key + 1])) return $segments[$key + 1];	
+		}
+	}
+	
+	return null;
+}
+
 ?>

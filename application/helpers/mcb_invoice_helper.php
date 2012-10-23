@@ -1,6 +1,5 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-//TODO these 2 lines are not present in 0.12. Should I remove them too?
 $CI =& get_instance();
 $CI->load->helper(array('mcb_invoice_amount', 'mcb_invoice_item', 'mcb_invoice_payment', 'mcb_numbers'));
 
@@ -109,7 +108,7 @@ function invoice_payment_link($invoice) {
 
 	global $CI;
 
-	if ($CI->mdl_mcb_data->setting('merchant_enabled')) {
+	if ($CI->mcbsb->settings->setting('merchant_enabled')) {
 
 		$link = $CI->lib_output->payment_link($invoice);
 
@@ -285,7 +284,7 @@ function invoice_date_entered($invoice) {
 	global $CI;
 
 	/* Date the invoice was entered */
-	return date($CI->mdl_mcb_data->setting('default_date_format'), $invoice->invoice_date_entered);
+	return date($CI->mcbsb->settings->setting('default_date_format'), $invoice->invoice_date_entered);
 
 }
 
@@ -294,7 +293,7 @@ function invoice_due_date($invoice) {
 	global $CI;
 
 	/* Date the invoice is due */
-	return date($CI->mdl_mcb_data->setting('default_date_format'), $invoice->invoice_due_date);
+	return date($CI->mcbsb->settings->setting('default_date_format'), $invoice->invoice_due_date);
 
 }
 
@@ -315,19 +314,19 @@ function invoice_logo($output_type = 'pdf') {
 
 	global $CI;
 
-	if ($CI->mdl_mcb_data->setting('include_logo_on_invoice') == 'TRUE' AND $CI->mdl_mcb_data->setting('invoice_logo')) {
+	if ($CI->mcbsb->settings->setting('include_logo_on_invoice') == 'TRUE' AND $CI->mcbsb->settings->setting('invoice_logo')) {
 
 		if ($output_type == 'pdf') {
 
 			/** Use a system path to include the image in the PDF **/
-			return '<img src="' . getcwd() . '/uploads/invoice_logos/' . $CI->mdl_mcb_data->setting('invoice_logo') . '" />';
+			return '<img src="' . getcwd() . '/uploads/invoice_logos/' . $CI->mcbsb->settings->setting('invoice_logo') . '" />';
 
 		}
 
 		elseif ($output_type == 'html') {
 
 			/** Use a URL to include the image in the HTML **/
-			return '<img src="' . base_url() . 'uploads/invoice_logos/' . $CI->mdl_mcb_data->setting('invoice_logo') . '" />';
+			return '<img src="' . base_url() . 'uploads/invoice_logos/' . $CI->mcbsb->settings->setting('invoice_logo') . '" />';
 
 		}
 

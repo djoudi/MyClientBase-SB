@@ -1,7 +1,24 @@
-project info available here: 
-
-http://www.mcbsb.com 
-
-The project is also available as "software as a service" in beta version:
+The project is available as "software as a service" in free beta version:
 
 http://tooljar.biz
+
+NOTE: 
+1) Please do not use this code at this stage: it's not usable! Use the master branch instead
+
+2) This version requires php5-intl installed on your system http://php.net/manual/en/intl.installation.php
+
+
+
+To download this version do:
+
+mkdir /tmp/git
+cd /tmp/git
+git clone https://github.com/damko/MyClientBase-SB.git
+cd MyClientBase-SB
+git fetch
+git checkout --track -b new-ui origin/new_ui
+
+git submodule init
+git submodule update
+cd sparks/ion_auth/2.3.3
+git checkout contact_engine

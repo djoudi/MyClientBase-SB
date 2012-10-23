@@ -51,7 +51,7 @@ function invoice_item_tax_rate($item) {
 
 	$CI =& get_instance();
 
-    return format_number($item->tax_rate_percent, TRUE, $CI->mdl_mcb_data->setting('decimal_taxes_num')) . '%';
+    return format_number($item->tax_rate_percent, TRUE, $CI->mcbsb->settings->setting('decimal_taxes_num')) . '%';
 
 }
 
@@ -67,7 +67,7 @@ function invoice_item_tax_sum_name($sum) {
 	$CI =& get_instance();
 
     /* For display purposes */
-    return $sum->tax_rate_name . ' @ ' . format_number($sum->tax_rate_percent, TRUE, $CI->mdl_mcb_data->setting('decimal_taxes_num')) . '%';
+    return $sum->tax_rate_name . ' @ ' . format_number($sum->tax_rate_percent, TRUE, $CI->mcbsb->settings->setting('decimal_taxes_num')) . '%';
 
 }
 function invoice_item_total($item) {
@@ -103,7 +103,7 @@ function format_qty($qty) {
     global $CI;
 
     /* Used internally, not for invoice templates */
-    return ($CI->mdl_mcb_data->setting('display_quantity_decimals')) ? format_number($qty) : format_number($qty, TRUE, 0);
+    return ($CI->mcbsb->settings->setting('display_quantity_decimals')) ? format_number($qty) : format_number($qty, TRUE, 0);
 
 }
 

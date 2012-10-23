@@ -1,0 +1,97 @@
+.ui-widget { 
+	font-family: sans-serif/*{ffDefault}*/; 
+	font-size: 13px/*{fsDefault}*/;
+}
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { 
+	font-family: sans-serif/*{ffDefault}*/; 
+	font-size: 13px;
+}
+.ui-widget-content { 
+	border: 1px solid #ccc/*{borderColorContent}*/; 
+	background: #ffffff/*{bgColorContent}*/; 
+	color: #555555/*{fcContent}*/; 
+}
+.ui-widget-content a {
+	color: #555555/*{fcContent}*/;
+}
+.ui-widget-header { 
+	border: 0px; 
+	border-bottom: 1px solid #ccc/*{borderColorHeader}*/; 
+	background: white/*{bgColorHeader}*/; 
+	color: #222222/*{fcHeader}*/; 
+	font-weight: bold; 
+}
+
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default { 
+	border: 1px solid #ccc/*{borderColorDefault}*/; 
+	background: #daefff/*{bgColorDefault}*/; 
+	font-weight: normal/*{fwDefault}*/; 
+	color: #555555/*{fcDefault}*/; 
+}
+.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited { 
+	color: #207fca/*{fcDefault}*/; 
+	text-decoration: none; 
+}
+.ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus { 
+	border: 1px solid #ccc/*{borderColorHover}*/; 
+	background: white/*{bgColorHover}*/; 
+	font-weight: normal/*{fwDefault}*/; 
+	color: #212121/*{fcHover}*/; 
+}
+.ui-state-hover a, .ui-state-hover a:hover, .ui-state-hover a:link, .ui-state-hover a:visited { 
+	color: #207fca/*{fcHover}*/;
+	text-decoration: none; 
+}
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active { 
+	border: 1px solid #ccc/*{borderColorActive}*/; 
+	background: #ffffff/*{bgColorActive}*/; 
+	font-weight: normal/*{fwDefault}*/; 
+	color: #212121/*{fcActive}*/; 
+}
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited { 
+	color: #207fca/*{fcActive}*/; 
+	text-decoration: none; 
+}
+
+.ui-tabs-panel a{
+	color: #207fca;
+}
+
+.ui-tabs-panel a.button, .ui-dialog a.button {
+	color: white;
+}
+
+.ui-tabs-panel a.button:hover, .ui-dialog a.button:hover {
+	color: #207fca;
+}
+
+
+.ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight  {min-height: 40px; border: 1px dotted #ccc/*{borderColorHighlight}*/; background: transparent/*{bgColorHighlight}*/; color: #363636/*{fcHighlight}*/; }
+.ui-state-highlight a, .ui-widget-content .ui-state-highlight a,.ui-widget-header .ui-state-highlight a { color: #363636/*{fcHighlight}*/; }
+.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error {border: 1px solid #cd0a0a/*{borderColorError}*/; background: #eaffda/*{bgColorError}*/; color: #cd0a0a/*{fcError}*/; }
+.ui-state-error a, .ui-widget-content .ui-state-error a, .ui-widget-header .ui-state-error a { color: #cd0a0a/*{fcError}*/; }
+.ui-state-error-text, .ui-widget-content .ui-state-error-text, .ui-widget-header .ui-state-error-text { color: #cd0a0a/*{fcError}*/; }
+.ui-priority-primary, .ui-widget-content .ui-priority-primary, .ui-widget-header .ui-priority-primary { font-weight: bold; }
+.ui-priority-secondary, .ui-widget-content .ui-priority-secondary,  .ui-widget-header .ui-priority-secondary { opacity: .7; filter:Alpha(Opacity=70); font-weight: normal; }
+.ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled { opacity: .35; filter:Alpha(Opacity=35); background-image: none; }
+
+
+#ui-datepicker-div, .ui-datepicker {
+	z-index: 1000; /* must be > than popup editor (950) */
+}
+
+/* this is to hide the X button in dialogs. It requires modification in mcbsb.js too */
+.no-close .ui-dialog-titlebar-close {display: none; }
+
+/* css for timepicker */
+.ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
+.ui-timepicker-div dl { text-align: left; }
+.ui-timepicker-div dl dt { height: 25px; margin-bottom: -25px; }
+.ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
+.ui-timepicker-div td { font-size: 90%; }
+.ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
+
+.ui-timepicker-rtl{ direction: rtl; }
+.ui-timepicker-rtl dl { text-align: right; }
+.ui-timepicker-rtl dl dd { margin: 0 65px 10px 10px; }

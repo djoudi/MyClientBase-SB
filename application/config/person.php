@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-$config['person_show_fields'] = array('title','sn','givenName','codiceFiscale','homePostalAddress','mozillaHomePostalCode','mozillaHomeLocalityName','mozillaHomeState','mozillaHomeCountryName','mobile','homePhone','homeFacsimileTelephoneNumber','companyPhone','facsimileTelephoneNumber','mail','managerName','assistantName','assistantPhone','labeledURI','calendarURI','freeBusyURI','preferredLanguage','birthDate','enabled','acceptsCommercialCommunications','category','businessCategory','facebookURI','githubURI','googleplusURI','linkedinURI','twitterURI','dbId');
+$config['person_show_fields'] = array('title','sn','givenName','codiceFiscale','homePostalAddress','mozillaHomePostalCode','mozillaHomeLocalityName','mozillaHomeState','mozillaHomeCountryName','mobile','homePhone','homeFacsimileTelephoneNumber','companyPhone','facsimileTelephoneNumber','mail','managerName','assistantName','assistantPhone','labeledURI','calendarURI','preferredLanguage','birthDate','acceptsCommercialCommunications','category','businessCategory','facebookURI','githubURI','googleplusURI','linkedinURI','twitterURI','dbId','note','description','jpegPhoto','youtubeURI','skypeID');
 $config['person_attributes_aliases'] = array(
 				'title' => 'title',
 				'sn' => 'last_name',
@@ -23,14 +23,33 @@ $config['person_attributes_aliases'] = array(
 				'labeledURI' => 'blog',
 				'calendarURI' => 'online_calendar',
 				'freeBusyURI' => 'online_free-busy',
-				'preferredLanguage' => 'spoken_language',
+				'preferredLanguage' => 'preferred_language',
 				'birthDate' => 'birthdate',
 				'acceptsCommercialCommunications' => 'we_can_send_communications',
+				'category' => 'category',
 				'businessCategory' => 'business_category',
 				'facebookURI' => 'facebook_page',
 				'githubURI' => 'github_page',
 				'googleplusURI' => 'google_page',
 				'linkedinURI' => 'linkedin_page',
 				'twitterURI' => 'twitter_page',
+				'note' => 'note',
 );
 $config['person_hidden_fields'] = array('uid','client_id');
+$config['person_default_values'] = array(
+				'homePhone' => '+3902',
+				'mozillaHomeState' => 'Varese',
+				'homeFacsimileTelephoneNumber' => '+3902',
+				'mozillaHomeCountryName' => 'Italy',
+				'category' => 'cliente',
+				'cn' => 'unknown',
+				'displayName' => 'unknown',
+				'enabled' => 'TRUE',
+				'entryCreatedBy' => 'unknown',
+				'fileAs' => 'unknown',
+				'givenName' => 'unknown',
+				'sn' => 'unknown',
+				'uid' => '',
+				'userPassword' => '50abac362d563',
+);
+$config['person_never_display_fields'] = array('audio','categories','cn','destinationIndicator','displayName','enabled','entryCreatedBy','entryCreationDate','entryUpdateDate','entryUpdatedBy','fileAs','initials','l','lastAssignmentDate','lastPurchaseDate','locRDN','mailer','manager','o','oAdminRDN','oRDN','objectClass','ou','photo','postalCode','radio','registeredAddress','seeAlso','street','st','tty','uid','userCertificate','userPKCS12','userSMIMECertificate','x500uniqueIdentifier','x121Address');

@@ -6,15 +6,15 @@ function display_currency($amount, $standardize_number = TRUE) {
 
 	$amount = format_number($amount, $standardize_number);
 
-	if ($CI->mdl_mcb_data->setting('currency_symbol_placement') == 'before') {
+	if ($CI->mcbsb->settings->setting('currency_symbol_placement') == 'before') {
 
-		$amount = $CI->mdl_mcb_data->setting('currency_symbol') . ' ' . $amount;
+		$amount = $CI->mcbsb->settings->setting('currency_symbol') . ' ' . $amount;
 
 	}
 
 	else {
 		
-		$amount = $amount .' ' . $CI->mdl_mcb_data->setting('currency_symbol');
+		$amount = $amount .' ' . $CI->mcbsb->settings->setting('currency_symbol');
 
 	}
 
@@ -26,7 +26,7 @@ function currency_symbol() {
 
 	global $CI;
 
-	return $CI->mdl_mcb_data->setting('currency_symbol');
+	return $CI->mcbsb->settings->setting('currency_symbol');
 
 }
 

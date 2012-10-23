@@ -29,7 +29,7 @@ function smarty_function_citranslate($params, $template)
 	
 	$dirname = setupCiTranslate($params['lang']);
 	
- 	$filename = $dirname.'mcb_lang.php';
+ 	$filename = strtolower($dirname.'mcb_lang.php');
  	if(is_file($filename))
  	{
  		include $filename;

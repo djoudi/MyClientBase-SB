@@ -1,5 +1,15 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * This helper configures settings for phpgettext to provide a proper content translation via the smarty "t" function 
+ * 
+ * @access		public
+ * @param		None
+ * @return		Array containing the localization settings
+ * 
+ * @author 		Damiano Venturin
+ * @since		Oct 25, 2012
+ */ 
 function setupPhpGettext() {
 
 	$CI =& get_instance();
@@ -21,34 +31,18 @@ function setupPhpGettext() {
 		log_message('debug','File '.$CI->config->item('gettextInc').' can not be found.');
 	}
 	
-	$supported_locales = $CI->config->item('gettextSupportedLocales');
 	$encoding = $CI->config->item('gettextEncoding');
 	
-	//takes the language settings from MCB and transforms it in a valid gettext locale
-	$mcb_locale = $CI->mdl_mcb_data->get('default_language');
-	switch ($mcb_locale) {
-		case 'english':
-			$smarty_locale = 'en_US';
-		break;
-		
-		case 'italian':
-			$smarty_locale = 'it_IT';
-		break;
-	}
-	
-	if(!isset($smarty_locale)) {
-		$locale = $CI->config->item('gettextDefaultLocale'); //(isset($_GET['lang']))? $_GET['lang'] : DEFAULT_LOCALE;
-	} else {
-		$locale = $smarty_locale;
-	}
-	
-	return array('locale' => $locale,
-				 'encoding' => $encoding,
-				 'supported_locales' => $supported_locales,
-				 'project_dir' => PROJECT_DIR,
-				 'locale_dir' => LOCALE_DIR,
-				 'default_locale' => DEFAULT_LOCALE,
-				 );
+	$locale = $smarty_locale = $CI->mcbsb->_locale;
+
+	return array(
+				'locale' => $locale,
+				'encoding' => $encoding,
+				'supported_locales' => $CI->mcbsb->_languages,
+				'project_dir' => PROJECT_DIR,
+				'locale_dir' => LOCALE_DIR,
+				'default_locale' => DEFAULT_LOCALE,
+	);
 }
 
 /* End of file phpgettext_helper.php */

@@ -1,0 +1,80 @@
+/* 
+	light green		#eaffda
+	green 			#82cc00 
+	darkest green	#69a600
+	
+	light blue		#daefff
+	blue 			#207fca
+	dark blue		#2280c9
+	darkest blue 	#1b659f
+	
+	dark red		#ba2323
+	
+	light orange	#ffba00
+	orange			#ff9c00
+	
+	light gray		#f3f3f3
+	medium gray		#acacac
+	gray			#555
+	dark gray		#444444
+	dark dark gray	#1e1e1e
+	
+	borders			#ccc
+*/
+
+.white{color: #fff}
+.b_white {background-color: #fff;}
+
+
+
+.light_blue {color: #daefff;}
+.b_light_blue {background-color: #daefff;}
+
+.blue {color: #207fca;}
+.b_blue {background-color: #207fca;}
+
+.dark_blue {color: #2280c9;}
+.b_dark_blue {background-color: #2280c9;}
+
+.darkest_blue {color: #1b659f;}
+.b_darkest_blue {background-color: #1b659f;}
+
+
+
+.light_green {color: #eaffda;}
+.b_light_green {background-color: #eaffda;}
+
+.green {color: #82cc00;}
+.b_green {background-color: #82cc00;}
+
+.dark_green {color: #69a600;}
+.b_dark_green {background-color: #69a600;}
+
+
+
+.dark_red {color: #ba2323;}
+.b_dark_red {background-color: #ba2323;}
+
+
+
+.light_orange {color: #ffba00;}
+.b_light_orange {background-color: #ffba00;}
+
+.orange {color: #ff9c00;}
+.b_orange {background-color: #ff9c00;}
+
+
+.light_gray {color: #f3f3f3;}
+.b_light_gray {background-color: #f3f3f3;}
+
+.medium_gray {color: #acacac;}
+.b_medium_gray {background-color: #acacac;}
+
+.gray {color: #555555;}
+.b_gray {background-color: #555555;}
+
+.dark_gray {color: #444444;}
+.b_dark_gray {background-color: #444444;}
+
+.darkest_gray {color: #1e1e1e;}
+.b_darkest_gray {background-color: #1e1e1e;}

@@ -51,7 +51,7 @@ function write_config($filename, array $config_items, $create=false) {
 				
 				//if it's not an associative array (unfortunately there is no way to have a precise check ...)
 				//just implode the array, otherwise pass through all the items
-				if(isset($new_value[0]))
+ 				if(isset($new_value[0]))
 				{
 					$string = 'array(\''.implode('\',\'', $new_value).'\');'."\n";
 				} else {
@@ -60,6 +60,7 @@ function write_config($filename, array $config_items, $create=false) {
 					}
 					$string = 'array('."\n".$string.');'."\n";
 				}
+ 							
 			} else {
 				$string = '"' . $new_value . '"' . ";\n";
 			}
