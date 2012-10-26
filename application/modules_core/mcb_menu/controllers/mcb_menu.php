@@ -40,9 +40,9 @@ class MCB_Menu extends Admin_Controller {
         		unset($menu_items[$key]); 
         	}
         	        	
-            if (!$this->session->userdata('global_admin')) {
+            if (!$this->session->userdata('is_admin')) {
 
-                if (isset($menu_item['global_admin'])) {
+                if (isset($menu_item['is_admin'])) {
 
                     unset($menu_items[$key]);
 
@@ -52,7 +52,7 @@ class MCB_Menu extends Admin_Controller {
 
                     foreach ($menu_item['submenu'] as $sub_key=>$sub_item) {
 
-                        if (isset($sub_item['global_admin'])) {
+                        if (isset($sub_item['is_admin'])) {
 
                             unset($menu_items[$key]['submenu'][$sub_key]);
                         }
@@ -111,7 +111,7 @@ class MCB_Menu extends Admin_Controller {
         	
 			if (strpos($menu_item['href'], $uri_string) === 0) {
 
-				if (isset($menu_item['global_admin']) and !$global_admin) {
+				if (isset($menu_item['is_admin']) and !$global_admin) {
 
 					redirect('contact');
 
@@ -125,7 +125,7 @@ class MCB_Menu extends Admin_Controller {
 
 					if (strpos($sub_item['href'], $uri_string) === 0) {
 
-						if (isset($sub_item['global_admin']) and !$global_admin) {
+						if (isset($sub_item['is_admin']) and !$global_admin) {
 
 							redirect('contact');
 
@@ -139,7 +139,7 @@ class MCB_Menu extends Admin_Controller {
 			}
 
 		}
-
+		$a = '';
 	}
 
 }

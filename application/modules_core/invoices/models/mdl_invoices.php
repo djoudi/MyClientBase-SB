@@ -14,7 +14,7 @@ class Mdl_Invoices extends MY_Model {
 
 		$this->order_by = 'mcb_invoices.invoice_date_entered DESC, mcb_invoices.invoice_id DESC';
 
-		$this->select_fields = "
+/* 		$this->select_fields = "
 		mcb_invoices.*,
 		mcb_invoice_amounts.*,
 		mcb_invoice_groups.invoice_group_name,
@@ -37,8 +37,18 @@ class Mdl_Invoices extends MY_Model {
 		mcb_invoice_statuses.*, 
 		(DATEDIFF(FROM_UNIXTIME(UNIX_TIMESTAMP()),FROM_UNIXTIME(mcb_invoices.invoice_due_date))) AS invoice_days_overdue,
 		IF(mcb_invoice_statuses.invoice_status_type NOT IN(3,2), IF((DATEDIFF(FROM_UNIXTIME(UNIX_TIMESTAMP()),FROM_UNIXTIME(mcb_invoices.invoice_due_date))) > 0, 1, 0), 0) AS invoice_is_overdue";
-
-		$user_custom_fields = $this->mdl_fields->get_object_fields(6);
+ */
+		
+		$this->select_fields = "
+		mcb_invoices.*,
+		mcb_invoice_amounts.*,
+		mcb_invoice_groups.invoice_group_name,
+		mcb_invoice_groups.invoice_group_prefix,
+		mcb_invoice_statuses.*,
+		(DATEDIFF(FROM_UNIXTIME(UNIX_TIMESTAMP()),FROM_UNIXTIME(mcb_invoices.invoice_due_date))) AS invoice_days_overdue,
+		IF(mcb_invoice_statuses.invoice_status_type NOT IN(3,2), IF((DATEDIFF(FROM_UNIXTIME(UNIX_TIMESTAMP()),FROM_UNIXTIME(mcb_invoices.invoice_due_date))) > 0, 1, 0), 0) AS invoice_is_overdue";
+		
+/* 		$user_custom_fields = $this->mdl_fields->get_object_fields(6);
 
 		if ($user_custom_fields) {
 
@@ -55,16 +65,16 @@ class Mdl_Invoices extends MY_Model {
 			$this->select_fields .= implode(',', $ucf);
 
 		}
-
+ */
 		$this->joins = array(
 			'mcb_invoice_statuses'	=>	array(
 				'mcb_invoice_statuses.invoice_status_id = mcb_invoices.invoice_status_id',
 				'left'
 			),
-			'mcb_users'				=>	array(
-				'mcb_users.user_id = mcb_invoices.user_id',
-				'left'
-			),
+// 			'mcb_users'				=>	array(
+// 				'mcb_users.user_id = mcb_invoices.user_id',
+// 				'left'
+// 			),
 			'mcb_invoice_amounts'	=>	'mcb_invoice_amounts.invoice_id = mcb_invoices.invoice_id',
 			'mcb_invoice_groups'	=>	array(
 				'mcb_invoice_groups.invoice_group_id = mcb_invoices.invoice_group_id',
@@ -222,7 +232,7 @@ class Mdl_Invoices extends MY_Model {
 			)
 		);
 
-// 		if (!$this->session->userdata('global_admin')) {
+// 		if (!$this->session->userdata('is_admin')) {
 // 			$params['where']['mcb_invoices.user_id'] = $this->session->userdata('user_id');
 // 		}
 
@@ -241,7 +251,7 @@ class Mdl_Invoices extends MY_Model {
 			)
 		);
 
-		if (!$this->session->userdata('global_admin')) {
+		if (!$this->session->userdata('is_admin')) {
 
 			$params['where']['mcb_invoices.user_id'] = $this->session->userdata('user_id');
 
@@ -262,7 +272,7 @@ class Mdl_Invoices extends MY_Model {
 			)
 		);
 
-		if (!$this->session->userdata('global_admin')) {
+		if (!$this->session->userdata('is_admin')) {
 
 			$params['where']['mcb_invoices.user_id'] = $this->session->userdata('user_id');
 
@@ -284,7 +294,7 @@ class Mdl_Invoices extends MY_Model {
 			)
 		);
 
-		if (!$this->session->userdata('global_admin')) {
+		if (!$this->session->userdata('is_admin')) {
 
 			$params['where']['mcb_invoices.user_id'] = $this->session->userdata('user_id');
 
@@ -306,7 +316,7 @@ class Mdl_Invoices extends MY_Model {
 			)
 		);
 
-		if (!$this->session->userdata('global_admin')) {
+		if (!$this->session->userdata('is_admin')) {
 
 			$params['where']['mcb_invoices.user_id'] = $this->session->userdata('user_id');
 
@@ -327,7 +337,7 @@ class Mdl_Invoices extends MY_Model {
 			)
 		);
 
-		if (!$this->session->userdata('global_admin')) {
+		if (!$this->session->userdata('is_admin')) {
 
 			$params['where']['mcb_invoices.user_id'] = $this->session->userdata('user_id');
 

@@ -4,7 +4,7 @@ class Dashboard_Widgets extends Admin_Controller {
 
 	function total_balance() {
 
-		if ($this->session->userdata('global_admin')) {
+		if ($this->session->userdata('is_admin')) {
 
 			$invoice_total_balance = $this->mdl_invoices->get_total_invoice_balance();
 
@@ -36,7 +36,7 @@ class Dashboard_Widgets extends Admin_Controller {
 
         }
 
-        if ($this->session->userdata('global_admin')) {
+        if ($this->session->userdata('is_admin')) {
 
             $invoice_total_paid = $this->mdl_payments->get_total_paid($params);
 

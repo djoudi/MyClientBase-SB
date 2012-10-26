@@ -6,7 +6,7 @@ class Mdl_Client_Statement extends CI_Model {
 
         $params = array();
 
-		if (!$this->session->userdata('global_admin')) {
+		if (!$this->session->userdata('is_admin')) {
 
 			$params['where']['mcb_invoices.user_id'] = $this->session->userdata('user_id');
 

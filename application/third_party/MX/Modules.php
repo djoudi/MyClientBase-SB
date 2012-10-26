@@ -2,11 +2,7 @@
 
 global $CFG;
 
-if(!defined('SPARKPATH'))
-{
-	//define('SPARKPATH', APPPATH.'sparks/');
-	define('SPARKPATH', FCPATH.'sparks/');
-}
+if(!defined('SPARKPATH')) define('SPARKPATH', FCPATH.'sparks/');
 
 
 /* get module locations from config settings or use the default module location and offset */
@@ -195,6 +191,7 @@ class Modules
 			$modules[array_shift($segments)] = ltrim(implode('/', $segments).'/','/');
 		}
 
+		$locations = Modules::$locations;
 		foreach (Modules::$locations as $location => $offset) {
 			foreach($modules as $module => $subpath) {
 				$fullpath = $location.$module.'/'.$base.$subpath;
@@ -206,7 +203,17 @@ class Modules
 
 				//DAM
 				//sparks
-				if ($base == 'libraries/' || $base == 'config/' || $base == 'helpers/' || preg_match('/^language\//', $base) || $base == 'views/')
+				$possible_bases = array(
+										'config/',
+										'controllers/',
+										'helpers/',
+										'libraries/',
+										'models/',
+										'views/'
+				);
+				
+				//$base == 'models/' || $base == 'libraries/' || $base == 'config/' || $base == 'helpers/' || $base == 'views/'
+				if (in_array($base, $possible_bases))
 				{	
 					//looking into sparks dir
 					$fullpath = $location.$base;
@@ -218,13 +225,25 @@ class Modules
 					if(is_file($fullpath.strtolower($file_ext))) return array($fullpath, strtolower($file));
 				} 	
 			}
+			
+			if (preg_match('/^language\//', $base))
+			{
+				//looking into sparks dir
+				$fullpath = $location.$base;
+			
+				//Camel case
+				if(is_file($fullpath.ucfirst($file_ext))) return array($fullpath, ucfirst($file));
+			
+				//lower case
+				if(is_file($fullpath.strtolower($file_ext))) return array($fullpath, strtolower($file));
+			}			
 		}
 
 		/* is the file in an application directory? */
 		if ($base == 'views/' OR $base == 'plugins/') {
 			if (is_file(APPPATH.$base.$path.$file_ext)) return array(APPPATH.$base.$path, $file);
 			show_error("Unable to locate the file: {$path}{$file_ext}");
-		}
+		}	
 
 		return array(FALSE, $file);
 	}

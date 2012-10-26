@@ -31,7 +31,7 @@ class Mdl_Fields extends MY_Model {
 			2	=>	'mcb_invoice_items',
 			//3	=>	'mcb_contacts',
 			3	=>	'mcb_payments',
-            4   =>  'mcb_users'
+            //4   =>  'mcb_users'
 		);
 
 		$this->column_prefixes = array(

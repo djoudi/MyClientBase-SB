@@ -1,5 +1,7 @@
 <?php (defined('BASEPATH')) OR exit('No direct script access allowed');
 
+//TODO all these methods should be migrated in mcbsb Class
+
 class Mdl_MCB_Data extends MY_Model {
 
 	public $settings;
@@ -20,7 +22,7 @@ class Mdl_MCB_Data extends MY_Model {
 
 		else {
 
-			return NULL;
+			return false;
 
 		}
 

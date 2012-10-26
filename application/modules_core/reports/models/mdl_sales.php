@@ -41,7 +41,7 @@ class Mdl_Sales extends CI_Model {
 
 		$this->db->where('invoice_is_quote', 0);
 
-		if (!$this->session->userdata('global_admin')) {
+		if (!$this->session->userdata('is_admin')) {
 
 			$this->db->where('mcb_invoices.user_id', $this->session->userdata('user_id'));
 

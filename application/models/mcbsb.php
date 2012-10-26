@@ -11,6 +11,8 @@ class Mcbsb  extends CI_Model {
 	public $_total_rows;
 	public $_user;
 	public $_version;
+	public $_language = null;  	//like english, italian, russian (always english words i.e. italian, not italiano)
+	public $_locale = null; 		//like en_us, it_it, ru_RU
 	
 	public function __construct() {
 		
@@ -26,19 +28,34 @@ class Mcbsb  extends CI_Model {
 		
 		//Contact Engine related libraries
 		//Rest client class
-		$this->load->spark('restclient/2.1.0');
-		$this->load->config('ion_auth', TRUE);		
+		$this->load->spark('curl/1.2.1');
+		$this->load->spark('ion_auth/2.3.3');
+		$this->load->library('ion_auth');
+		$this->load->library('session');
+		$this->load->library('mcbsb_user');
 		
 		$this->initialize();
 		
-		//$tmp = $this->session->all_userdata();
-		$this->_user->id = $this->session->userdata('user_id');
-		$this->_user->name = $this->session->userdata('first_name') . ' ' . $this->session->all_userdata('last_name');
-		$this->_user->first_name = $this->session->userdata('first_name');
-		$this->_user->last_name = $this->session->userdata('last_name');
-		$this->_user->is_admin = $this->session->userdata('is_admin');
-			
-		$this->load->model('users/mdl_users','users');  //mdl_users is loaded in $this->users
+        if(!$this->_user->logged_in()){
+        	//check if segments have login to avoid infinite loop
+        	if(!in_array('login',$this->uri->segment_array())) redirect('/login');
+        }
+        
+        //this check is required to increase security in a multi hosting environment where different urls
+        //point to different installations of MCBSB
+        //the current base_url has to match the value stored in session
+        if($this->config->item('validate_url')) {
+        	
+        	$authenticated_for_url = $this->session->userdata('authenticated_for_url');
+        	
+        	if($authenticated_for_url != base_url()){
+        		if(!in_array('login',$this->uri->segment_array()) && !in_array('logout',$this->uri->segment_array())) redirect('/logout');
+        	}
+        }
+        
+        $this->_load_language();
+		
+		//$this->load->model('users/mdl_users','users');  //mdl_users is loaded in $this->users
 	}
 	
 	private function initialize() {
@@ -70,6 +87,8 @@ class Mcbsb  extends CI_Model {
 				}
 			}
 		}
+		
+		$this->_user = new Mcbsb_User();
 	}
 
 	//loads an object into $this->$objname
@@ -91,6 +110,47 @@ class Mcbsb  extends CI_Model {
 		//TODO I think I can load the header from here
 	}
 	
+	/**
+	 * Sets the attributes "_language" and "_locale".
+	 * $this->_language will be used by the standard Code Igniter translation system
+	 * $this->_locale will be used by phpgettext 
+	 * 
+	 * $this->_language contains the name of the language like italian, english, russian ...
+	 * $this->_locale contains the I18N locale code like it_IT, en_US, ru_RU ... 
+	 * 
+	 * @access		private
+	 * @param		Nothing
+	 * @return		Nothing	
+	 * 
+	 * @author 		Damiano Venturin
+	 * @since		Oct 25, 2012
+	 */
+	private function _load_language() {
+		
+		$this->load->config('phpgettext');
+		
+		//load the preferred language for the current user or the default system language
+		if(!empty($this->_user->preferred_language) && in_array($this->_user->preferred_language,array_keys($this->config->item('gettextSupportedLocales')))) {
+			$this->_language = $this->_user->preferred_language;
+		} else {
+			$this->load->model('mcb_data/mdl_mcb_data');
+		
+			if($default_language = $this->mdl_mcb_data->get('default_language')) {
+				$this->_language = $default_language;
+			}
+		}
+
+		if(is_null($this->_language)) {
+			$this->_language = 'english'; //default value
+		} 
+		
+		if(is_null($this->_locale)) {
+			$tmp = $this->config->item('gettextSupportedLocales');
+			$this->_locale = $tmp[$this->_language];			
+		}
+		
+		$this->load->language('mcb', $this->_language);		
+	}	
 	
 	public function get_enabled_modules() {
 		$this->load->model('mcb_modules/mdl_mcb_modules');

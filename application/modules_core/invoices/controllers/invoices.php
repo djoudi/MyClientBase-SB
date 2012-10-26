@@ -226,30 +226,11 @@ class Invoices extends Admin_Controller {
 			)
 		);
 
-//TODO remove this ACL
-//         if (!$this->session->userdata('global_admin')) {
-//             $params['where']['mcb_invoices.user_id'] = $this->session->userdata('user_id');
-//         }
-
 		
 		if (!$invoice = $this->mdl_invoices->get($params)) {
 			$this->mcbsb->system_messages->error = 'Invoice not found';
 			redirect('invoices');
 		}
-
-		//TODO what is this?
-		$user_params = array(
-			'where' =>  array(
-				'mcb_users.user_client_id'   =>  0
-			)
-		);
-
-        if (!$this->session->userdata('global_admin')) {
-
-            $user_params['where']['user_id'] = $this->session->userdata('user_id');
-
-        }
-		//end of "what is this"
         
 		$data = array(
 			'invoice'			=>	$invoice,
@@ -261,8 +242,8 @@ class Invoices extends Admin_Controller {
 			'tax_rates'			=>	$this->mdl_tax_rates->get(),
 			'invoice_statuses'	=>	$this->mdl_invoice_statuses->get(),
 			'tab_index'			=>	$tab_index,
-			'custom_fields'		=>	$this->mdl_fields->get_object_fields(1),
-			'users'             =>  $this->mdl_users->get($user_params)
+			'custom_fields'		=>	array(), //$this->mdl_fields->get_object_fields(1),
+			'users'             =>  array(), //$this->mdl_users->get($user_params)
 		);
 
 		$data['site_url'] = site_url($this->uri->uri_string());

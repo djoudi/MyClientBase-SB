@@ -88,15 +88,6 @@ class Sessions extends CI_Controller {
 
     }
 
-    function logout() {
-
-        $this->load->helper('url');
-
-        $this->session->sess_destroy();
-
-        redirect('sessions/login');
-
-    }
 
     function recover() {
 

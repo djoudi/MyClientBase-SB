@@ -41,6 +41,7 @@
 $route['default_controller'] = "contact";
 $route['404_override'] = '';
 
+$route['logout'] = 'login/logout/';
 $route['contact/search/:any'] = 'contact/index/';
 $route['contact/order_by/:any'] = 'contact/index/order_by/';
 

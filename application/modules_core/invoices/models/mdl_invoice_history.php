@@ -12,10 +12,11 @@ class Mdl_Invoice_History extends MY_Model {
 
 		$this->order_by = 'invoice_history_date DESC';
 
-		$this->select = 'mcb_invoice_history.*, mcb_users.username, mcb_invoices.invoice_number';
-
+		//$this->select = 'mcb_invoice_history.*, mcb_users.username, mcb_invoices.invoice_number';
+		$this->select = 'mcb_invoice_history.*, mcb_invoices.invoice_number';
+		
 		$this->joins = array(
-			'mcb_users'		=>	'mcb_users.user_id = mcb_invoice_history.user_id',
+			//'mcb_users'		=>	'mcb_users.user_id = mcb_invoice_history.user_id',
 			'mcb_invoices'	=>	'mcb_invoices.invoice_id = mcb_invoice_history.invoice_id'
 		);
 

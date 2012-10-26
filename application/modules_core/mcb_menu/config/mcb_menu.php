@@ -42,17 +42,17 @@ $config = array(
         'system'    =>  array(
             'title'         =>  'mcbsb settings',
             'href'          =>  'settings',
-            'global_admin'  =>  TRUE,
+            'is_admin'  =>  TRUE,
             'submenu'       =>  array(
 				'mcb_core_modules'   =>  array(
 				                    'title'         =>  'handle modules',
 				                    'href'          =>  'mcb_modules/core',
-				                    'global_admin'  =>  TRUE,
+				                    'is_admin'  =>  TRUE,
 				),                
                 'fields'    =>  array(
                     'title'         =>  'custom fields',
                     'href'          =>  'fields/index',
-                    'global_admin'  =>  TRUE,
+                    'is_admin'  =>  TRUE,
                 ),
             	'invoices/templates'   =>  array(
             		'title'         =>  'invoice templates',
@@ -65,22 +65,22 @@ $config = array(
                 'invoice_statuses'  =>  array(
                     'title'         =>  'invoice statuses',
                     'href'          =>  'invoice_statuses/index',
-                    'global_admin'  =>  TRUE,
+                    'is_admin'  =>  TRUE,
                 ),
             	'payments/payment_methods'  =>  array(
             			'title'         =>  'payment methods',
             			'href'          =>  'payments/payment_methods',
-            			'global_admin'  =>  TRUE
+            			'is_admin'  =>  TRUE
             	),            		
             	'templates/index/type/payment_receipts' =>  array(
             			'title'         =>  'payment receipt templates',
             			'href'          =>  'templates/index/type/payment_receipts',
-            			'global_admin'  =>  TRUE
+            			'is_admin'  =>  TRUE
             	),            		
                 'settings'  =>  array(
                     'title'         =>  'system settings',
                     'href'          =>  'settings/index',
-                    'global_admin'  =>  TRUE,
+                    'is_admin'  =>  TRUE,
                 ),
                 'tax_rates' =>  array(
                     'title'         =>  'tax rates',
@@ -89,7 +89,7 @@ $config = array(
                 'users' =>  array(
                     'title'         =>  'user accounts',
                     'href'          =>  'users/index',
-                    'global_admin'  =>  TRUE,
+                    'is_admin'  =>  TRUE,
                 )
             )
         )

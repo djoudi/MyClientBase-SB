@@ -49,7 +49,7 @@ class Payments extends Admin_Controller {
 				$params['order_by'] = 'payment_date DESC';
 		}
 
-		if (!$this->session->userdata('global_admin')) {
+		if (!$this->session->userdata('is_admin')) {
 
 			$params['where'][] = 'mcb_invoices.invoice_id IN (SELECT invoice_id FROM mcb_invoices WHERE user_id = ' . $this->session->userdata('user_id') . ')';
 
@@ -115,7 +115,7 @@ class Payments extends Admin_Controller {
 					)
 				);
 
-// 				if (!$this->session->userdata('global_admin')) {
+// 				if (!$this->session->userdata('is_admin')) {
 // 					$params['where']['mcb_invoices.user_id'] = $this->session->userdata('user_id');
 // 				}
 
@@ -134,7 +134,7 @@ class Payments extends Admin_Controller {
 					)
 				);
 
-				if (!$this->session->userdata('global_admin')) {
+				if (!$this->session->userdata('is_admin')) {
 
 					$params['where']['mcb_invoices.user_id'] = $this->session->userdata('user_id');
 

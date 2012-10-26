@@ -5,31 +5,32 @@ class Mdl_Users extends MY_Model {
 	public function __construct() {
 
 		parent::__construct();
-
-		//TODO uncomment me
-/* 		$CI = get_instance();
-		if($CI->mcbsb->is_module_enabled('tooljar')) {
-			redirect('/');
-			return false;
-		} */
-				
-		$this->table_name = 'mcb_users';
-
-		$this->primary_key = 'mcb_users.user_id';
-
-		$this->select_fields = "
-		SQL_CALC_FOUND_ROWS *";
-
-		$this->order_by = 'last_name, first_name';
-
-		//TODO do not uncomment this line: it breaks mcbsb load
-		//$this->custom_fields = $this->mdl_fields->get_object_fields(6);
-
 	}
 
+	public function get_all($category = 'mcbsb'){
+		
+		$this->load->config('ion_auth', TRUE);
+		
+		if(!$ce_key = $this->config->item('contact_engine_key','ion_auth')) $ce_key = '';
+		$a = $this->config->item('contact_engine_api','ion_auth');
+		$this->rest->initialize(array('server' => $this->config->item('contact_engine_api','ion_auth').'exposeObj/person/'));
+		
+		//gets users stored in Contact Engine
+		$method = 'read';
+		$input = array();
+		$input['ce_key'] = $ce_key;
+		$input['filter'] = '(&(category=mcbsb*)(enabled=TRUE))';
+		
+		$rest_return = $this->rest->get($method, $input, 'serialize');
+		
+		//TODO crr error bla bla
+		return $rest_return['data'];
+	}
+	
 	public function validate() {
 
-		$this->form_validation->set_rules('global_admin', $this->lang->line('global_administrator'));
+		/*
+		$this->form_validation->set_rules('is_admin', $this->lang->line('global_administrator'));
 		$this->form_validation->set_rules('username', $this->lang->line('username'), 'required|callback_username_check');
 
 		if (!uri_assoc('user_id') and $this->uri->segment(2) <> 'profile') {
@@ -64,6 +65,8 @@ class Mdl_Users extends MY_Model {
 		}
 		return parent::validate($this);
 
+		*/
+		return true;
 	}
 
 	public function username_check($username) {
@@ -106,9 +109,9 @@ class Mdl_Users extends MY_Model {
 
 		}
 
-		if (!$this->input->post('global_admin')) {
+		if (!$this->input->post('is_admin')) {
 
-			$db_array['global_admin'] = 0;
+			$db_array['is_admin'] = 0;
 
 		}
 

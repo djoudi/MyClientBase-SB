@@ -1,12 +1,12 @@
 <?php if ($this->uri->segment(2) <> 'profile') { ?>
 
-	<?php if ($this->session->userdata('global_admin')) { ?>
+	<?php if ($this->session->userdata('is_admin')) { ?>
 	<dl>
 		<dt style="width: 150px;"><label>* <?php echo $this->lang->line('username'); ?>: </label></dt>
 		<dd><input type="text" name="username" id="username" value="<?php echo $this->mdl_users->form_value('username'); ?>" /></dd>
 	
 		<dt style="width: 150px;"><label><?php echo $this->lang->line('global_administrator'); ?>: </label></dt>
-		<dd><input type="checkbox" name="global_admin" id="global_admin" value="1" <?php if($this->mdl_users->form_value('global_admin')){ ?>checked="checked"<?php } ?> /></dd>
+		<dd><input type="checkbox" name="global_admin" id="global_admin" value="1" <?php if($this->mdl_users->form_value('is_admin')){ ?>checked="checked"<?php } ?> /></dd>
 	</dl>
 	<?php } ?>
 	
@@ -15,7 +15,7 @@
 	<?php } else { ?>
 
 	<input type="hidden" name="username" id="username" value="<?php echo $this->mdl_users->form_value('username'); ?>" />
-	<input type="hidden" name="global_admin" id="global_admin" value="<?php echo $this->mdl_users->form_value('global_admin'); ?>" />
+	<input type="hidden" name="global_admin" id="global_admin" value="<?php echo $this->mdl_users->form_value('is_admin'); ?>" />
 
 	<dt style="width: 150px;"><label><?php echo $this->lang->line('username'); ?>: </label></dt>
 	<dd><?php echo $this->mdl_users->form_value('username'); ?></dd>

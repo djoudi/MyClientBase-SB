@@ -1,4 +1,4 @@
-<?php if ($this->session->userdata('global_admin') and $this->mdl_mcb_modules->num_custom_modules_enabled) { ?>
+<?php if ($this->session->userdata('is_admin') and $this->mdl_mcb_modules->num_custom_modules_enabled) { ?>
 
 <div class="section_wrapper" style="clear:right; float:right; display:inline; width: 280px; background-color: gray;">
 

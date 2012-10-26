@@ -874,7 +874,7 @@ class Contact extends Admin_Controller {
         
         	//TODO is this necessary?
         	//prevents common users from seeing the invoices made by someonelse
-        	// 	        if (!$this->session->userdata('global_admin')) {
+        	// 	        if (!$this->session->userdata('is_admin')) {
         	// 	            $invoice_params['where']['mcb_invoices.user_id'] = $this->session->userdata('user_id');
         	// 	        }
         

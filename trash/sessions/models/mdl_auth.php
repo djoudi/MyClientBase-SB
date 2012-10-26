@@ -2,30 +2,7 @@
 
 class Mdl_Auth extends MY_Model {
 
-	public function auth($username, $password) {
 
-		$this->db->select('mcb_users.*');
-
-		$this->db->where('username', $username);
-		$this->db->where('password', $password);
-        
-		$query = $this->db->get('mcb_users');
-
-		if ($query->num_rows() == 1) {
-
-			return $query->row();
-
-		}
-
-		else {
-
-            $this->session->set_flashdata('custom_error', $this->lang->line('username_or_pw_incorrect'));
-
-            redirect('sessions/login');
-
-		}
-
-	}
 
 	public function set_session($user_object, $object_vars, $custom_vars = NULL) {
 

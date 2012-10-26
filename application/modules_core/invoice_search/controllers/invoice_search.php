@@ -29,7 +29,7 @@ class Invoice_Search extends Admin_Controller {
 
 			$params = array();
 
-			if (!$this->session->userdata('global_admin')) {
+			if (!$this->session->userdata('is_admin')) {
 
 				$params['where']['mcb_invoices.user_id'] = $this->session->userdata('user_id');
 

@@ -19,7 +19,7 @@ class Mdl_Inventory_Sales extends CI_Model {
             'group_by'  =>  'mcb_inventory.inventory_id'
         );
 
-		if (!$this->session->userdata('global_admin')) {
+		if (!$this->session->userdata('is_admin')) {
 
 			$params['where']['mcb_invoices.user_id'] = $this->session->userdata('user_id');
 

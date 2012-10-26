@@ -154,9 +154,7 @@ class MX_Loader extends CI_Loader
 		if ($path === FALSE) {
 			$this->_ci_load_class($library, $params, $object_name);
 			$_alias = $this->_ci_classes[$class];
-
 		} else {
-
 			Modules::load_file($_library, $path);
 			$library = ucfirst($_library);
 			CI::$APP->$_alias = new $library($params);
@@ -252,6 +250,9 @@ class MX_Loader extends CI_Loader
 		if (in_array($_alias, $this->_ci_models, TRUE))
 			return CI::$APP->$_alias;
 
+		$this->scan_spark_for_locations();
+		$a = Modules::find(strtolower($model), $this->_module, 'models/');
+		
 		/* check module */
 		list($path, $_model) = Modules::find(strtolower($model), $this->_module, 'models/');
 

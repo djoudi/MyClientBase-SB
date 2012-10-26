@@ -14,74 +14,24 @@ class Users extends Admin_Controller {
 
     function index() {
 
-    	//TODO uncomment me
-/*     	if($this->mcbsb->is_module_enabled('tooljar')) {
-    		$message = 'This module is disabled because the Tooljar module is enabled';
-    		redirect(base_url());
-    	}    	
- */    	
         $this->redir->set_last_index();
 
-        $params = array(
-            'limit'		=>	$this->mdl_mcb_data->setting('results_per_page'),
-            'paginate'	=>	TRUE,
-            'page'		=>	uri_assoc('page'),
-            'order_by'	=>	'last_name, first_name',
-            'where'     =>  array(
-                'mcb_users.user_client_id'   =>  0
-            )
+        $tmp = array(
+            'users' =>	$this->mdl_users->get_all()
         );
 
-        $data = array(
-            'users' =>	$this->mdl_users->get($params)
-        );
-
+        $data = array();
+        $data['details'] = $this->plenty_parser->parse('index.tpl', $tmp, true, 'smarty', 'users');
+        
         $data['site_url'] = site_url($this->uri->uri_string());
         $data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'users');
+        
         
         $this->load->view('index', $data);
 
     }
 
     function form() {
-
-		$user_id = uri_assoc('user_id');
-
-        if (!$this->mdl_users->validate()) {
-
-			$this->load->model('tax_rates/mdl_tax_rates');
-
-            if (!$_POST AND $user_id) {
-
-                $this->mdl_users->prep_validation($user_id);
-
-				$this->mdl_users->set_form_value('default_tax_rate_id', $this->mdl_mcb_userdata->get($user_id, 'default_tax_rate_id'));
-				$this->mdl_users->set_form_value('default_tax_rate_option', $this->mdl_mcb_userdata->get($user_id, 'default_tax_rate_option'));
-				$this->mdl_users->set_form_value('default_item_tax_rate_id', $this->mdl_mcb_userdata->get($user_id, 'default_item_tax_rate_id'));
-
-            }
-
-            $data = array(
-                'custom_fields'	=>	$this->mdl_users->custom_fields,
-				'tax_rates'		=>	$this->mdl_tax_rates->get()
-            );
-
-            $data['site_url'] = site_url($this->uri->uri_string());
-            $data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'users');
-            
-            $this->load->view('form', $data);
-
-        }
-
-        else {
-
-            $user_id = $this->mdl_users->save($this->mdl_users->db_array(), $user_id);
-
-			$this->mdl_mcb_userdata->save_settings($user_id, $this->input->post('user_settings'));
-
-            $this->redir->redirect('users');
-
-        }
 
     }
 
