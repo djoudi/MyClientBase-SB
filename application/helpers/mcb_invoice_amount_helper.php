@@ -63,7 +63,7 @@ function invoice_tax_rate_name($invoice_tax_rate) {
 	$CI =& get_instance();
 
     /* Invoice tax rate */
-    return $invoice_tax_rate->tax_rate_name . ' @ ' . format_number($invoice_tax_rate->tax_rate_percent, TRUE, $CI->mdl_mcb_data->setting('decimal_taxes_num')) . '%';
+    return $invoice_tax_rate->tax_rate_name . ' @ ' . format_number($invoice_tax_rate->tax_rate_percent, TRUE, $CI->mcbsb->settings->setting('decimal_taxes_num')) . '%';
 
 }
 

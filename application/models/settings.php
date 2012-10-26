@@ -4,8 +4,6 @@
 
 class Settings extends MY_Model {
 
-	public $settings;
-
 	public function get($key) {
 
 		$this->db->select('mcb_value');

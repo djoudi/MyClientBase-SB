@@ -6,7 +6,7 @@ function format_date($unix_timestamp_date = NULL, $return_time = false) {
 
 		global $CI;
 
-		$return_date = date($CI->mdl_mcb_data->setting('default_date_format'), $unix_timestamp_date);
+		$return_date = date($CI->mcbsb->settings->setting('default_date_format'), $unix_timestamp_date);
 
 		if($return_time) {
 			$return_date .= " " . date('H:i:s', $unix_timestamp_date);
@@ -48,7 +48,7 @@ function standardize_date($date) {
 
 	}
 
-	$date_format = explode($delimiter, $CI->mdl_mcb_data->setting('default_date_format'));
+	$date_format = explode($delimiter, $CI->mcbsb->settings->setting('default_date_format'));
 
 	$date = explode($delimiter, $date);
 

@@ -11,12 +11,16 @@ class Mcbsb  extends CI_Model {
 	public $record_descriptor;
 	public $field_descriptor;
 	public $db_obj;
+	//public $top_menu;
+	public $module;
 		
 	public $_enabled_modules;
 	public $_total_rows;
 	public $_version;
 	public $_language = null;  	//like english, italian, russian (always english words i.e. italian, not italiano)
 	public $_locale = null; 		//like en_us, it_it, ru_RU
+	public $_modules = array();
+	public $_top_menu = array();
 	
 	public function __construct() {
 		
@@ -56,7 +60,8 @@ class Mcbsb  extends CI_Model {
         
         $this->_load_language();
 		
-		//$this->load->model('users/mdl_users','users');  //mdl_users is loaded in $this->users
+        $this->refresh_modules();
+		//$this->load->model('users/mdl_users','users');  //mdl_users is loaded in $this->users  //TODO delme
 	}
 	
 	private function initialize() {
@@ -144,7 +149,7 @@ class Mcbsb  extends CI_Model {
 		if(!empty($this->user->preferred_language) && in_array($this->user->preferred_language,array_keys($this->config->item('gettextSupportedLocales')))) {
 			$this->_language = $this->user->preferred_language;
 		} else {
-			$this->load->model('mcb_data/mdl_mcb_data');
+			//$this->load->model('mcb_data/mdl_mcb_data'); //TODO delme
 		
 			if($default_language = $this->settings->get('default_language')) {
 				$this->_language = $default_language;
@@ -163,17 +168,80 @@ class Mcbsb  extends CI_Model {
 		$this->load->language('mcb', $this->_language);		
 	}	
 	
-	public function get_enabled_modules() {
-		$this->load->model('mcb_modules/mdl_mcb_modules');
-		return $this->_enabled_modules = $this->mdl_mcb_modules->get_enabled();		
+	
+	/**
+	 * This method parses the config file of every module and refreshes the database module records
+	 *
+	 * @access		private
+	 * @param		nothing
+	 * @return		nothing
+	 *
+	 * @author 		Damiano Venturin
+	 * @since		Jun 21, 2012
+	 */
+	private function refresh_modules() {
+	
+		$this->load->helper('directory');
+	
+		//Gather list of directories inside modules
+		$modules_dir = array_pop(array_keys($this->config->item('modules_locations')));
+		$modules = directory_map($modules_dir, TRUE);
+	
+		// Delete any orphaned module records from database
+		$all_modules_in_db = $this->module->getAllRecords();
+		foreach ($all_modules_in_db as $key => $record){
+			if(!in_array($record['module_path'], $modules)){
+				$this->module->obj_ID_value = $record['module_id'];
+				$this->module->delete();
+			}
+		}		
+		
+		// Update modules table
+		foreach ($modules as $module) {
+				
+			// This should be the location of the module's config file
+			$config_file = $modules_dir . $module . '/config/config.php';
+	
+			// If the config file exists, adjust the modules table accordingly
+			if (file_exists($config_file)) {
+	
+				$config = array();
+				$config['module'] = array();
+				$skip = false;
+				
+				include($config_file);
+				
+				if(!isset($config['module']['module_order'])) $config['module']['module_order'] = 99;
+				
+				$this->module = new Module();
+				if(!$this->module->check_and_adjust($config['module'])) continue;				
+	
+			}
+		}
+		
+		$all_modules_in_db = $this->module->getAllRecords();
+		$this->_modules['all'] = array();
+		$this->_modules['enabled'] = array();
+		foreach ($all_modules_in_db as $key => $record){
+			
+			$this->_modules['all'][] = $record['module_name'];
+			
+			if($record['module_enabled'] == 1) {
+				$this->_modules['enabled'][] = $record['module_name'];
+				
+				//TODO module ACL here
+				$this->_top_menu[] = array(
+											'item_name' => $record['module_name'],
+											'item_link' => $record['module_path'],
+				);
+			}
+			
+		}
 	}
 	
 	public function is_module_enabled($module) {
-		$this->get_enabled_modules();
-		if(in_arrayi($module,$this->_enabled_modules['all'])) {
-			return true;
-		}
-		return false;
+		if(is_array($module_name) || is_object($module_name)) return false; //TODO should be nice to trigger an error
+		return $this->module->is_enabled($module);
 	}
 	
 	private function set_system_message($type, $text) {
