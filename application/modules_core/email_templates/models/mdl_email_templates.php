@@ -15,7 +15,7 @@ class Mdl_Email_Templates extends MY_Model {
 
 		$this->order_by = 'email_template_title';
 
-		$this->limit = $this->mdl_mcb_data->setting('results_per_page');
+		$this->limit = $this->mcbsb->settings->setting('results_per_page');
 
 	}
 

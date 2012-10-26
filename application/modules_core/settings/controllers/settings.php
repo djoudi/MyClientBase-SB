@@ -88,7 +88,7 @@ class Settings extends Admin_Controller {
 
 			$this->_custom_save();
 
-			$this->mdl_mcb_data->set_session_data();
+			$this->mcbsb->settings->set_session_data();
 
 			$this->session->set_flashdata('custom_success', $this->lang->line('system_settings_saved'));
 

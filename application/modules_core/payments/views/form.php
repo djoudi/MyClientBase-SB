@@ -47,7 +47,7 @@
 						<option <?php if (!$this->mdl_payments->form_value('payment_method_id')) { ?>selected="selected"<?php } ?>></option>
 						<option value="9999" <?php if ($this->mdl_payments->form_value('payment_method_id') == '9999') { ?>selected="selected"<?php } ?>><?php echo $this->lang->line('apply_credit'); ?></option>
 						<?php foreach ($payment_methods as $payment_method) { ?>
-						<option value="<?php echo $payment_method->payment_method_id; ?>" <?php if ((!uri_assoc('payment_id') and $this->mdl_mcb_data->setting('default_payment_method') == $payment_method->payment_method_id) OR ($this->mdl_payments->form_value('payment_method_id') == $payment_method->payment_method_id)) { ?>selected="selected"<?php } ?>><?php echo $payment_method->payment_method; ?></option>
+						<option value="<?php echo $payment_method->payment_method_id; ?>" <?php if ((!uri_assoc('payment_id') and $this->mcbsb->settings->setting('default_payment_method') == $payment_method->payment_method_id) OR ($this->mdl_payments->form_value('payment_method_id') == $payment_method->payment_method_id)) { ?>selected="selected"<?php } ?>><?php echo $payment_method->payment_method; ?></option>
 						<?php } ?>
 					</select>
 				</dd>

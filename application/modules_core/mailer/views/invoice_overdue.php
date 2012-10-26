@@ -63,11 +63,11 @@
 
                 <dl>
                     <dt><label><?php echo $this->lang->line('cc'); ?>: </label></dt>
-                    <dd><input type="text" name="email_cc" value="<?php echo ($this->mdl_mailer->form_value('email_cc')) ? $this->mdl_mailer->form_value('email_cc') : $this->mdl_mcb_data->setting('default_cc'); ?>" /></dd>
+                    <dd><input type="text" name="email_cc" value="<?php echo ($this->mdl_mailer->form_value('email_cc')) ? $this->mdl_mailer->form_value('email_cc') : $this->mcbsb->settings->setting('default_cc'); ?>" /></dd>
                 </dl>
                 <dl>
                     <dt><label><?php echo $this->lang->line('bcc'); ?>: </label></dt>
-                    <dd><input type="text" name="email_bcc" value="<?php echo ($this->mdl_mailer->form_value('email_bcc')) ? $this->mdl_mailer->form_value('email_bcc') : $this->mdl_mcb_data->setting('default_bcc'); ?>" /></dd>
+                    <dd><input type="text" name="email_bcc" value="<?php echo ($this->mdl_mailer->form_value('email_bcc')) ? $this->mdl_mailer->form_value('email_bcc') : $this->mcbsb->settings->setting('default_bcc'); ?>" /></dd>
                 </dl>
                 <dl>
                     <dt><label>* <?php echo $this->lang->line('subject'); ?>: </label></dt>
@@ -75,7 +75,7 @@
                 </dl>
                 <dl>
                     <dt><label><?php echo $this->lang->line('invoice_as_body'); ?>: </label></dt>
-                    <dd><input type="checkbox" name="invoice_as_body" value="1" <?php if ($this->mdl_mcb_data->setting('default_email_body')) { ?>checked="checked"<?php } ?>/></dd>
+                    <dd><input type="checkbox" name="invoice_as_body" value="1" <?php if ($this->mcbsb->settings->setting('default_email_body')) { ?>checked="checked"<?php } ?>/></dd>
                 </dl>
                 <dl>
                     <dt><label><?php echo $this->lang->line('body'); ?>: </label></dt>

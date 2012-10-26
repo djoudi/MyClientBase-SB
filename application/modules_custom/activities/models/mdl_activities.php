@@ -73,7 +73,7 @@ class Mdl_Activities extends MY_Model {
 				}
 			}
 				
-			$this->mcbsb->activity->user_id = $this->mcbsb->_user->id;
+			$this->mcbsb->activity->user_id = $this->mcbsb->user->id;
 			return true;
 		} else {
 			return $return;

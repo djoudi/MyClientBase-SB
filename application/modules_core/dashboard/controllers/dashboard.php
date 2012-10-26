@@ -8,9 +8,9 @@ class Dashboard extends Admin_Controller {
 
 		parent::__construct();
 
-		if ($this->mdl_mcb_data->setting('dashboard_override')) {
+		if ($this->mcbsb->settings->setting('dashboard_override')) {
 
-			redirect($this->mdl_mcb_data->setting('dashboard_override'));
+			redirect($this->mcbsb->settings->setting('dashboard_override'));
 
 		}
 
@@ -35,31 +35,31 @@ class Dashboard extends Admin_Controller {
 			'static_error'			=>	$module_upgrade_notice
 		);
 
-		if ($this->mdl_mcb_data->setting('dashboard_show_open_invoices') == 'TRUE') {
+		if ($this->mcbsb->settings->setting('dashboard_show_open_invoices') == 'TRUE') {
 
 			$data['open_invoices'] = $this->mdl_invoices->get_recent_open();
 
 		}
 
-		if ($this->mdl_mcb_data->setting('dashboard_show_pending_invoices') == 'TRUE') {
+		if ($this->mcbsb->settings->setting('dashboard_show_pending_invoices') == 'TRUE') {
 
 			$data['pending_invoices'] = $this->mdl_invoices->get_recent_pending();
 
 		}
 
-		if ($this->mdl_mcb_data->setting('dashboard_show_closed_invoices') == 'TRUE') {
+		if ($this->mcbsb->settings->setting('dashboard_show_closed_invoices') == 'TRUE') {
 
 			$data['closed_invoices'] = $this->mdl_invoices->get_recent_closed();
 
 		}
 
-		if ($this->mdl_mcb_data->setting('dashboard_show_overdue_invoices') == 'TRUE') {
+		if ($this->mcbsb->settings->setting('dashboard_show_overdue_invoices') == 'TRUE') {
 
 			$data['overdue_invoices'] = $this->mdl_invoices->get_recent_overdue();
 
 		}
 
-		if ($this->mdl_mcb_data->setting('dashboard_show_quotes') == 'TRUE') {
+		if ($this->mcbsb->settings->setting('dashboard_show_quotes') == 'TRUE') {
 
 			$data['quotes'] = $this->mdl_invoices->get_quotes();
 

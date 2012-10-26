@@ -19,7 +19,7 @@ class Payment_Methods extends Admin_Controller {
 		$page = (uri_assoc('page', 4)) ? uri_assoc('page', 4) : 0;
 
 		$params = array(
-			'limit'		=>	$this->mdl_mcb_data->setting('results_per_page'),
+			'limit'		=>	$this->mcbsb->settings->setting('results_per_page'),
 			'paginate'	=>	TRUE,
 			'page'		=>	$page
 		);

@@ -8,8 +8,8 @@ class Widgets extends Admin_Controller {
 
 		$data = array(
 			'templates'					=>	$this->mdl_templates->get('invoices'),
-			'default_invoice_template'	=>	$this->mdl_mcb_data->setting('default_invoice_template'),
-			'default_quote_template'	=>	$this->mdl_mcb_data->setting('default_quote_template')
+			'default_invoice_template'	=>	$this->mcbsb->settings->setting('default_invoice_template'),
+			'default_quote_template'	=>	$this->mcbsb->settings->setting('default_quote_template')
 		);
 
 		$this->load->view('invoices/jquery_invoice_generate', $data);

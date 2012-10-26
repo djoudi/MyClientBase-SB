@@ -47,7 +47,7 @@
 				</dl>
 				<dl>
 					<dt><label><?php echo $this->lang->line('invoice_as_body'); ?>: </label></dt>
-					<dd><input type="checkbox" name="invoice_as_body" value="1" <?php if ($this->mdl_mcb_data->setting('default_email_body')) { ?>checked="checked"<?php } ?>/></dd>
+					<dd><input type="checkbox" name="invoice_as_body" value="1" <?php if ($this->mcbsb->settings->setting('default_email_body')) { ?>checked="checked"<?php } ?>/></dd>
 				</dl>
 				<dl>
 					<dt><label><?php echo $this->lang->line('body'); ?>: </label></dt>

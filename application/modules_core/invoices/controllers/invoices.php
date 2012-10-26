@@ -29,7 +29,7 @@ class Invoices extends Admin_Controller {
 		
 		$params = array(
 				'paginate'				=>	TRUE,
-				'limit'					=>	$this->mdl_mcb_data->setting('results_per_page'),
+				'limit'					=>	$this->mcbsb->settings->setting('results_per_page'),
 				'page'					=>	$page,
 				'where'					=>	array(),
 		);
@@ -443,7 +443,7 @@ class Invoices extends Admin_Controller {
 
 		if (!$default_template) {
 
-			$default_template = $this->mdl_mcb_data->setting('default_' . $type . '_template');
+			$default_template = $this->mcbsb->settings->setting('default_' . $type . '_template');
 
 		}
 
@@ -459,7 +459,7 @@ class Invoices extends Admin_Controller {
 
 		if (!$default_group_id) {
 
-			$default_group_id = $this->mdl_mcb_data->setting('default_' . $type . '_group_id');
+			$default_group_id = $this->mcbsb->settings->setting('default_' . $type . '_group_id');
 
 		}
 

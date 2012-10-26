@@ -30,9 +30,9 @@ class Dashboard_Widgets extends Admin_Controller {
 
         $params = array();
 
-        if ($this->mdl_mcb_data->setting('dashboard_total_paid_cutoff_date')) {
+        if ($this->mcbsb->settings->setting('dashboard_total_paid_cutoff_date')) {
 
-            $params['where']['mcb_payments.payment_date >='] = $this->mdl_mcb_data->setting('dashboard_total_paid_cutoff_date');
+            $params['where']['mcb_payments.payment_date >='] = $this->mcbsb->settings->setting('dashboard_total_paid_cutoff_date');
 
         }
 

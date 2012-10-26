@@ -5,11 +5,15 @@ class Mcbsb  extends CI_Model {
 	protected $_error;
 	protected $_success;
 	protected $_warning;
-	public $system_messages;  //equal to: $this->load->model('system_messages');
-	
+	public $system_messages;  		//equal to: $this->load->model('system_messages');
+	public $settings;				//equal to: $this->load->model('settings');
+	public $user;				//equal to: $this->load->model('mcbsb_user');
+	public $record_descriptor;
+	public $field_descriptor;
+	public $db_obj;
+		
 	public $_enabled_modules;
 	public $_total_rows;
-	public $_user;
 	public $_version;
 	public $_language = null;  	//like english, italian, russian (always english words i.e. italian, not italiano)
 	public $_locale = null; 		//like en_us, it_it, ru_RU
@@ -22,21 +26,18 @@ class Mcbsb  extends CI_Model {
 		
 		$this->_version = $this->config->item('mcbsb_version'); 
 		
-		$this->load->model('record_descriptor');
-		$this->load->model('field_descriptor');
-		$this->load->model('db_obj');
-		
 		//Contact Engine related libraries
 		//Rest client class
 		$this->load->spark('curl/1.2.1');
 		$this->load->spark('ion_auth/2.3.3');
 		$this->load->library('ion_auth');
 		$this->load->library('session');
-		$this->load->library('mcbsb_user');
+		
+		$this->load->driver('plenty_parser');
 		
 		$this->initialize();
 		
-        if(!$this->_user->logged_in()){
+        if(!$this->user->logged_in()){
         	//check if segments have login to avoid infinite loop
         	if(!in_array('login',$this->uri->segment_array())) redirect('/login');
         }
@@ -79,16 +80,26 @@ class Mcbsb  extends CI_Model {
 					if(!preg_match('/^_/', $property_name, $matches))
 					{
 						//loads the class
-						$this->load->model($property_name);
-	
-						//references the loaded object
-						$this->$property_name =& $CI->$property_name;
+						switch ($property_name) {
+							case 'user':
+								$this->load->library('mcbsb_user');
+								$this->$property_name = new Mcbsb_User();
+							break;
+							
+							default:
+								$this->load->model($property_name);
+								//references the loaded object
+								$this->$property_name =& $CI->$property_name;								
+							break;
+						}
 					}
 				}
 			}
 		}
 		
-		$this->_user = new Mcbsb_User();
+		$this->settings->set_application_title();
+		
+		$this->settings->get_all();
 	}
 
 	//loads an object into $this->$objname
@@ -130,12 +141,12 @@ class Mcbsb  extends CI_Model {
 		$this->load->config('phpgettext');
 		
 		//load the preferred language for the current user or the default system language
-		if(!empty($this->_user->preferred_language) && in_array($this->_user->preferred_language,array_keys($this->config->item('gettextSupportedLocales')))) {
-			$this->_language = $this->_user->preferred_language;
+		if(!empty($this->user->preferred_language) && in_array($this->user->preferred_language,array_keys($this->config->item('gettextSupportedLocales')))) {
+			$this->_language = $this->user->preferred_language;
 		} else {
 			$this->load->model('mcb_data/mdl_mcb_data');
 		
-			if($default_language = $this->mdl_mcb_data->get('default_language')) {
+			if($default_language = $this->settings->get('default_language')) {
 				$this->_language = $default_language;
 			}
 		}

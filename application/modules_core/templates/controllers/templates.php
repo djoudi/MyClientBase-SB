@@ -107,7 +107,7 @@ class Templates extends Admin_Controller {
 
 	function save_settings() {
 
-		$this->mdl_mcb_data->save('default_invoice_template', $this->input->post('default_invoice_template'));
+		$this->mcbsb->settings->save('default_invoice_template', $this->input->post('default_invoice_template'));
 
 	}
 

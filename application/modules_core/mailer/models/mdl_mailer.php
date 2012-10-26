@@ -68,7 +68,7 @@ class Mdl_Mailer extends MY_Model {
 	public function email_invoice($invoice, $invoice_template, $from_email, $from_name, $to, $subject, $email_body, $email_footer, $invoice_as_body, $email_cc = NULL, $email_bcc = NULL) {
 
 		$this->load->helper(array(
-			$this->mdl_mcb_data->setting('pdf_plugin'),
+			$this->mcbsb->settings->setting('pdf_plugin'),
 			'mailer/phpmailer',
 			'mcb_currency',
 			'mcb_invoice',
@@ -138,7 +138,7 @@ class Mdl_Mailer extends MY_Model {
 
 		$full_filename = 'uploads/temp/' . $filename . '.pdf';
 
-		$this->load->helper($this->mdl_mcb_data->setting('pdf_plugin'));
+		$this->load->helper($this->mcbsb->settings->setting('pdf_plugin'));
 
 		$invoice_payments = $this->mdl_invoices->get_invoice_payments($invoice->invoice_id);
 

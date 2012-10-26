@@ -38,13 +38,13 @@ class Items extends Admin_Controller {
 
 				if (!$default_item_tax_rate_id) {
 
-					$default_item_tax_rate_id = $this->mdl_mcb_data->setting('default_item_tax_rate_id');
+					$default_item_tax_rate_id = $this->mcbsb->settings->setting('default_item_tax_rate_id');
 
 				}
 
 				if ($default_item_tax_option == "") {
 					
-					$default_item_tax_option = $this->mdl_mcb_data->setting('default_item_tax_option');
+					$default_item_tax_option = $this->mcbsb->settings->setting('default_item_tax_option');
 
 				}
 

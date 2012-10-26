@@ -38,7 +38,7 @@ class Client_List extends Admin_Controller {
 
         elseif ($output_type == 'pdf') {
 
-            $this->load->helper($this->mdl_mcb_data->setting('pdf_plugin'));
+            $this->load->helper($this->mcbsb->settings->setting('pdf_plugin'));
 
             $html = $this->load->view('client_list_pdf', $data, TRUE);
 

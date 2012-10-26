@@ -14,7 +14,7 @@ class Mdl_Inventory_Types extends MY_Model {
 
 		$this->order_by = 'inventory_type';
 
-		$this->limit = $this->mdl_mcb_data->setting('results_per_page');
+		$this->limit = $this->mcbsb->settings->setting('results_per_page');
 
 	}
 

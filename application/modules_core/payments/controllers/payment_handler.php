@@ -16,11 +16,11 @@ class Payment_Handler extends MX_Controller {
 
 			$this->load->model('mcb_data/mdl_mcb_data');
 
-			$this->mdl_mcb_data->set_session_data();
+			$this->mcbsb->settings->set_session_data();
 
 			$this->load->driver('merchant');
 
-			$this->merchant->driver = strtolower($this->mdl_mcb_data->get('merchant_driver'));
+			$this->merchant->driver = strtolower($this->mcbsb->settings->get('merchant_driver'));
 
 			if ($this->merchant->notify()) {
 

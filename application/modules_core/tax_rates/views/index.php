@@ -17,7 +17,7 @@
 				<?php foreach ($tax_rates as $tax_rate) { ?>
 				<tr class="hoverall">
 					<td  class="first"><?php echo $tax_rate->tax_rate_name; ?></td>
-					<td><?php echo format_number($tax_rate->tax_rate_percent, TRUE, $this->mdl_mcb_data->setting('decimal_taxes_num')); ?>%</td>
+					<td><?php echo format_number($tax_rate->tax_rate_percent, TRUE, $this->mcbsb->settings->setting('decimal_taxes_num')); ?>%</td>
 					<td class="last">
 						<a href="<?php echo site_url('tax_rates/form/tax_rate_id/' . $tax_rate->tax_rate_id); ?>" title="<?php echo $this->lang->line('edit'); ?>">
 							<?php echo icon('edit'); ?>

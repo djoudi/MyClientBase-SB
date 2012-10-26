@@ -60,7 +60,7 @@
 					<dd>
 						<select name="tax_rate_id" id="tax_rate_id">
 							<?php foreach ($tax_rates as $tax_rate) { ?>
-							<option value="<?php echo $tax_rate->tax_rate_id; ?>" <?php if(($this->mdl_items->form_value('tax_rate_id') == $tax_rate->tax_rate_id)) { ?>selected="selected"<?php } ?>><?php echo format_number($tax_rate->tax_rate_percent, TRUE, $this->mdl_mcb_data->setting('decimal_taxes_num')) . '% - ' . $tax_rate->tax_rate_name; ?></option>
+							<option value="<?php echo $tax_rate->tax_rate_id; ?>" <?php if(($this->mdl_items->form_value('tax_rate_id') == $tax_rate->tax_rate_id)) { ?>selected="selected"<?php } ?>><?php echo format_number($tax_rate->tax_rate_percent, TRUE, $this->mcbsb->settings->setting('decimal_taxes_num')) . '% - ' . $tax_rate->tax_rate_name; ?></option>
 							<?php } ?>
 						</select>
                         <select name="item_tax_option" id="item_tax_option">
@@ -72,7 +72,7 @@
                 
 				<dl>
 					<dt><label><?php echo $this->lang->line('apply_invoice_tax'); ?>: </label></dt>
-					<dd><input type="checkbox" name="is_taxable" id="is_taxable" value="1" <?php if ((!uri_assoc('invoice_item_id', 4) and $this->mdl_mcb_data->setting('default_apply_invoice_tax')) or $this->mdl_items->form_value('is_taxable')) { ?>checked="checked"<?php } ?> /></dd>
+					<dd><input type="checkbox" name="is_taxable" id="is_taxable" value="1" <?php if ((!uri_assoc('invoice_item_id', 4) and $this->mcbsb->settings->setting('default_apply_invoice_tax')) or $this->mdl_items->form_value('is_taxable')) { ?>checked="checked"<?php } ?> /></dd>
 				</dl>
                 
                 <dl id="dl_save_as_inventory">

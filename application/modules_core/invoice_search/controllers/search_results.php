@@ -33,7 +33,7 @@ class Search_Results extends Admin_Controller {
 
 		$params = array(
 			'paginate'		=>	TRUE,
-			'limit'			=>	$this->mdl_mcb_data->setting('results_per_page'),
+			'limit'			=>	$this->mcbsb->settings->setting('results_per_page'),
 			'page'			=>	$page
 		);
 
@@ -66,7 +66,7 @@ class Search_Results extends Admin_Controller {
 
 	function pdf() {
 
-		$this->load->helper($this->mdl_mcb_data->setting('pdf_plugin'));
+		$this->load->helper($this->mcbsb->settings->setting('pdf_plugin'));
 
 		$invoices = $this->_get_results();
 

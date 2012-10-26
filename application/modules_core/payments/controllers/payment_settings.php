@@ -38,7 +38,7 @@ class Payment_Settings extends Admin_Controller {
 
 		foreach ($this->input->post('payment_settings') as $key=>$value) {
 
-			$this->mdl_mcb_data->save($key, $value);
+			$this->mcbsb->settings->save($key, $value);
 
 		}
 

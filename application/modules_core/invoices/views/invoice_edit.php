@@ -37,7 +37,7 @@
 						<?php } ?>
 						<li><a href="#tab_taxes"><?php echo $this->lang->line('tax_and_other'); ?></a></li>
 						<li><a href="#tab_notes"><?php echo $this->lang->line('notes'); ?></a></li>
-						<?php if (!$this->mdl_mcb_data->setting('disable_invoice_audit_history')) { ?>
+						<?php if (!$this->mcbsb->settings->setting('disable_invoice_audit_history')) { ?>
 						<li><a href="#tab_history"><?php echo $this->lang->line('history'); ?></a></li>
 						<?php } ?>
 					</ul>
@@ -63,7 +63,7 @@
 						<?php $this->load->view('tab_notes'); ?>
 					</div>
 
-					<?php if (!$this->mdl_mcb_data->setting('disable_invoice_audit_history')) { ?>
+					<?php if (!$this->mcbsb->settings->setting('disable_invoice_audit_history')) { ?>
 					<div id="tab_history">
 						<?php $this->load->view('tab_history'); ?>
 					</div>

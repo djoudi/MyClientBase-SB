@@ -173,7 +173,7 @@ class Mdl_Tasks extends MY_Model {
 				}
 			}
 			
-			$this->mcbsb->task->user_id = $this->mcbsb->_user->id;
+			$this->mcbsb->task->user_id = $this->mcbsb->user->id;
 			return true;			
 		} else {
 			return $return;

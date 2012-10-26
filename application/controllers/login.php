@@ -10,13 +10,7 @@ class Login extends CI_Controller {
          
         $this->load->library('form_validation');
                 
-        $this->load->helper('mcb_app');
-        
-        $this->load->model('mcb_data/mdl_mcb_data');
-        
-        $this->mdl_mcb_data->set_application_title();        
-        
-        $this->load->driver('plenty_parser');
+        $this->load->helper('mcb_app');   
     }
 
     public function check_captcha(){
@@ -39,7 +33,7 @@ class Login extends CI_Controller {
     	
     	if ($this->form_validation->run() == TRUE)
     	{
-       		if($this->mcbsb->_user->login($this->input->post('username'),$this->input->post('password'),true))	{
+       		if($this->mcbsb->user->login($this->input->post('username'),$this->input->post('password'),true))	{
        			redirect('/contact');
        		} else {
        			//TODO set an error    				
@@ -78,13 +72,13 @@ class Login extends CI_Controller {
     	$data['errors'] = $this->form_validation->get_validation_errors();
     	$data['captcha'] = create_captcha($vals);
     	 
-    	$this->plenty_parser->parse('login.tpl', $data, false, 'smarty');    	 
+    	$this->load->view('login.tpl', $data, false, true);    	 
 
     }
 
     function logout() {
 
-    	$this->mcbsb->_user->logout();
+    	$this->mcbsb->user->logout();
 		$this->session->sess_destroy();
 
 		redirect('/login');

@@ -50,7 +50,7 @@ class Invoice_Mailer extends Admin_Controller {
 		/**
 		 * Set some default values
 		 */
-		$default_template = $this->mdl_email_templates->get_by_id($this->mdl_mcb_data->setting('default_invoice_email_template'));
+		$default_template = $this->mdl_email_templates->get_by_id($this->mcbsb->settings->setting('default_invoice_email_template'));
 		$email_body = ($default_template) ? $default_template->email_template_body : ' ';
 		$email_footer = ($default_template) ? $default_template->email_template_footer : ' ';
 
@@ -91,8 +91,8 @@ class Invoice_Mailer extends Admin_Controller {
                 $this->mdl_mailer->set_form_value('email_subject', $email_subject);
                 $this->mdl_mailer->set_form_value('email_body', $email_body);
                 $this->mdl_mailer->set_form_value('invoice_template', uri_assoc('invoice_template', 4));
-                $this->mdl_mailer->set_form_value('email_cc', $this->mdl_mcb_data->setting('default_cc'));
-                $this->mdl_mailer->set_form_value('email_bcc', $this->mdl_mcb_data->setting('default_bcc'));
+                $this->mdl_mailer->set_form_value('email_cc', $this->mcbsb->settings->setting('default_cc'));
+                $this->mdl_mailer->set_form_value('email_bcc', $this->mcbsb->settings->setting('default_bcc'));
                 $this->mdl_mailer->set_form_value('email_footer', $email_footer);
 
             }
@@ -177,7 +177,7 @@ class Invoice_Mailer extends Admin_Controller {
 
 				$this->load->model('email_templates/mdl_email_templates');
 
-				$default_template = $this->mdl_email_templates->get_by_id($this->mdl_mcb_data->setting('default_overdue_invoice_email_template'));
+				$default_template = $this->mdl_email_templates->get_by_id($this->mcbsb->settings->setting('default_overdue_invoice_email_template'));
 				$email_body = ($default_template) ? $default_template->email_template_body : ' ';
 				$email_footer = ($default_template) ? $default_template->email_template_footer : ' ';
 
@@ -189,7 +189,7 @@ class Invoice_Mailer extends Admin_Controller {
                 $this->mdl_mailer->set_form_value('email_body', $email_body);
                 $this->mdl_mailer->set_form_value('email_footer', $email_footer);
 
-                $this->mdl_mailer->set_form_value('invoice_template', $this->mdl_mcb_data->setting('default_invoice_template'));
+                $this->mdl_mailer->set_form_value('invoice_template', $this->mcbsb->settings->setting('default_invoice_template'));
 
             }
 

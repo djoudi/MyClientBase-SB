@@ -24,7 +24,7 @@ class Mdl_Invoice_History extends MY_Model {
 	
     public function save($invoice_id, $user_id, $invoice_history_data) {
 
-        if (!$this->mdl_mcb_data->setting('disable_invoice_audit_history')) {
+        if (!$this->mcbsb->settings->setting('disable_invoice_audit_history')) {
 
             $db_array = array(
                 'invoice_id'			=>	$invoice_id,

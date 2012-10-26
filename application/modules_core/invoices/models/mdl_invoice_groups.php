@@ -15,7 +15,7 @@ class Mdl_Invoice_Groups extends MY_Model {
 
 		$this->order_by = 'mcb_invoice_groups.invoice_group_prefix';
 
-		$this->limit = $this->mdl_mcb_data->setting('results_per_page');
+		$this->limit = $this->mcbsb->settings->setting('results_per_page');
 
 	}
 

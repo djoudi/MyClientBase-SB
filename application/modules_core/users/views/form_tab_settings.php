@@ -4,7 +4,7 @@
 	<select name="user_settings[default_tax_rate_id]">
 		<option value="0"></option>
 	    <?php foreach ($tax_rates as $tax_rate) { ?>
-		<option value="<?php echo $tax_rate->tax_rate_id; ?>" <?php if($this->mdl_users->form_value('default_tax_rate_id') == $tax_rate->tax_rate_id) { ?>selected="selected"<?php } ?>><?php echo format_number($tax_rate->tax_rate_percent, TRUE, $this->mdl_mcb_data->setting('decimal_taxes_num')); ?>% - <?php echo $tax_rate->tax_rate_name; ?></option>
+		<option value="<?php echo $tax_rate->tax_rate_id; ?>" <?php if($this->mdl_users->form_value('default_tax_rate_id') == $tax_rate->tax_rate_id) { ?>selected="selected"<?php } ?>><?php echo format_number($tax_rate->tax_rate_percent, TRUE, $this->mcbsb->settings->setting('decimal_taxes_num')); ?>% - <?php echo $tax_rate->tax_rate_name; ?></option>
 	    <?php } ?>
 	</select>
     </dd>
@@ -27,7 +27,7 @@
 	<select name="user_settings[default_item_tax_rate_id]">
 		<option value="0"></option>
 	    <?php foreach ($tax_rates as $tax_rate) { ?>
-	    <option value="<?php echo $tax_rate->tax_rate_id; ?>" <?php if($this->mdl_users->form_value('default_item_tax_rate_id') == $tax_rate->tax_rate_id) { ?>selected="selected"<?php } ?>><?php echo format_number($tax_rate->tax_rate_percent, TRUE, $this->mdl_mcb_data->setting('decimal_taxes_num')); ?>% - <?php echo $tax_rate->tax_rate_name; ?></option>
+	    <option value="<?php echo $tax_rate->tax_rate_id; ?>" <?php if($this->mdl_users->form_value('default_item_tax_rate_id') == $tax_rate->tax_rate_id) { ?>selected="selected"<?php } ?>><?php echo format_number($tax_rate->tax_rate_percent, TRUE, $this->mcbsb->settings->setting('decimal_taxes_num')); ?>% - <?php echo $tax_rate->tax_rate_name; ?></option>
 	    <?php } ?>
 	</select>
     </dd>

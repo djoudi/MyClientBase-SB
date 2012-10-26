@@ -32,13 +32,13 @@ class Mailer extends Admin_Controller {
 
 			if ($key == 'smtp_security' and $value == 'none') {
 
-				$this->mdl_mcb_data->delete('smtp_security');
+				$this->mcbsb->settings->delete('smtp_security');
 
 			}
 
 			else {
 
-				$this->mdl_mcb_data->save($key, $value);
+				$this->mcbsb->settings->save($key, $value);
 
 			}
 
@@ -46,7 +46,7 @@ class Mailer extends Admin_Controller {
 
 		if (!isset($_POST['email_settings']['default_email_body'])) {
 
-			$this->mdl_mcb_data->save('default_email_body', 0);
+			$this->mcbsb->settings->save('default_email_body', 0);
 
 		}
 

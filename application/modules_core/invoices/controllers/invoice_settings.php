@@ -61,74 +61,74 @@ class Invoice_Settings extends Admin_Controller {
 		 * execute when the core system settings are saved.
 		 */
 		
-		$this->mdl_mcb_data->save('currency_symbol', $this->input->post('currency_symbol'));
-		$this->mdl_mcb_data->save('currency_symbol_placement', $this->input->post('currency_symbol_placement'));
-		$this->mdl_mcb_data->save('default_invoice_group_id', $this->input->post('default_invoice_group_id'));
-		$this->mdl_mcb_data->save('default_quote_group_id', $this->input->post('default_quote_group_id'));
-		$this->mdl_mcb_data->save('default_tax_rate_id', $this->input->post('default_tax_rate_id'));
-        $this->mdl_mcb_data->save('default_tax_rate_option', $this->input->post('default_tax_rate_option'));
-		$this->mdl_mcb_data->save('default_item_tax_rate_id', $this->input->post('default_item_tax_rate_id'));
-		$this->mdl_mcb_data->save('default_item_tax_option', $this->input->post('default_item_tax_option'));
-		$this->mdl_mcb_data->save('default_invoice_template', $this->input->post('default_invoice_template'));
-		$this->mdl_mcb_data->save('default_quote_template', $this->input->post('default_quote_template'));
-		$this->mdl_mcb_data->save('invoices_due_after', $this->input->post('invoices_due_after'));
-		$this->mdl_mcb_data->save('default_open_status_id', $this->input->post('default_open_status_id'));
-		$this->mdl_mcb_data->save('default_closed_status_id', $this->input->post('default_closed_status_id'));
-		$this->mdl_mcb_data->save('decimal_symbol', $this->input->post('decimal_symbol'));
-		$this->mdl_mcb_data->save('thousands_separator', $this->input->post('thousands_separator'));
-        $this->mdl_mcb_data->save('cron_key', $this->input->post('cron_key'));
+		$this->mcbsb->settings->save('currency_symbol', $this->input->post('currency_symbol'));
+		$this->mcbsb->settings->save('currency_symbol_placement', $this->input->post('currency_symbol_placement'));
+		$this->mcbsb->settings->save('default_invoice_group_id', $this->input->post('default_invoice_group_id'));
+		$this->mcbsb->settings->save('default_quote_group_id', $this->input->post('default_quote_group_id'));
+		$this->mcbsb->settings->save('default_tax_rate_id', $this->input->post('default_tax_rate_id'));
+        $this->mcbsb->settings->save('default_tax_rate_option', $this->input->post('default_tax_rate_option'));
+		$this->mcbsb->settings->save('default_item_tax_rate_id', $this->input->post('default_item_tax_rate_id'));
+		$this->mcbsb->settings->save('default_item_tax_option', $this->input->post('default_item_tax_option'));
+		$this->mcbsb->settings->save('default_invoice_template', $this->input->post('default_invoice_template'));
+		$this->mcbsb->settings->save('default_quote_template', $this->input->post('default_quote_template'));
+		$this->mcbsb->settings->save('invoices_due_after', $this->input->post('invoices_due_after'));
+		$this->mcbsb->settings->save('default_open_status_id', $this->input->post('default_open_status_id'));
+		$this->mcbsb->settings->save('default_closed_status_id', $this->input->post('default_closed_status_id'));
+		$this->mcbsb->settings->save('decimal_symbol', $this->input->post('decimal_symbol'));
+		$this->mcbsb->settings->save('thousands_separator', $this->input->post('thousands_separator'));
+        $this->mcbsb->settings->save('cron_key', $this->input->post('cron_key'));
 
         if ($this->input->post('invoice_logo')) {
 
-			$this->mdl_mcb_data->save('invoice_logo', $this->input->post('invoice_logo'));
+			$this->mcbsb->settings->save('invoice_logo', $this->input->post('invoice_logo'));
 
 		}
 
 		if ($this->input->post('include_logo_on_invoice')) {
 
-			$this->mdl_mcb_data->save('include_logo_on_invoice', "TRUE");
+			$this->mcbsb->settings->save('include_logo_on_invoice', "TRUE");
 
 		}
 
 		else {
 
-			$this->mdl_mcb_data->save('include_logo_on_invoice', "FALSE");
+			$this->mcbsb->settings->save('include_logo_on_invoice', "FALSE");
 
 		}
 
 		if ($this->input->post('display_quantity_decimals')) {
 
-			$this->mdl_mcb_data->save('display_quantity_decimals', 1);
+			$this->mcbsb->settings->save('display_quantity_decimals', 1);
 
 		}
 
 		else {
 
-			$this->mdl_mcb_data->save('display_quantity_decimals', 0);
+			$this->mcbsb->settings->save('display_quantity_decimals', 0);
 
 		}
 
 		if ($this->input->post('disable_invoice_audit_history')) {
 
-			$this->mdl_mcb_data->save('disable_invoice_audit_history', 1);
+			$this->mcbsb->settings->save('disable_invoice_audit_history', 1);
 
 		}
 
 		else {
 
-			$this->mdl_mcb_data->save('disable_invoice_audit_history', 0);
+			$this->mcbsb->settings->save('disable_invoice_audit_history', 0);
 
 		}
 
 		if ($this->input->post('default_apply_invoice_tax')) {
 
-			$this->mdl_mcb_data->save('default_apply_invoice_tax', 1);
+			$this->mcbsb->settings->save('default_apply_invoice_tax', 1);
 
 		}
 
 		else  {
 
-			$this->mdl_mcb_data->save('default_apply_invoice_tax', 0);
+			$this->mcbsb->settings->save('default_apply_invoice_tax', 0);
 
 		}
 
@@ -136,7 +136,7 @@ class Invoice_Settings extends Admin_Controller {
 
 			if ($this->input->post('decimal_taxes_num') == 2 or $this->input->post('decimal_taxes_num') == 3) {
 
-				$this->mdl_mcb_data->save('decimal_taxes_num', $this->input->post('decimal_taxes_num'));
+				$this->mcbsb->settings->save('decimal_taxes_num', $this->input->post('decimal_taxes_num'));
 
 				$this->_adjust_decimal_taxes($this->input->post('decimal_taxes_num'));
 

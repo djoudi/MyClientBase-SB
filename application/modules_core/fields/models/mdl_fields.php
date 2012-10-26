@@ -13,7 +13,7 @@ class Mdl_Fields extends MY_Model {
 		$this->select_fields = "
 		SQL_CALC_FOUND_ROWS *";
 
-		$this->limit = $this->mdl_mcb_data->setting('results_per_page');
+		$this->limit = $this->mcbsb->settings->setting('results_per_page');
 
 		$this->order_by = 'object_id, field_name';
 

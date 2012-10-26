@@ -36,7 +36,7 @@ class Contact extends Admin_Controller {
      */
     private function get_wanted_page()
     {
-    	$results_per_page = $this->mdl_mcb_data->setting('results_per_page');
+    	$results_per_page = $this->mcbsb->settings->setting('results_per_page');
     	
     	if($results_per_page == 0) return 0;
     	
@@ -339,7 +339,7 @@ class Contact extends Admin_Controller {
     	{
 	    	$params = array(
 	    			'paginate'		=>	TRUE,
-	    			'items_page'	=>	$this->mdl_mcb_data->setting('results_per_page'),
+	    			'items_page'	=>	$this->mcbsb->settings->setting('results_per_page'),
 	    			'wanted_page'	=>	$this->get_wanted_page(),
 	    			'search'		=>  array('city' => $city, 'state' => $state),
 	    	);    	
@@ -431,7 +431,7 @@ class Contact extends Admin_Controller {
         
         $params = array(
                    		'paginate'		=>	TRUE,
-                        'items_page'	=>	$this->mdl_mcb_data->setting('results_per_page'),
+                        'items_page'	=>	$this->mcbsb->settings->setting('results_per_page'),
                         'wanted_page'	=>	$wanted_page,
                         'search'		=>  $search,
         				);

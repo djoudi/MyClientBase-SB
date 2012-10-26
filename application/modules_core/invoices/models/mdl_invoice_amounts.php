@@ -246,7 +246,7 @@ class Mdl_Invoice_Amounts extends CI_Model {
                 /* This invoice currently has a closed status. Update it. */
 
                 $db_array = array(
-                    'invoice_status_id'	=>	$this->mdl_mcb_data->setting('default_open_status_id')
+                    'invoice_status_id'	=>	$this->mcbsb->settings->setting('default_open_status_id')
                 );
 
                 $this->db->where('invoice_id', $invoice_id);
@@ -266,7 +266,7 @@ class Mdl_Invoice_Amounts extends CI_Model {
                 /* This invoice needs a closed status */
 
                 $db_array = array(
-                    'invoice_status_id'	=>	$this->mdl_mcb_data->setting('default_closed_status_id')
+                    'invoice_status_id'	=>	$this->mcbsb->settings->setting('default_closed_status_id')
                 );
 
                 $this->db->where('invoice_id', $invoice_id);

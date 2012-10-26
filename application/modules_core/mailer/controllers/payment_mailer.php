@@ -52,9 +52,9 @@ class Payment_Mailer extends Admin_Controller {
                 $this->mdl_mailer->set_form_value('email_subject', $this->lang->line('invoice_number') . $invoice->invoice_number . ' ' . $this->lang->line('payment_receipt'));
                 $this->mdl_mailer->set_form_value('email_body', '');
                 $this->mdl_mailer->set_form_value('template', uri_assoc('receipt_template', 4));
-                $this->mdl_mailer->set_form_value('email_cc', $this->mdl_mcb_data->setting('default_cc'));
-                $this->mdl_mailer->set_form_value('email_bcc', $this->mdl_mcb_data->setting('default_bcc'));
-                $this->mdl_mailer->set_form_value('email_footer', $this->mdl_mcb_data->setting('email_footer'));
+                $this->mdl_mailer->set_form_value('email_cc', $this->mcbsb->settings->setting('default_cc'));
+                $this->mdl_mailer->set_form_value('email_bcc', $this->mcbsb->settings->setting('default_bcc'));
+                $this->mdl_mailer->set_form_value('email_footer', $this->mcbsb->settings->setting('email_footer'));
 
             }
 

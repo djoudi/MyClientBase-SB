@@ -4,9 +4,9 @@ class Dashboard_Settings extends Admin_Controller {
 
 	function display() {
 
-        if (!$_POST and $this->mdl_mcb_data->setting('dashboard_total_paid_cutoff_date')) {
+        if (!$_POST and $this->mcbsb->settings->setting('dashboard_total_paid_cutoff_date')) {
 
-            $this->mdl_mcb_data->set_setting('dashboard_total_paid_cutoff_date', format_date($this->mdl_mcb_data->setting('dashboard_total_paid_cutoff_date')));
+            $this->mcbsb->settings->set_setting('dashboard_total_paid_cutoff_date', format_date($this->mcbsb->settings->setting('dashboard_total_paid_cutoff_date')));
 
         }
 
@@ -23,67 +23,67 @@ class Dashboard_Settings extends Admin_Controller {
 
 		if ($this->input->post('dashboard_show_open_invoices')) {
 
-			$this->mdl_mcb_data->save('dashboard_show_open_invoices', 'TRUE');
+			$this->mcbsb->settings->save('dashboard_show_open_invoices', 'TRUE');
 
 		}
 
 		else {
 
-			$this->mdl_mcb_data->save('dashboard_show_open_invoices', 'FALSE');
+			$this->mcbsb->settings->save('dashboard_show_open_invoices', 'FALSE');
 
 		}
 
 		if ($this->input->post('dashboard_show_closed_invoices')) {
 
-			$this->mdl_mcb_data->save('dashboard_show_closed_invoices', 'TRUE');
+			$this->mcbsb->settings->save('dashboard_show_closed_invoices', 'TRUE');
 
 		}
 
 		else {
 
-			$this->mdl_mcb_data->save('dashboard_show_closed_invoices', 'FALSE');
+			$this->mcbsb->settings->save('dashboard_show_closed_invoices', 'FALSE');
 
 		}
 		
 		if ($this->input->post('dashboard_show_pending_invoices')) {
 
-			$this->mdl_mcb_data->save('dashboard_show_pending_invoices', 'TRUE');
+			$this->mcbsb->settings->save('dashboard_show_pending_invoices', 'TRUE');
 
 		}
 
 		else {
 
-			$this->mdl_mcb_data->save('dashboard_show_pending_invoices', 'FALSE');
+			$this->mcbsb->settings->save('dashboard_show_pending_invoices', 'FALSE');
 
 		}
 		
 		if ($this->input->post('dashboard_show_overdue_invoices')) {
 
-			$this->mdl_mcb_data->save('dashboard_show_overdue_invoices', 'TRUE');
+			$this->mcbsb->settings->save('dashboard_show_overdue_invoices', 'TRUE');
 
 		}
 
 		else {
 
-			$this->mdl_mcb_data->save('dashboard_show_overdue_invoices', 'FALSE');
+			$this->mcbsb->settings->save('dashboard_show_overdue_invoices', 'FALSE');
 
 		}
 
 		if ($this->input->post('dashboard_show_quotes')) {
 
-			$this->mdl_mcb_data->save('dashboard_show_quotes', 'TRUE');
+			$this->mcbsb->settings->save('dashboard_show_quotes', 'TRUE');
 
 		}
 
 		else {
 
-			$this->mdl_mcb_data->save('dashboard_show_quotes', 'FALSE');
+			$this->mcbsb->settings->save('dashboard_show_quotes', 'FALSE');
 
 		}
 
-		$this->mdl_mcb_data->save('dashboard_override', $this->input->post('dashboard_override'));
+		$this->mcbsb->settings->save('dashboard_override', $this->input->post('dashboard_override'));
 
-        $this->mdl_mcb_data->save('dashboard_total_paid_cutoff_date', strtotime(standardize_date($this->input->post('dashboard_total_paid_cutoff_date'))));
+        $this->mcbsb->settings->save('dashboard_total_paid_cutoff_date', strtotime(standardize_date($this->input->post('dashboard_total_paid_cutoff_date'))));
 
 	}
 

@@ -249,13 +249,13 @@ class Tasks extends Admin_Controller {
 
 		if ($this->input->post('dashboard_show_open_tasks')) {
 
-			$this->mdl_mcb_data->save('dashboard_show_open_tasks', "TRUE");
+			$this->mcbsb->settings->save('dashboard_show_open_tasks', "TRUE");
 
 		}
 
 		else {
 
-			$this->mdl_mcb_data->save('dashboard_show_open_tasks', "FALSE");
+			$this->mcbsb->settings->save('dashboard_show_open_tasks', "FALSE");
 
 		}
 
@@ -264,7 +264,7 @@ class Tasks extends Admin_Controller {
 	
 	function dashboard_widget() {
 
-		if ($this->mdl_mcb_data->setting('dashboard_show_open_tasks') == "TRUE") {
+		if ($this->mcbsb->settings->setting('dashboard_show_open_tasks') == "TRUE") {
 
 			$params = array(
 				'limit'	=>	10,

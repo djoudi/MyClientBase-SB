@@ -30,7 +30,7 @@ class Upload_Logo extends Admin_Controller {
 				
 				$upload_data = $this->upload->data();
 
-				$this->mdl_mcb_data->save('invoice_logo', $upload_data['file_name']);
+				$this->mcbsb->settings->save('invoice_logo', $upload_data['file_name']);
 
 				redirect('settings');
 
@@ -50,9 +50,9 @@ class Upload_Logo extends Admin_Controller {
 
 		unlink('./uploads/invoice_logos/' . uri_assoc('invoice_logo', 4));
 
-		if ($this->mdl_mcb_data->setting('invoice_logo') == uri_assoc('invoice_logo', 4)) {
+		if ($this->mcbsb->settings->setting('invoice_logo') == uri_assoc('invoice_logo', 4)) {
 
-			$this->mdl_mcb_data->delete('invoice_logo');
+			$this->mcbsb->settings->delete('invoice_logo');
 
 			$this->session->unset_userdata('invoice_logo');
 

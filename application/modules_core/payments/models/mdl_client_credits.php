@@ -19,7 +19,7 @@ class Mdl_Client_Credits extends MY_Model {
 			'mcb_clients'	=>	'mcb_clients.client_id = mcb_client_credits.client_credit_client_id'
 		);
 
-		$this->limit = $this->mdl_mcb_data->setting('results_per_page');
+		$this->limit = $this->mcbsb->settings->setting('results_per_page');
 
 		$this->custom_fields = $this->mdl_fields->get_object_fields(5);
 

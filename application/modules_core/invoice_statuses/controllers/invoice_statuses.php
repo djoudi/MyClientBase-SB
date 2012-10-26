@@ -18,7 +18,7 @@ class Invoice_Statuses extends Admin_Controller {
 		
 		$params = array(
 			'paginate'	=>	TRUE,
-			'limit'		=>	$this->mdl_mcb_data->setting('results_per_page'),
+			'limit'		=>	$this->mcbsb->settings->setting('results_per_page'),
 			'page'		=>	uri_assoc('page')
 		);
 

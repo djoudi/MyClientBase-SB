@@ -55,7 +55,7 @@ class Sales_by_Customer extends Admin_Controller {
 
 		elseif ($output_type == 'pdf') {
 
-            $this->load->helper($this->mdl_mcb_data->setting('pdf_plugin'));
+            $this->load->helper($this->mcbsb->settings->setting('pdf_plugin'));
 
             $html = $this->load->view('sales_by_customer_pdf', $data, TRUE);
 

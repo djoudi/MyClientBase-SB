@@ -12,8 +12,6 @@ class Admin_Controller extends MX_Controller {
 		
         $this->load->helper('url');
         
-        $this->load->driver('plenty_parser');
-        
 		if (!isset(self::$is_loaded)) {
 
 			self::$is_loaded = TRUE;
@@ -27,17 +25,15 @@ class Admin_Controller extends MX_Controller {
 				'mcb_invoice_amount', 'mcb_invoice_item',
 				'mcb_invoice_payment', 'mcb_numbers'));
 
-            $this->load->model(array('mcb_modules/mdl_mcb_modules','mcb_data/mdl_mcb_data','mcb_data/mdl_mcb_userdata'));
+			$this->load->model(array('mcb_modules/mdl_mcb_modules','mcb_data/mdl_mcb_userdata'));
 
-            modules::run('mcb_menu/check_permission', $this->uri->uri_string(), $this->mcbsb->_user->is_admin);
+            modules::run('mcb_menu/check_permission', $this->uri->uri_string(), $this->mcbsb->user->is_admin);
             
 			$this->mdl_mcb_modules->set_module_data();
 
-            $this->mdl_mcb_data->set_session_data();
-
 			$this->mdl_mcb_modules->load_custom_languages();
 
-			$this->load->language('mcb', $this->mdl_mcb_data->setting('default_language'));
+			$this->load->language('mcb', $this->mcbsb->settings->setting('default_language'));
 
             $this->load->model('fields/mdl_fields');
 
@@ -45,7 +41,7 @@ class Admin_Controller extends MX_Controller {
 
 			$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 
-            if ($this->mdl_mcb_data->setting('enable_profiler')) {
+            if ($this->mcbsb->settings->setting('enable_profiler')) {
 
                 $this->output->enable_profiler();
 

@@ -23,7 +23,7 @@ class Mdl_Payments extends MY_Model {
 			'mcb_payment_methods'	=>	array('mcb_payment_methods.payment_method_id = mcb_payments.payment_method_id', 'left')
 		);
 
-		$this->limit = $this->mdl_mcb_data->setting('results_per_page');
+		$this->limit = $this->mcbsb->settings->setting('results_per_page');
 
 		$this->custom_fields = $this->mdl_fields->get_object_fields(5);
 

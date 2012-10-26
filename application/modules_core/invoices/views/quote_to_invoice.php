@@ -14,7 +14,7 @@
 
 				<dl>
 					<dt><label><?php echo $this->lang->line('invoice_date'); ?>: </label></dt>
-					<dd><input id="datepicker" type="text" name="invoice_date_entered" value="<?php echo date($this->mdl_mcb_data->setting('default_date_format')); ?>" /></dd>
+					<dd><input id="datepicker" type="text" name="invoice_date_entered" value="<?php echo date($this->mcbsb->settings->setting('default_date_format')); ?>" /></dd>
 				</dl>
 				<dl>
 					<dt><label><?php echo $this->lang->line('client'); ?>: </label></dt>
@@ -25,7 +25,7 @@
 					<dd>
 						<select name="invoice_group_id" id="invoice_group_id">
 							<?php foreach ($invoice_groups as $invoice_group) { ?>
-							<option value="<?php echo $invoice_group->invoice_group_id; ?>" <?php if ($this->mdl_mcb_data->setting('default_invoice_group_id') == $invoice_group->invoice_group_id) { ?>selected="selected"<?php } ?>><?php echo $invoice_group->invoice_group_name; ?></option>
+							<option value="<?php echo $invoice_group->invoice_group_id; ?>" <?php if ($this->mcbsb->settings->setting('default_invoice_group_id') == $invoice_group->invoice_group_id) { ?>selected="selected"<?php } ?>><?php echo $invoice_group->invoice_group_name; ?></option>
 							<?php } ?>
 						</select>
 					</dd>

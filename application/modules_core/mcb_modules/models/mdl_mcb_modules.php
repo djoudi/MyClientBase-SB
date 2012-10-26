@@ -346,9 +346,9 @@ class Mdl_MCB_Modules extends MY_Model {
 
             if ($module->module_enabled) {
 
-                if (file_exists(APPPATH . '/modules_custom/' . $module->module_path . '/language/' . $this->mdl_mcb_data->setting('default_language') . '/' . $module->module_path . '_lang.php')) {
+                if (file_exists(APPPATH . '/modules_custom/' . $module->module_path . '/language/' . $this->mcbsb->settings->setting('default_language') . '/' . $module->module_path . '_lang.php')) {
 
-                    $lang = $this->mdl_mcb_data->setting('default_language');
+                    $lang = $this->mcbsb->settings->setting('default_language');
 
                 }
 

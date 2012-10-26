@@ -42,7 +42,7 @@ class Inventory_History extends Admin_Controller {
                 'inventory_history' =>  $query->result()
             );
 
-            $this->load->helper($this->mdl_mcb_data->setting('pdf_plugin'));
+            $this->load->helper($this->mcbsb->settings->setting('pdf_plugin'));
 
             $html = $this->load->view('inventory_history_pdf', $data, TRUE);
 

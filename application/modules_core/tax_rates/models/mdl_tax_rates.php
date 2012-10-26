@@ -15,7 +15,7 @@ class Mdl_Tax_Rates extends MY_Model {
 
 		$this->order_by = 'tax_rate_percent';
 
-		$this->limit = $this->mdl_mcb_data->setting('results_per_page');
+		$this->limit = $this->mcbsb->settings->setting('results_per_page');
 
 	}
 
@@ -46,7 +46,7 @@ class Mdl_Tax_Rates extends MY_Model {
 
 		}
 
-		elseif ($this->mdl_mcb_data->setting('default_tax_rate_id') == $tax_rate_id) {
+		elseif ($this->mcbsb->settings->setting('default_tax_rate_id') == $tax_rate_id) {
 
 			$this->session->set_flashdata('custom_error', $this->lang->line('cannot_delete_default_tax_rate'));
 

@@ -22,7 +22,7 @@ class Cron extends Cron_Controller {
 
         $this->load->model(array('invoices/mdl_invoices', 'mailer/mdl_mailer', 'email_templates/mdl_email_templates'));
 
-		$default_template = $this->mdl_email_templates->get_by_id($this->mdl_mcb_data->setting('default_overdue_invoice_email_template'));
+		$default_template = $this->mdl_email_templates->get_by_id($this->mcbsb->settings->setting('default_overdue_invoice_email_template'));
 		$email_body = ($default_template) ? $default_template->email_template_body : ' ';
 		$email_footer = ($default_template) ? $default_template->email_template_footer : ' ';
 
@@ -43,13 +43,13 @@ class Cron extends Cron_Controller {
 
         foreach ($invoices as $invoice) {
 
-            $invoice_template = $this->mdl_mcb_data->setting('default_invoice_template');
+            $invoice_template = $this->mcbsb->settings->setting('default_invoice_template');
             $from_email = $invoice->from_email_address;
             $from_name = $invoice->from_first_name . ' ' . $invoice->from_last_name;
             $subject = $this->lang->line('overdue_invoice_reminder');
-            $email_cc = $this->mdl_mcb_data->setting('default_cc');
-            $email_bcc = $this->mdl_mcb_data->setting('default_bcc');
-            $invoice_as_body = $this->mdl_mcb_data->setting('default_email_body');
+            $email_cc = $this->mcbsb->settings->setting('default_cc');
+            $email_bcc = $this->mcbsb->settings->setting('default_bcc');
+            $invoice_as_body = $this->mcbsb->settings->setting('default_email_body');
             $to = $invoice->client_email_address;
 
             $this->mdl_mailer->email_invoice($invoice, $invoice_template, $from_email, $from_name, $to, $subject, $email_body, $email_footer, $invoice_as_body, $email_cc, $email_bcc);
@@ -60,7 +60,7 @@ class Cron extends Cron_Controller {
 
     function _check_auth($cron_key) {
 
-        if ($cron_key <> $this->mdl_mcb_data->get('cron_key')) {
+        if ($cron_key <> $this->mcbsb->settings->get('cron_key')) {
 
             exit;
 

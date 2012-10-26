@@ -4,7 +4,7 @@
 
 <div class="grid_8" id="content_wrapper">
 
-	<?php if ($this->mdl_mcb_data->setting('dashboard_show_overdue_invoices') == "TRUE" and $overdue_invoices) { ?>
+	<?php if ($this->mcbsb->settings->setting('dashboard_show_overdue_invoices') == "TRUE" and $overdue_invoices) { ?>
 
 	<div class="section_wrapper" style="min-height: 0px;">
 
@@ -24,7 +24,7 @@
 
 	<?php } ?>
 
-	<?php if ($this->mdl_mcb_data->setting('dashboard_show_quotes') == "TRUE") { ?>
+	<?php if ($this->mcbsb->settings->setting('dashboard_show_quotes') == "TRUE") { ?>
 
 	<div class="section_wrapper">
 
@@ -41,7 +41,7 @@
 
 	<?php } ?>
 
-	<?php if ($this->mdl_mcb_data->setting('dashboard_show_open_invoices') == "TRUE") { ?>
+	<?php if ($this->mcbsb->settings->setting('dashboard_show_open_invoices') == "TRUE") { ?>
 
 	<div class="section_wrapper">
 
@@ -57,7 +57,7 @@
 
 	<?php } ?>
 
-	<?php if ($this->mdl_mcb_data->setting('dashboard_show_pending_invoices') == "TRUE") { ?>
+	<?php if ($this->mcbsb->settings->setting('dashboard_show_pending_invoices') == "TRUE") { ?>
 
 	<div class="section_wrapper">
 
@@ -73,7 +73,7 @@
 
 	<?php } ?>
 
-	<?php if ($this->mdl_mcb_data->setting('dashboard_show_closed_invoices') == "TRUE") { ?>
+	<?php if ($this->mcbsb->settings->setting('dashboard_show_closed_invoices') == "TRUE") { ?>
 
 	<div class="section_wrapper">
 

@@ -251,7 +251,7 @@ class MX_Loader extends CI_Loader
 			return CI::$APP->$_alias;
 
 		$this->scan_spark_for_locations();
-		$a = Modules::find(strtolower($model), $this->_module, 'models/');
+		//$a = Modules::find(strtolower($model), $this->_module, 'models/');
 		
 		/* check module */
 		list($path, $_model) = Modules::find(strtolower($model), $this->_module, 'models/');

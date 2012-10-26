@@ -46,7 +46,7 @@
                         <dd>
                             <select name="inventory_tax_rate_id">
                                 <?php foreach ($tax_rates as $tax_rate) { ?>
-                                <option value="<?php echo $tax_rate->tax_rate_id; ?>" <?php if(($this->mdl_inventory->form_value('inventory_tax_rate_id') == $tax_rate->tax_rate_id) or (!$this->mdl_inventory->form_value('inventory_tax_rate_id') and $this->mdl_mcb_data->setting('default_item_tax_rate_id') == $tax_rate->tax_rate_id)) { ?>selected="selected"<?php } ?>><?php echo format_number($tax_rate->tax_rate_percent, TRUE, $this->mdl_mcb_data->setting('decimal_taxes_num')) . '% - ' . $tax_rate->tax_rate_name; ?></option>
+                                <option value="<?php echo $tax_rate->tax_rate_id; ?>" <?php if(($this->mdl_inventory->form_value('inventory_tax_rate_id') == $tax_rate->tax_rate_id) or (!$this->mdl_inventory->form_value('inventory_tax_rate_id') and $this->mcbsb->settings->setting('default_item_tax_rate_id') == $tax_rate->tax_rate_id)) { ?>selected="selected"<?php } ?>><?php echo format_number($tax_rate->tax_rate_percent, TRUE, $this->mcbsb->settings->setting('decimal_taxes_num')) . '% - ' . $tax_rate->tax_rate_name; ?></option>
                                 <?php } ?>
                             </select>
                         </dd>

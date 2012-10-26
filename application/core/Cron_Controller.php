@@ -16,11 +16,11 @@ class Cron_Controller extends MX_Controller {
 
         $this->load->model('mcb_data/mdl_mcb_data');
 
-        $this->mdl_mcb_data->set_session_data();
+        $this->mcbsb->settings->set_session_data();
 
         $this->load->helper(array('uri', 'mcb_currency', 'mcb_invoice', 'mcb_date', 'mcb_icon', 'mcb_custom', 'mcb_app'));
 
-        $this->load->language('mcb', $this->mdl_mcb_data->setting('default_language'));
+        $this->load->language('mcb', $this->mcbsb->settings->setting('default_language'));
 
         $this->load->model('fields/mdl_fields');
 

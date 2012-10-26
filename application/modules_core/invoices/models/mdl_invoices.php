@@ -374,7 +374,7 @@ class Mdl_Invoices extends MY_Model {
 			'invoice_date_entered'		=>	$date_entered,
 			'invoice_due_date'			=>	$this->calculate_due_date($date_entered),
 			'user_id'					=>	$this->session->userdata('user_id'),
-			'invoice_status_id'			=>	$this->mdl_mcb_data->setting('default_open_status_id'),
+			'invoice_status_id'			=>	$this->mcbsb->settings->setting('default_open_status_id'),
 			'invoice_is_quote'			=>	$invoice_is_quote
 		);
 
@@ -393,7 +393,7 @@ class Mdl_Invoices extends MY_Model {
 
 		if (!$default_tax_rate_id) {
 
-			$default_tax_rate_id = $this->mdl_mcb_data->setting('default_tax_rate_id');
+			$default_tax_rate_id = $this->mcbsb->settings->setting('default_tax_rate_id');
 
 		}
 
@@ -406,7 +406,7 @@ class Mdl_Invoices extends MY_Model {
 
 		if (!$default_tax_rate_option) {
 
-			$default_tax_rate_option = $this->mdl_mcb_data->setting('default_tax_rate_option');
+			$default_tax_rate_option = $this->mcbsb->settings->setting('default_tax_rate_option');
 
 		}
 
@@ -734,7 +734,7 @@ class Mdl_Invoices extends MY_Model {
 
 	private function calculate_due_date($date_entered) {
 
-		return mktime(0, 0, 0, date("m", $date_entered), date("d", $date_entered) + $this->mdl_mcb_data->setting('invoices_due_after'), date("Y", $date_entered));
+		return mktime(0, 0, 0, date("m", $date_entered), date("d", $date_entered) + $this->mcbsb->settings->setting('invoices_due_after'), date("Y", $date_entered));
 
 	}
 

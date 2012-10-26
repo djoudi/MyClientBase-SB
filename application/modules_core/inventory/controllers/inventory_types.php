@@ -9,8 +9,6 @@ class Inventory_Types extends Admin_Controller {
 		$this->_post_handler();
 
 		$this->load->model('mdl_inventory_types');
-
-		$this->load->driver('plenty_parser');
 	}
 
 	public function index() {
