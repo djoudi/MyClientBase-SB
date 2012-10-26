@@ -930,7 +930,7 @@ class Contact extends Admin_Controller {
         }
                 
         $data['tooljar_module_is_enabled'] = false;
-        if(in_arrayi('tooljar',$this->enabled_modules['all'])) {
+        if ($this->mdl_mcb_modules->check_enable('tooljar')) {
         	$data['tooljar_module_is_enabled'] = true;
         }        
         

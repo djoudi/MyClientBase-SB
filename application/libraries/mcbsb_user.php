@@ -29,7 +29,7 @@ class Mcbsb_User extends User {
 	} 
 
 	private function read_from_session(){
-		
+	
 		$this->id = $this->session->userdata('user_id');
 		$this->email = $this->session->userdata('email');
 		$this->username = $this->session->userdata('username');
@@ -37,13 +37,8 @@ class Mcbsb_User extends User {
 		$this->last_name = $this->session->userdata('last_name');
 		$this->preferred_language = $this->session->userdata('preferred_language');
 		$this->lastlogin = $this->session->userdata('old_last_login');
-		
-		//TODO change me #trick
-		$this->is_admin = true;
-		//$this->mcbsb->_user->is_admin = $this->session->userdata('is_admin');
-		
+		$this->is_admin = $this->session->userdata('is_admin');
 		$this->authenticated_for_url = $this->session->userdata('authenticated_for_url');
-		
 		$this->colleagues = $this->session->userdata('colleagues');
 	}
 	
@@ -84,7 +79,6 @@ class Mcbsb_User extends User {
 			if(is_array($var_value)) return false; //TODO maybe add a system error?
 		
 			if($var_name == 'email') {
-				//TODO validate email
 				if(!valid_email($var_value)) return false; //TODO maybe add a system error?
 			}
 			
@@ -93,7 +87,33 @@ class Mcbsb_User extends User {
 			}
 		}
 
-		if(!$logged_in = $this->ion_auth->login($email, $password, $remember)) return false;
+		if(!$logged_in = $this->ion_auth->login($email, $password, $remember)) {
+
+			$this->load->model('mcb_modules/mdl_mcb_modules');
+			$this->mdl_mcb_modules->get_enabled();
+			if ($this->mdl_mcb_modules->check_enable('tooljar')) {
+				
+				$this->config->load('tooljar/tooljar.php');
+				if($this->config->item('tooljar_ce_key')) {
+					//maybe it's the tooljar administrator: look in the tooljar users database
+					unset($this->ion_auth);
+					
+					$this->load->model('ion_auth_contact_engine_model');
+					$this->ion_auth = new Ion_auth_contact_engine_model();
+					$this->ion_auth->ce_key = $this->config->item('tooljar_ce_key'); 
+					if($logged_in = $this->ion_auth->login($email, $password, $remember)) {
+						$this->is_admin = true;
+						$this->session->set_userdata(array('is_admin' => $this->is_admin));
+					} else {
+						return false;
+					}
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
 						
 		//it saves current base_url into session. This should solve problems in multisite installations => this session is valid only for this subdomain
 		$this->session->set_userdata(array('authenticated_for_url' => base_url()));
