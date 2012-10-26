@@ -36,7 +36,7 @@ class MY_Loader extends MX_Loader {
 		$vars = array_merge($vars, $mcbsb_settings);
 		
 		$vars['environment'] = ENVIRONMENT;  //development or production
-		$vars['top_menu'] = $this->mcbsb->top_menu->generate();
+		$vars['top_menu'] = $this->mcbsb->_top_menu;
 		$vars['system_messages'] = $this->mcbsb->system_messages->all;
 		return $vars;
 	}

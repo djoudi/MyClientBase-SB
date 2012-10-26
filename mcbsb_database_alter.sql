@@ -98,3 +98,24 @@ TRUNCATE TABLE `users`;
 TRUNCATE TABLE `users_groups`;
 
 
+
+
+
+
+
+
+
+
+
+ALTER TABLE `mcb_modules` DROP `module_core`;
+
+ALTER TABLE `mcb_modules` CHANGE `module_description` `module_description` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
+CHANGE `module_author` `module_author` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
+CHANGE `module_homepage` `module_homepage` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
+CHANGE `module_version` `module_version` VARCHAR( 25 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
+CHANGE `module_available_version` `module_available_version` VARCHAR( 25 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '';
+
+ALTER TABLE `mcb_modules` CHANGE `module_enabled` `module_enabled` INT( 1 ) NULL DEFAULT '0',
+CHANGE `module_change_status` `module_change_status` INT( 1 ) NULL DEFAULT '1';
+
+TRUNCATE TABLE `mcb_modules`;

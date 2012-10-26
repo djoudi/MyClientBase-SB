@@ -23,13 +23,11 @@ class Admin_Controller extends MX_Controller {
 				'mcb_invoice_amount', 'mcb_invoice_item',
 				'mcb_invoice_payment', 'mcb_numbers'));
 
-			$this->load->model(array('mcb_modules/mdl_mcb_modules','mcb_data/mdl_mcb_userdata'));
+			$this->load->model(array('mcb_data/mdl_mcb_userdata'));
 
             $this->mcbsb->top_menu->check_permission($this->uri->uri_string(), $this->mcbsb->user->is_admin);
-            
-			$this->mdl_mcb_modules->set_module_data();
 
-			$this->mdl_mcb_modules->load_custom_languages();
+			//$this->mdl_mcb_modules->load_custom_languages();
 
 			$this->load->language('mcb', $this->mcbsb->settings->setting('default_language'));
 

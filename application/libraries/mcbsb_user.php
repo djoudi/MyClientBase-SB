@@ -89,9 +89,8 @@ class Mcbsb_User extends User {
 
 		if(!$logged_in = $this->ion_auth->login($email, $password, $remember)) {
 
-			$this->load->model('mcb_modules/mdl_mcb_modules');
-			$this->mdl_mcb_modules->get_enabled();
-			if ($this->mdl_mcb_modules->check_enable('tooljar')) {
+			
+			if ($this->mcbsbs->is_module_enabled('tooljar')) {
 				
 				$this->config->load('tooljar/tooljar.php');
 				if($this->config->item('tooljar_ce_key')) {

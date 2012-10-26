@@ -6,15 +6,14 @@ class Top_Menu extends MY_Model {
 
 		parent::__construct();
 		
-		
 	}
 
 	//Get core modules status
 	public function get_core_modules_status()
 	{
-		$this->load->model('mdl_mcb_modules');
+/* 		$this->load->model('mdl_mcb_modules');
 		$this->mdl_mcb_modules->refresh();
-		$modules = $this->mdl_mcb_modules->core_modules;
+		$modules = $this->mcbsb->_modules['enabled'];
 		$status_items = array();
 		foreach ($modules as $key => $module)
 		{
@@ -25,12 +24,13 @@ class Top_Menu extends MY_Model {
 				$status_items[$key] = 'disabled';
 			}
 		}
-		return $status_items;
+		return $status_items; */
+		return array();
 	}
 	
 	public function generate() {
 
-		$this->load->model('mdl_mcb_modules');
+		//$this->load->model('mdl_mcb_modules');
 		$this->load->config('mcb_menu');
         $menu_items = $this->config->item('mcb_menu');
 		
