@@ -16,8 +16,6 @@ class Admin_Controller extends MX_Controller {
 
 			self::$is_loaded = TRUE;
 
-            $this->load->config('mcb_menu/mcb_menu');
-
 			$this->load->database();
 
 			$this->load->helper(array('uri', 'mcb_currency', 'mcb_invoice',
@@ -27,7 +25,8 @@ class Admin_Controller extends MX_Controller {
 
 			$this->load->model(array('mcb_modules/mdl_mcb_modules','mcb_data/mdl_mcb_userdata'));
 
-            modules::run('mcb_menu/check_permission', $this->uri->uri_string(), $this->mcbsb->user->is_admin);
+            //modules::run('mcb_menu/check_permission', $this->uri->uri_string(), $this->mcbsb->user->is_admin);
+            $this->mcbsb->top_menu->check_permission($this->uri->uri_string(), $this->mcbsb->user->is_admin);
             
 			$this->mdl_mcb_modules->set_module_data();
 

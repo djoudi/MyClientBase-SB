@@ -11,6 +11,7 @@ class Mcbsb  extends CI_Model {
 	public $record_descriptor;
 	public $field_descriptor;
 	public $db_obj;
+	public $top_menu;
 		
 	public $_enabled_modules;
 	public $_total_rows;

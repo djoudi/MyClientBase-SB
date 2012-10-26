@@ -72,7 +72,7 @@ class Login extends CI_Controller {
     	$data['errors'] = $this->form_validation->get_validation_errors();
     	$data['captcha'] = create_captcha($vals);
     	 
-    	$this->load->view('login.tpl', $data, false, true);    	 
+    	$this->load->view('login.tpl', $data, false, 'smarty');    	 
 
     }
 

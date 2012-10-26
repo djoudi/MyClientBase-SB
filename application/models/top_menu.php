@@ -1,19 +1,16 @@
 <?php (defined('BASEPATH')) OR exit('No direct script access allowed');
 
-
-//TODO replaced by class top_menu. This should be replaced
-
-class MCB_Menu extends Admin_Controller {
+class Top_Menu extends MY_Model {
 
 	function __construct() {
 
 		parent::__construct();
-
 	}
 
 	//Get core modules status
 	public function get_core_modules_status()
 	{
+		$this->load->model('mdl_mcb_modules');
 		$this->mdl_mcb_modules->refresh();
 		$modules = $this->mdl_mcb_modules->core_modules;
 		$status_items = array();
@@ -29,13 +26,14 @@ class MCB_Menu extends Admin_Controller {
 		return $status_items;
 	}
 	
-	function generate() {
+	public function generate() {
 
+		$this->load->model('mdl_mcb_modules');
+		$this->load->config('mcb_menu');		
         $menu_items = $this->config->item('mcb_menu');
 		
         //DAM
         $status_items = $this->get_core_modules_status();
-        //$status_items = $this->config->item('mcb_module');
         
         foreach ($menu_items as $key => $menu_item) {
 			//DAM
