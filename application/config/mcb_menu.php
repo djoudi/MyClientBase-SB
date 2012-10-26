@@ -1,5 +1,6 @@
 <?php
 //TODO this should be generated automatically, shouldn't it?
+
 $config = array(
     'mcb_menu'  =>  array(
     	'dashboard' =>  array(

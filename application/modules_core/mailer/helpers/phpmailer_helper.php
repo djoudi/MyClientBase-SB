@@ -12,29 +12,29 @@ function phpmail_send($from, $to, $subject, $message, $attachment_path = NULL, $
 
 	$mail->IsHtml();
 
-	if ($CI->mdl_mcb_data->setting('email_protocol') == 'smtp') {
+	if ($CI->mcbsb->settings->setting('email_protocol') == 'smtp') {
 
 		$mail->IsSMTP();
 
 		$mail->SMTPAuth = true;
 
-		if ($CI->mdl_mcb_data->setting('smtp_security')) {
+		if ($CI->mcbsb->settings->setting('smtp_security')) {
 
-			$mail->SMTPSecure = $CI->mdl_mcb_data->setting('smtp_security');
+			$mail->SMTPSecure = $CI->mcbsb->settings->setting('smtp_security');
 
 		}
 
-		$mail->Host = $CI->mdl_mcb_data->setting('smtp_host');
+		$mail->Host = $CI->mcbsb->settings->setting('smtp_host');
 
-		$mail->Port = $CI->mdl_mcb_data->setting('smtp_port');
+		$mail->Port = $CI->mcbsb->settings->setting('smtp_port');
 
-		$mail->Username = $CI->mdl_mcb_data->setting('smtp_user');
+		$mail->Username = $CI->mcbsb->settings->setting('smtp_user');
 
-		$mail->Password = $CI->mdl_mcb_data->setting('smtp_pass');
+		$mail->Password = $CI->mcbsb->settings->setting('smtp_pass');
 
 	}
 
-	elseif ($CI->mdl_mcb_data->setting('email_protocol') == 'sendmail') {
+	elseif ($CI->mcbsb->settings->setting('email_protocol') == 'sendmail') {
 
 		$mail->IsSendmail();
 

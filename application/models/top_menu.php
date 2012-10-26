@@ -5,6 +5,8 @@ class Top_Menu extends MY_Model {
 	function __construct() {
 
 		parent::__construct();
+		
+		
 	}
 
 	//Get core modules status
@@ -29,7 +31,7 @@ class Top_Menu extends MY_Model {
 	public function generate() {
 
 		$this->load->model('mdl_mcb_modules');
-		$this->load->config('mcb_menu');		
+		$this->load->config('mcb_menu');
         $menu_items = $this->config->item('mcb_menu');
 		
         //DAM
@@ -96,7 +98,9 @@ class Top_Menu extends MY_Model {
 	
 	function check_permission($uri_string, $global_admin) {
 
-		foreach ($this->config->item('mcb_menu') as $menu_item) {
+		$this->load->config('mcb_menu');
+		$menu = $this->config->item('mcb_menu');
+		foreach ($menu as $menu_item) {
 
         	//DAM
 			$status_items = $this->get_core_modules_status();
@@ -110,37 +114,38 @@ class Top_Menu extends MY_Model {
         	}
 			//\DAM
         	
-			if (strpos($menu_item['href'], $uri_string) === 0) {
-
-				if (isset($menu_item['is_admin']) and !$global_admin) {
-
-					redirect('contact');
-
+        	if(!empty($uri_string)){
+				if (strpos($menu_item['href'], $uri_string) === 0) {
+	
+					if (isset($menu_item['is_admin']) and !$global_admin) {
+	
+						redirect('contact');
+	
+					}
+	
 				}
-
-			}
-
-			if (isset($menu_item['submenu'])) {
+        	}
+        	
+			if (isset($menu_item['submenu']) and is_array($menu_item['submenu'])) {
 
 				foreach ($menu_item['submenu'] as $sub_item) {
 
-					if (strpos($sub_item['href'], $uri_string) === 0) {
-
-						if (isset($sub_item['is_admin']) and !$global_admin) {
-
-							redirect('contact');
-
+					if(!empty($uri_string)){
+						if (strpos($sub_item['href'], $uri_string) === 0) {
+	
+							if (isset($sub_item['is_admin']) and !$global_admin) {
+	
+								redirect('contact');
+	
+							}
+	
 						}
-
 					}
-
-
 				}
 
 			}
 
 		}
-		$a = '';
 	}
 
 }

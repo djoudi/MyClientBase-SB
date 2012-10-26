@@ -23,7 +23,7 @@ class Lib_output {
 
 	function pdf($invoice_id, $invoice_template) {
 
-		$this->CI->load->helper($this->CI->mdl_mcb_data->setting('pdf_plugin'));
+		$this->CI->load->helper($this->CI->mcbsb->settings->setting('pdf_plugin'));
 
 		$invoice = $this->get_invoice($invoice_id);
 
@@ -60,18 +60,18 @@ class Lib_output {
 
 	function payment_link($invoice) {
 		
-		if ($this->CI->mdl_mcb_data->setting('merchant_enabled')) {
+		if ($this->CI->mcbsb->settings->setting('merchant_enabled')) {
 
-			$merchant_driver = strtolower($this->CI->mdl_mcb_data->setting('merchant_driver'));
+			$merchant_driver = strtolower($this->CI->mcbsb->settings->setting('merchant_driver'));
 
 			$this->CI->load->driver('merchant');
 			$this->CI->merchant->driver = $merchant_driver;
 
 			$params = array(
 				'test_mode'				=>	FALSE,
-				'merchant_account_id'	=>	$this->CI->mdl_mcb_data->setting('merchant_account_id'),
+				'merchant_account_id'	=>	$this->CI->mcbsb->settings->setting('merchant_account_id'),
 				'amount'				=>	$invoice->invoice_balance,
-				'currency_code'			=>	$this->CI->mdl_mcb_data->setting('merchant_currency_code'),
+				'currency_code'			=>	$this->CI->mcbsb->settings->setting('merchant_currency_code'),
 				'reference'				=>	$this->CI->lang->line('invoice_number') . ' ' . $invoice->invoice_number,
 				'return_url'			=>	site_url('client_center/merchant_return'),
 				'cancel_url'			=>	site_url('client_center/merchant_cancel'),

@@ -35,7 +35,7 @@ class Lib_output {
 
 	function pdf($invoice_id, $payment_id, $template) {
 
-		$this->CI->load->helper($this->CI->mdl_mcb_data->setting('pdf_plugin'));
+		$this->CI->load->helper($this->CI->mcbsb->settings->setting('pdf_plugin'));
 
 		$params = array(
 			'where'	=>	array(
