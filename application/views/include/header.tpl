@@ -74,7 +74,6 @@
 	<body>
 
 	{* top anchor *}
-ciao
 	<div class="container_16" style="max-width: 1200px;">
 
 	<a id="top" name="top"></a>
