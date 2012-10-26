@@ -44,10 +44,11 @@ class Module extends Db_Obj
 	}
 	
 	public function __get($attribute) {
-		parent::__get($attribute);
+		$value = parent::__get($attribute);
 		if($attribute == 'module_config') {
-			$this->$attribute = unserialize($this->$attribute);
+			$value = unserialize($value);
 		}
+		return $value;
 	}
 	
 	public function create(){
@@ -186,6 +187,9 @@ class Module extends Db_Obj
 	private function diff(array $config){
 		
 		foreach ($config as $key => $value){
+			//the config file can not overwrite the module_enabled attribute
+			if($key == 'module_enabled') continue;
+			
 			if($key == 'module_config') {
 				if(serialize($value) != serialize($this->$key)) return true;
 			} else {
