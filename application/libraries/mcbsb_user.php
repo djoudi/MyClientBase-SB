@@ -16,6 +16,7 @@ class Mcbsb_User extends User {
 	public $authenticated_for_url = null;
 	public $is_admin = false;
 	private $ion_auth = null;
+	public $colleagues = array();
 	
 	public function __construct(){
 		
@@ -24,6 +25,7 @@ class Mcbsb_User extends User {
 		$this->ion_auth = new Ion_auth();
 		
 		$this->read_from_session();
+		
 	} 
 
 	private function read_from_session(){
@@ -41,6 +43,32 @@ class Mcbsb_User extends User {
 		//$this->mcbsb->_user->is_admin = $this->session->userdata('is_admin');
 		
 		$this->authenticated_for_url = $this->session->userdata('authenticated_for_url');
+		
+		$this->colleagues = $this->session->userdata('colleagues');
+	}
+	
+	private function get_colleagues(){
+
+		$this->load->model('contact/mdl_contact');
+		$this->load->model('contact/mdl_person');
+		$contact = new Mdl_Person();
+		$oid = 10000000; //TODO put here the oid of the organization owning the app
+		$input = array('filter' => '(&(oRDN='.$oid.')(enabled=TRUE))');
+		$rest_return = $contact->get($input,true);
+		
+		if($contact->crr->has_no_errors) {
+			$this->load->library('colleague');
+			foreach ($contact->crr->data as $key => $item){
+				 $colleague = new Colleague();
+				 if(isset($item['cn'][0])) $colleague->name = $item['cn'][0];
+				 if(isset($item['mail'][0])) $colleague->email = $item['mail'][0];
+				 if(isset($item['uid'][0])) $colleague->uid = $item['uid'][0];
+				 $colleague->oid = $oid;
+				 $this->colleagues[] = $colleague; 
+			}
+		}
+		
+		$this->session->set_userdata(array('colleagues' => $this->colleagues));		
 	}
 	
 	public function login($email,$password,$remember = false){
@@ -65,13 +93,14 @@ class Mcbsb_User extends User {
 			}
 		}
 
-		if($logged_in = $this->ion_auth->login($email, $password, $remember)){
+		if(!$logged_in = $this->ion_auth->login($email, $password, $remember)) return false;
 						
-			//it saves current base_url into session. This should solve problems in multisite installations => this session is valid only for this subdomain
- 			$this->session->set_userdata(array('authenticated_for_url' => base_url()));
- 			
- 			$this->read_from_session();
-		}
+		//it saves current base_url into session. This should solve problems in multisite installations => this session is valid only for this subdomain
+		$this->session->set_userdata(array('authenticated_for_url' => base_url()));
+ 		
+		$this->get_colleagues();
+		
+		$this->read_from_session();
 		
 		return $logged_in;
 	}
