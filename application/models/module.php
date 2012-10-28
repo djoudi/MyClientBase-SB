@@ -89,6 +89,7 @@ class Module extends Db_Obj
 	public function is_enabled($module_name){
 		if(is_array($module_name) || is_object($module_name)) return false;
 		
+		//mysql query are case insensitive by default, so I don't care about the case of $module_name
 		$sql = 'select module_enabled from ' . $this->db_table . ' where module_name="' . $module_name .'" limit 1';
 		$result = parent::performSearch($sql,true);
 		

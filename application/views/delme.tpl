@@ -1,3 +1,6 @@
-{include file='include/header.tpl'}
+{include file='header.tpl'}
 
-{include file='include/footer.tpl'}
+  <div class="grid_12">
+	12
+  </div>
+{include file='footer.tpl'}

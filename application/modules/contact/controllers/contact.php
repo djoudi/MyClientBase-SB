@@ -14,7 +14,7 @@ class Contact extends Admin_Controller {
 
         $this->load->model('mdl_contacts');
         
-        $this->enabled_modules = $this->mdl_mcb_modules->get_enabled();
+        $this->enabled_modules = $this->mcbsb->_modules['enabled'];
     }
 
     /**
@@ -469,12 +469,8 @@ class Contact extends Admin_Controller {
         }
         
         //loading Smarty template
-        $data['js_autofocus'] = $this->load->view('jquery_set_focus', array('id'=>'search-box'), true);
-        $data['site_url'] = site_url($this->uri->uri_string());
-        $data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'contact');        
-        $data['middle'] = $this->plenty_parser->parse('index_ce.tpl', $data, true, 'smarty', 'contact');
-        
-        $this->load->view('index_ce', $data);
+        //$data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'contact');
+        $this->load->view('contact_search.tpl', $data, false, 'smarty','contact');
     }
 
 	private function getContactById()
@@ -838,7 +834,8 @@ class Contact extends Admin_Controller {
         
         //getting invoices and quotes
         //TODO FIXME this is no good. Somehow it translates the modules names
-        if(in_arrayi('invoices',$this->enabled_modules['all']) || in_arrayi('fatture',$this->enabled_modules['all'])) {
+//        if(in_arrayi('invoices',$this->enabled_modules['all']) || in_arrayi('fatture',$this->enabled_modules['all'])) {
+		if($this->mcbsb->is_module_enabled('invoices')) {        	
         	$this->load->model('invoices/mdl_invoices');
         		
         	$data['invoice_module_is_enabled'] = true;
@@ -879,8 +876,8 @@ class Contact extends Admin_Controller {
         
         //allows creations of tasks for the contact
         //TODO FIXME this is no good. Somehow it translates the modules names
-        if(in_arrayi('tasks',$this->enabled_modules['all']) || in_arrayi('incarichi',$this->enabled_modules['all']) ) {
-        		
+        //if(in_arrayi('tasks',$this->enabled_modules['all']) || in_arrayi('incarichi',$this->enabled_modules['all']) ) {
+        if($this->mcbsb->is_module_enabled('tasks')) {        		
         	$this->mcbsb->load('tasks/task','task');
         
         	//TODO add a filter to get only the tasks of this contact
@@ -909,18 +906,13 @@ class Contact extends Admin_Controller {
 	        $data['ss_contact_folder_num_items'] = $ss_contact_folder_num_items;
         }
                 
-        $data['tooljar_module_is_enabled'] = false;
-        if ($this->mdl_mcb_modules->check_enable('tooljar')) {
-        	$data['tooljar_module_is_enabled'] = true;
-        }        
+        $data['tooljar_module_is_enabled'] = $this->mcbsb->is_module_enabled('tooljar');
         
         //loading Smarty templates
-        $data['site_url'] = site_url($this->uri->uri_string());
+//         $data['header'] = $this->load->view('header.tpl', $data, true, 'smarty');
+//         $data['footer'] = $this->load->view('footer.tpl', $data, true, 'smarty');
         $data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'contact');
-        $data['details']	= $this->plenty_parser->parse('details.tpl', $data, true, 'smarty', 'contact');
-        
-        //loading CI template
-        $this->load->view('details', $data);
+        $this->load->view('contact_details.tpl', $data, false, 'smarty','contact');
 
     }
     

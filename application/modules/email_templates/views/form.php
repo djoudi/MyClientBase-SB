@@ -4,7 +4,7 @@
 
 	<div class="section_wrapper">
 
-		<h3 class="title_black"><?php echo $this->lang->line('email_template_form'); ?></h3>
+		<h3><?php echo $this->lang->line('email_template_form'); ?></h3>
 
 		<div class="content toggle">
 

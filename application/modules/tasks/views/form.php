@@ -6,7 +6,7 @@
 
 	<div class="section_wrapper">
 
-		<h3 class="title_black"><?php echo $this->lang->line('task_form'); ?></h3>
+		<h3><?php echo $this->lang->line('task_form'); ?></h3>
 
 		<div class="content toggle" style="min-height: 0; padding-bottom: 45px;">
 
@@ -59,7 +59,7 @@
 			if(isset($activities)) {		
 		?>
 			<div  class="content toggle" style="min-height: 0px;">
-			<h3 class="title_black"><?php echo $this->lang->line('activities'); ?></h3>
+			<h3><?php echo $this->lang->line('activities'); ?></h3>
 		<?php  
 				echo $table;
 				echo '</div>';

@@ -85,14 +85,14 @@
 				{$contact_ref = $contact->cn}
 				{$contact_id = $contact->uid}
 				{$contact_id_key = "uid"}
-				<h3 class="title_black"><span style="font-size: 12px;">{t}Person{/t}: </span>{$contact->cn}</h3>
+				<h3><span style="font-size: 12px;">{t}Person{/t}: </span>{$contact->cn}</h3>
 			{/if}		
 			
 			{if {preg_match pattern="dueviOrganization" subject=$contact->objectClass}}
 				{$contact_ref = $contact->o}
 				{$contact_id = $contact->oid}
 				{$contact_id_key = "oid"}
-				<h3 class="title_black"><span style="font-size: 12px;">{t}Organization{/t}: </span>{$contact->o}</h3>
+				<h3><span style="font-size: 12px;">{t}Organization{/t}: </span>{$contact->o}</h3>
 			{/if}
 			
 			{* <pre>{$contact|print_r}</pre> *} 

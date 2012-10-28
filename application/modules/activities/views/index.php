@@ -6,7 +6,7 @@
 
 		<form method="post" action="<?php echo site_url($this->uri->uri_string()); ?>" style="display: inline;">
 
-		<h3 class="title_black"><?php echo $this->lang->line('activities'); ?></h3>
+		<h3><?php echo $this->lang->line('activities'); ?></h3>
 
 		<div class="content toggle no_padding">
 

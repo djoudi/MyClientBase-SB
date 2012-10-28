@@ -6,7 +6,7 @@
 
 	<div class="section_wrapper">
 
-		<h3 class="title_black"><?php echo $this->lang->line('activity_form'); ?></h3>
+		<h3><?php echo $this->lang->line('activity_form'); ?></h3>
 
 		<div class="content toggle" style="min-height: 0; padding-bottom: 45px;">
 				

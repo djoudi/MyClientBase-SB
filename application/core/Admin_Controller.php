@@ -25,7 +25,8 @@ class Admin_Controller extends MX_Controller {
 
 			$this->load->model(array('mcb_data/mdl_mcb_userdata'));
 
-            $this->mcbsb->top_menu->check_permission($this->uri->uri_string(), $this->mcbsb->user->is_admin);
+			//TODO fixme
+            //$this->mcbsb->top_menu->check_permission($this->uri->uri_string(), $this->mcbsb->user->is_admin);
 
 			//$this->mdl_mcb_modules->load_custom_languages();
 

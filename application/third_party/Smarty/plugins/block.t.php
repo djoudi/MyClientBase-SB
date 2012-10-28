@@ -149,6 +149,18 @@ function smarty_block_t($params, $text, &$smarty)
 		}
 	}
 
+	//DAM underlines the character at position $params['u']. This is used to highlight the caracter to use as shortcut
+	if(isset($params['u']) and !empty($text)) {
+		if(is_int($params['u']) && $params['u'] > 0) {
+			if(strlen($text) >= $params['u']){
+				$characters = str_split($text);
+				$character = $characters[($params['u'] - 1)];
+				$character = '<u>'.$character.'</u>';
+				$characters[($params['u'] - 1)] = $character;
+				$text = implode('', $characters);
+			}
+		}
+	}
 	return $text;
 }
 

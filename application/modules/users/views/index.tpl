@@ -2,7 +2,7 @@
 
 	<div class="section_wrapper">
 
-		<h3 class="title_black">{citranslate lang=$language text='users_accounts'}</h3>
+		<h3>{citranslate lang=$language text='users_accounts'}</h3>
 
 		<div class="content toggle no_padding">
 

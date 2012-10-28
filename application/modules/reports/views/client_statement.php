@@ -35,7 +35,7 @@
 
 	<div class="section_wrapper">
 
-		<h3 class="title_black"><?php echo $this->lang->line('client_statement'); ?></h3>
+		<h3><?php echo $this->lang->line('client_statement'); ?></h3>
 
 		<div class="content toggle" style="min-height: 0px;">
 

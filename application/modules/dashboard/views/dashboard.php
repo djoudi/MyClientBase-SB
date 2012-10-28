@@ -8,7 +8,7 @@
 
 	<div class="section_wrapper" style="min-height: 0px;">
 
-		<h3 class="title_black"><?php echo $this->lang->line('overdue_invoices'); ?>
+		<h3><?php echo $this->lang->line('overdue_invoices'); ?>
 		<span style="font-size: 60%;">
 		<?php $this->load->view('btn_add', array('btn_name'=>'btn_email_reminders', 'btn_value'=>$this->lang->line('email_reminders'))); ?>
 		</span>
@@ -28,7 +28,7 @@
 
 	<div class="section_wrapper">
 
-		<h3 class="title_black"><?php echo $this->lang->line('quotes'); ?></h3>
+		<h3><?php echo $this->lang->line('quotes'); ?></h3>
 
 		<div class="content toggle no_padding" style="min-height: 0px;">
 
@@ -45,7 +45,7 @@
 
 	<div class="section_wrapper">
 
-		<h3 class="title_black"><?php echo $this->lang->line('open_invoices'); ?></h3>
+		<h3><?php echo $this->lang->line('open_invoices'); ?></h3>
 
 		<div class="content toggle no_padding" style="min-height: 0px;">
 
@@ -61,7 +61,7 @@
 
 	<div class="section_wrapper">
 
-		<h3 class="title_black"><?php echo $this->lang->line('pending_invoices'); ?></h3>
+		<h3><?php echo $this->lang->line('pending_invoices'); ?></h3>
 
 		<div class="content toggle no_padding" style="min-height: 0px;">
 
@@ -77,7 +77,7 @@
 
 	<div class="section_wrapper">
 
-		<h3 class="title_black"><?php echo $this->lang->line('recently_closed_invoices'); ?></h3>
+		<h3><?php echo $this->lang->line('recently_closed_invoices'); ?></h3>
 
 		<div class="content toggle no_padding" style="min-height: 0px;">
 

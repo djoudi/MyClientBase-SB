@@ -4,7 +4,7 @@
 
     <div class="section_wrapper">
 
-        <h3 class="title_black"><?php echo ($this->uri->segment(5) <> 'quote') ? $this->lang->line('create_invoice') : $this->lang->line('create_quote'); ?></h3>
+        <h3><?php echo ($this->uri->segment(5) <> 'quote') ? $this->lang->line('create_invoice') : $this->lang->line('create_quote'); ?></h3>
 
         <div class="content toggle">
 

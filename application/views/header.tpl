@@ -13,15 +13,22 @@
 		<meta name="author" content="Damiano Venturin" />	
 
 		{* css *}
-		<link href="/assets/style/css/styles.css" rel="stylesheet" type="text/css" media="screen" />
-		<link href="/assets/style/fluid_grid.css?column_width=60&amp;column_amount=16&amp;gutter_width=20" media="screen" rel="stylesheet" type="text/css">
-		{* <link href="/assets/style/css/superfish.css" rel="stylesheet" type="text/css" media="screen" /> *}
-		<!--[if IE 6]><link rel="stylesheet" type="text/css" media="screen" href="/assets/style/css/ie6.css" /><![endif]-->
-		<!--[if IE 7]><link rel="stylesheet" type="text/css" media="screen" href="/assets/style/css/ie7.css" /><![endif]-->
-		<link type="text/css" href="/assets/jquery/ui-themes/myclientbase/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
-
+		{$device = 'computer'}
+		<link rel="stylesheet" href="/layout/css/{$device}/mcbsb.css" />		
 
 		{* javascript *}
+				
+		<script type="text/javascript" src="/js/jquery-1.8.2.js"></script>
+		<script type="text/javascript" src="/js/jquery-ui-1.9.1.js"></script>
+		<script type="text/javascript" src="/js/jquery.hotkeys.js"></script> {* provides shortcuts *}
+		
+		{* global var language *}
+		<script type="text/javascript">
+			language = "{$language}";
+		</script>
+		
+		<script type="text/javascript" src="/js/mcbsb.js"></script>
+		
 		{if $environment == 'development'}
 		{literal}
 		<script type="text/javascript">
@@ -44,51 +51,32 @@
 		
 		</script>				
 		{/literal}
-		{/if}		
-		<script type="text/javascript" src="/assets/jquery/jquery-172.js"></script>
-		<script type="text/javascript" src="/assets/jquery/jquery-ui-1.8.16.min.js"></script>
-		<script src="/assets/jquery/jquery.maskedinput-1.2.2.min.js" type="text/javascript"></script>
-		<script src="/assets/jquery/util.js" type="text/javascript"></script>
-		<script src="/assets/jquery/superfish.js" type="text/javascript"></script>
-		<script src="/assets/jquery/supersubs.js" type="text/javascript"></script>
-		<script src="/assets/jquery/mcbsb.js" type="text/javascript"></script>
+		{/if}
 		
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-	
-		{literal}
-     <script>
-         $(document).ready(function(){
-             $("ul.sf-menu").supersubs({
-                 minWidth:    12,
-                 maxWidth:    38,
-                 extraWidth:  1
-             }).superfish();
-
-			$( "input:submit.uibutton").button();
-
-         });
-     </script>
-		{/literal}
+		{* <script src="/assets/jquery/jquery.maskedinput-1.2.2.min.js" type="text/javascript"></script> *}
+		{* <script src="/assets/jquery/util.js" type="text/javascript"></script> *}
+		{* <script src="/assets/jquery/superfish.js" type="text/javascript"></script> *}
+		{* <script src="/assets/jquery/supersubs.js" type="text/javascript"></script> *}
+		
+		
+		{* <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' /> *}
 
 	</head>
 	<body>
 
 	{* top anchor *}
-ciao
-	<div class="container_16" style="max-width: 1200px;">
-
-	<a id="top" name="top"></a>
- 	
-		<div id="navigation_wrapper">
-			<ul class="sf-menu" id="navigation">
-
-    			<pre>{$top_menu|print_r}</pre>
-
-			</ul>
+	<div class="container_24">
+			
+		<div class="grid_24"> 	
+			<div class="top_menu">
+				<a id="top" name="top"></a>
+				<ul class="top_menu" id="navigation">
+	
+	    			{foreach $top_menu as $key => $item}
+	    			{* TODO add class="selected" to the selected tab *}
+	    				<li class="top_menu b_light_blue"><a class="top_menu" href="{$item['item_link']}">{$item['item_name']}</a></li>
+	    			{/foreach}
+					<span style="float: right; margin-right: 5px;">MCB-SB {$mcbsb_version}</span>
+				</ul>
+			</div>
 		</div>
-
-		<div id="subnavigation_wrapper">
-    			<pre>{$system_messages|print_r}</pre>
-		</div>
-		
-		<div class="container_10" id="center_wrapper">

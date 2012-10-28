@@ -4,7 +4,7 @@
 
     <div class="section_wrapper">
 
-		<h3 class="title_black"><?php echo (!uri_assoc('is_quote') ? $this->lang->line('invoices') : $this->lang->line('quotes')); ?></h3>
+		<h3><?php echo (!uri_assoc('is_quote') ? $this->lang->line('invoices') : $this->lang->line('quotes')); ?></h3>
 
         <div class="content toggle">
           

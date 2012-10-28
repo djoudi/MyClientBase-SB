@@ -6,7 +6,7 @@
 
         <div class="section_wrapper">
 
-            <h3 class="title_black"><?php echo $this->lang->line('select_invoices'); ?></h3>
+            <h3><?php echo $this->lang->line('select_invoices'); ?></h3>
 
             <div class="content toggle no_padding" style="min-height: 0px;">
 
@@ -37,7 +37,7 @@
 
         <div class="section_wrapper">
 
-            <h3 class="title_black"><?php echo $this->lang->line('send_email'); ?></h3>
+            <h3><?php echo $this->lang->line('send_email'); ?></h3>
 
             <div class="content toggle">
 

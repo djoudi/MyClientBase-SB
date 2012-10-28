@@ -92,6 +92,8 @@ class Mcbsb  extends CI_Model {
 							break;
 							
 							default:
+								//TODO what about $this->load($obj_name, $alias = null){
+								
 								$this->load->model($property_name);
 								//references the loaded object
 								$this->$property_name =& $CI->$property_name;								
@@ -239,9 +241,9 @@ class Mcbsb  extends CI_Model {
 		}
 	}
 	
-	public function is_module_enabled($module) {
+	public function is_module_enabled($module_name) {
 		if(is_array($module_name) || is_object($module_name)) return false; //TODO should be nice to trigger an error
-		return $this->module->is_enabled($module);
+		return $this->module->is_enabled($module_name);
 	}
 	
 	private function set_system_message($type, $text) {

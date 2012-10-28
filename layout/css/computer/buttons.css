@@ -1,0 +1,20 @@
+.button, .big_button {
+    background-color:#207fca;
+    padding: 3px;
+    position: relative;
+    font-size: 13px;
+    text-decoration: none;
+    color: white;
+    border: solid 1px #555555;
+    border-radius: 4px;
+}
+ 
+.big_button {
+	font-size: 28px;
+	padding: 10px;	
+}
+
+.button:hover, .big_button:hover{
+	background-color: #daefff;
+	color: #2280c9;
+}

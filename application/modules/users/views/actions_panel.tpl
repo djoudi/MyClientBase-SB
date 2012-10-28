@@ -2,7 +2,7 @@
 
 {* MAIN ACTIONS *}
 <div class="section_wrapper" style="clear:right; float:right; display:inline; width: 280px; background-color: gray;">
-	<h3 class="title_black">{t}Main Actions{/t}</h3>
+	<h3>{t}Main Actions{/t}</h3>
 
 	<ul class="quicklinks content toggle" >
 
@@ -20,7 +20,7 @@
 
 {if !{preg_match pattern="\/users\/form" subject=$site_url}}
 <div class="section_wrapper" style="clear:right; float:right; display:inline; width: 280px; background-color: #ff9c00;">
-	<h3 class="title_black">{t}User Actions{/t}</h3>
+	<h3>{t}User Actions{/t}</h3>
 
 	<ul class="quicklinks content toggle" >
 		{if {preg_match pattern="\/users$" subject=$site_url} or {preg_match pattern="\/users\/index$" subject=$site_url}}

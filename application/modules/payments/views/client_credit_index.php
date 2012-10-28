@@ -6,7 +6,7 @@
 
 	<div class="section_wrapper">
 
-		<h3 class="title_black"><?php echo $this->lang->line('account_deposits'); ?>
+		<h3><?php echo $this->lang->line('account_deposits'); ?>
 		<span style="font-size: 60%;">
 		<?php $this->load->view('btn_add', array('btn_value'=>$this->lang->line('enter_deposit'))); ?>
 		</span>

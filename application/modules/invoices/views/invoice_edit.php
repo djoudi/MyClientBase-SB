@@ -24,7 +24,7 @@
 
 	<div class="section_wrapper" style="background-color: #ff9c00;">
 
-		<h3 class="title_black"><?php echo ($invoice->invoice_is_quote == 1 ? $this->lang->line('quote_number') : $this->lang->line('invoice_number')) . ' ' . $invoice->invoice_number; ?></h3>
+		<h3><?php echo ($invoice->invoice_is_quote == 1 ? $this->lang->line('quote_number') : $this->lang->line('invoice_number')) . ' ' . $invoice->invoice_number; ?></h3>
 
 		<div class="content toggle">
 

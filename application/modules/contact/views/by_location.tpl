@@ -31,7 +31,7 @@
 				</iframe>
 			</div>
 			<div style="width: 230px; float: right;">
-				<h3 class="title_black">{"{t}statistics{/t}"|capitalize} </h3>
+				<h3>{"{t}statistics{/t}"|capitalize} </h3>
 				<table class="table-clients" style="background-color: white;">
 					<tr style="border-left: 1px solid #d8d8d8;">
 					    	<td>{t}City{/t}</td>
@@ -55,7 +55,7 @@
 	<div class="right-block" style="width: 505px; background-color: transparent;">
 		<div style="overflow: auto; width: 100%">
 			<div style="width: 250px; float: left;">
-				{if $made_search}<h3 class="title_black">{"{t}people{/t}"|capitalize} </h3>{/if}
+				{if $made_search}<h3>{"{t}people{/t}"|capitalize} </h3>{/if}
 		
 			
 				{if count($people) gt 0}
@@ -77,7 +77,7 @@
 		
 		
 			<div style="width: 250px; float: right;">
-				{if $made_search}<h3 class="title_black">{"{t}organizations{/t}"|capitalize}</h3>{/if}
+				{if $made_search}<h3>{"{t}organizations{/t}"|capitalize}</h3>{/if}
 			
 		
 				{if count($orgs) gt 0}    

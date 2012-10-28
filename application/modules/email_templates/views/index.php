@@ -4,7 +4,7 @@
 
 	<div class="section_wrapper">
 
-		<h3 class="title_black"><?php echo $this->lang->line('email_templates'); ?>
+		<h3><?php echo $this->lang->line('email_templates'); ?>
 		<?php //TODO what's this ?>
 		<span style="font-size: 60%;">
 		<?php $this->load->view('btn_add', array('btn_value'=>$this->lang->line('add'))); ?>

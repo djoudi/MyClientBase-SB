@@ -80,9 +80,9 @@
 	});
 </script>
 
-<div class="section_wrapper" style="clear:right; float:right; display:inline; width: 280px; background-color: gray;">
+
 	
-	<h3 class="title_black">{t}Main Actions{/t}</h3>
+	<h3>{t}Main Actions{/t}</h3>
 	
 	<ul class="quicklinks content toggle" >
 		{if !{preg_match pattern="\/contact\/index$" subject=$site_url} and !{preg_match pattern="\/contact$" subject=$site_url}}
@@ -111,11 +111,10 @@
 			</div>				
 		</li>		
 	</ul>
-</div>
+
 
 {if isset($contact_id)}
-	<div class="section_wrapper" style="clear:right; float:right; display:inline; width: 280px; background-color: #ff9c00;">
-		<h3 class="title_black">{t}Contact Actions{/t}</h3>
+		<h3>{t}Contact Actions{/t}</h3>
 	
 		<ul class="quicklinks content toggle" >
 			
@@ -160,20 +159,17 @@
 				 -->
 			{/if}						
 		</ul>
-		
-	</div>
+
 {/if}
 
 {if isset($contact_id)}
 	{if $tooljar_module_is_enabled && $object_type == 'organization'}
-	<div class="section_wrapper" style="clear:right; float:right; display:inline; width: 280px; background-color: #ff9c00;">
-		<h3 class="title_black">{t}ToolJar Actions{/t}</h3>
+		<h3>{t}ToolJar Actions{/t}</h3>
 	
 		<ul class="quicklinks content toggle" >
 
 
 				<li><a href="#" onClick="set_as_my_tj_organization({ 'oid':'{$contact_id}','hash':'set_here_the_hash' })">{t}This is my organization{/t}</a></li>
 		</ul>
-	</div>					
 	{/if}
 {/if}

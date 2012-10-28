@@ -4,7 +4,7 @@
 
 	<div class="section_wrapper">
 
-		<h3 class="title_black"><?php echo $this->lang->line('change_password'); ?></h3>
+		<h3><?php echo $this->lang->line('change_password'); ?></h3>
 
 		<?php $this->load->view('system_messages'); ?>
 

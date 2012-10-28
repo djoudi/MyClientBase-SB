@@ -11,7 +11,7 @@
 		<form method="post" action="<?php echo site_url('invoice_search'); ?>" style="display: inline;">
 			<input type="hidden" name="output_type" value="index" />
 
-			<h3 class="title_black"><?php echo $this->lang->line('search'); ?></h3>
+			<h3><?php echo $this->lang->line('search'); ?></h3>
 
 			<div class="content toggle" style="min-height: 0px; height: 30px;">
 
@@ -47,7 +47,7 @@
 
 	<div class="section_wrapper">
 
-		<h3 class="title_black"><?php echo (!uri_assoc('is_quote') ? $this->lang->line('invoices') : $this->lang->line('quotes')); ?>
+		<h3><?php echo (!uri_assoc('is_quote') ? $this->lang->line('invoices') : $this->lang->line('quotes')); ?>
 				<?php 
 					if(isset($tot_num_invoices)) {
 						?>
