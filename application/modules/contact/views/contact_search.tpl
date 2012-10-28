@@ -1,8 +1,9 @@
-
 {assign header_file "{$fcpath}application/views/header.tpl"}
+{assign top_menu_file "{$fcpath}application/views/top_menu.tpl"}
 {assign footer_file "{$fcpath}application/views/footer.tpl"}
 
 {include file="$header_file"}
+{include file="$top_menu_file"}
 
 {literal}
 <script type="text/javascript">
@@ -20,6 +21,18 @@
 	$(document).ready(function() {
 		domo();
 		$('#search-box').focus();
+
+		$('#button_search').click(function(event) {
+		    $form = $(this).parent("form");
+		    $('#form_contact_search').submit();
+		});
+
+		$('#button_reset').click(function(event) {
+		    $('#form_contact_search').append('<input type="hidden" value="reset" name="reset" />');
+		    $('#form_contact_search').submit();
+		    //$.post($form.attr("action"), $form.serialize() + "&reset=reset", function(data) { $(this).html(data); });
+		});				
+		
 	});
 </script>
 {/literal}
@@ -42,10 +55,10 @@
 <div class="grid_9">
 
 	<div class="box contact_search">
-		<form id="form_contact_search" method="post" action="">
-			<span style="margin-left: 5px;">{t}Contact{/t}: </span><input style="width: 200px;" title="{t}Search for name, organization name, vat number, phone, email, website{/t}" type="text" name="search" id="search-box" value="">
-			<a href="#" class="button">{t u=1}Search{/t}</a> <a href="#" class="button">{t u=1}Reset{/t}</a>
-			{* <input type="submit" class="button" name="reset" value="{t}Reset{/t}" /> *}
+		<form id="form_contact_search" method="post">
+			<span style="margin-left: 5px;">{t}Contact{/t}: </span>
+			<input style="width: 200px;" title="{t}Search for name, organization name, vat number, phone, email, website{/t}" type="text" name="search" id="search-box" value="">
+			<a href="#" class="button" id="button_search">{t u=1}Search{/t}</a> <a href="#" class="button" id="button_reset">{t u=1}Reset{/t}</a>
 		</form>
 	</div>
 	

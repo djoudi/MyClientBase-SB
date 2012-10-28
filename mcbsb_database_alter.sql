@@ -118,4 +118,7 @@ CHANGE `module_available_version` `module_available_version` VARCHAR( 25 ) CHARA
 ALTER TABLE `mcb_modules` CHANGE `module_enabled` `module_enabled` INT( 1 ) NULL DEFAULT '0',
 CHANGE `module_change_status` `module_change_status` INT( 1 ) NULL DEFAULT '1';
 
+ALTER TABLE `mcb_modules` ADD `module_top_menu` INT( 1 ) NOT NULL DEFAULT '1' AFTER `module_order`;
+
 TRUNCATE TABLE `mcb_modules`;
+

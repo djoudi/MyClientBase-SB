@@ -34,7 +34,7 @@ class MY_Loader extends MX_Loader {
 		$a = $this->mcbsb;
 		
 		//TODO maybe including all the settings is too much. We'll see
-		$vars = array_merge($vars, $mcbsb_settings);
+		//$vars = array_merge($vars, $mcbsb_settings);
 		
 		$vars['mcbsb_version'] = $this->mcbsb->_version;
 		$vars['language'] = $this->mcbsb->_language;
@@ -42,7 +42,7 @@ class MY_Loader extends MX_Loader {
 		$vars['fcpath'] = FCPATH;
 		$vars['site_url'] = site_url($this->uri->uri_string());
 		
-		$vars['top_menu'] = $this->mcbsb->_top_menu;
+		$vars['top_menu'] = $this->mcbsb->_modules['top_menu'];
 		$vars['system_messages'] = $this->mcbsb->system_messages->all;
 		$vars['colleagues'] = array();
 		$vars['colleagues'][0]['name'] = 'pippo';

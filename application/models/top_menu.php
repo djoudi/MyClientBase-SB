@@ -1,5 +1,7 @@
 <?php (defined('BASEPATH')) OR exit('No direct script access allowed');
 
+//TODO delme
+
 class Top_Menu extends MY_Model {
 
 	function __construct() {

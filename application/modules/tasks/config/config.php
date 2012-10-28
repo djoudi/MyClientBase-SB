@@ -7,6 +7,7 @@ $config['module'] = array(
 	'module_author'			=>	'Damiano Venturin',
 	'module_homepage'		=>	'http://www.mcbsb.com',
 	'module_version'		=>	'0.13.0',
+	'module_top_menu' => true,
 	'module_config'			=>	array(
 		'dashboard_widget'	=>	'tasks/dashboard_widget',
 		'settings_view'		=>	'tasks/task_settings/display',

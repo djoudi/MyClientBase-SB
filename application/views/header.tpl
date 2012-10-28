@@ -63,20 +63,6 @@
 
 	</head>
 	<body>
-
-	{* top anchor *}
 	<div class="container_24">
-			
-		<div class="grid_24"> 	
-			<div class="top_menu">
-				<a id="top" name="top"></a>
-				<ul class="top_menu" id="navigation">
-	
-	    			{foreach $top_menu as $key => $item}
-	    			{* TODO add class="selected" to the selected tab *}
-	    				<li class="top_menu b_light_blue"><a class="top_menu" href="{$item['item_link']}">{$item['item_name']}</a></li>
-	    			{/foreach}
-					<span style="float: right; margin-right: 5px;">MCB-SB {$mcbsb_version}</span>
-				</ul>
-			</div>
-		</div>
+	{* top anchor *}
+	<a id="top" name="top"></a>

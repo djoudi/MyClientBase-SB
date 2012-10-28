@@ -22,6 +22,7 @@ class Module extends Db_Obj
 	protected $module_config = null;
 	protected $module_change_status = 0;
 	protected $module_order = 99;
+	protected $module_top_menu = true;
 	
 	public function __construct(){
 		parent::__construct();

@@ -8,6 +8,7 @@ $config['module'] = array(
 	'module_author'			=>	'Damiano Venturin',
 	'module_homepage'		=>	'http://www.mcbsb.com',
 	'module_version'		=>	'0.0.1',
+	'module_top_menu'		=>	true,		
 	'module_config'			=>	array(
 		//'settings_view'		=>	'activities/activity_settings/display',
 		//'settings_save'		=>	'activities/activity_settings/save',

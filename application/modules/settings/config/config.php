@@ -4,6 +4,7 @@ $config['module'] = array(
 	'module_name'	=>	$this->lang->line('general'),
 	'module_path'	=>	'settings',
 	'module_order'	=>	1,
+	'module_top_menu' => true,
 	'module_config'	=>	array(
 		'settings_view'	=>	'settings/other_settings/display',
 		'settings_save'	=>	'settings/other_settings/save'

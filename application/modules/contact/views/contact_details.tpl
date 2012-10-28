@@ -1,7 +1,9 @@
 {assign header_file "{$fcpath}application/views/header.tpl"}
+{assign top_menu_file "{$fcpath}application/views/top_menu.tpl"}
 {assign footer_file "{$fcpath}application/views/footer.tpl"}
 
 {include file="$header_file"}
+{include file="$top_menu_file"}
 
 {* focuses on the tab matching the hash and goes on the top of the page *}
 

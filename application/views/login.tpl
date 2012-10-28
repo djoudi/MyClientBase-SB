@@ -1,48 +1,49 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link href="/assets/style/css/styles.css" rel="stylesheet" type="text/css" media="screen" />
-		<link type="text/css" href="/assets/jquery/ui-themes/myclientbase/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
-		<script type="text/javascript" src="/assets/jquery/jquery-1.6.2.min.js"></script>
-		<script type="text/javascript" src="/assets/jquery/jquery-ui-1.8.16.custom.min.js"></script>
-	</head>
-	<body>
-		<div class="container_10" id="center_wrapper">
+{assign header_file "{$fcpath}application/views/header.tpl"}
+{assign footer_file "{$fcpath}application/views/footer.tpl"}
 
-			<div class="grid_5 push_2" id="content_wrapper">
+{include file="$header_file"}
 
-				<div class="section_wrapper">
+{literal}
+<script type="text/javascript">
+	$(document).ready(function(){
+
+		$('#button_login').click(function() {
+  			$('#form_login').submit();
+		});
+		$('#username').focus();
+	});
+</script>
+{/literal}
+
+<div class="push_1 grid_7">
+
+	{* <pre>{$errors|print_r}</pre> *}
+	<div class="box" style="padding: 10px; padding-left: 25px;">
+	
+	<h3 style="margin-bottom: 20px;">MCB-SB</h3>
+	 
+	<form method="post" action="/login" id="form_login">
+		<dl>
+			<dt><label>{t}Email{/t}</label></dt>
+			<dd><input type="text" value="{$form['username']}" id="username" name="username" /></dd>
 				
-					<div class="content toggle" style="min-height: 0px;">
-						{* <pre>{$errors|print_r}</pre> *} 
-						<form method="post" action="/login">
-							<dl>
-								<dt><label>{t}Email{/t}</label></dt>
-								<dd><input type="text" value="{$form['username']}" id="username" name="username" /></dd>
-							</dl>
-							
-							<dl>					
-								<dt><label>{t}Password{/t}</label></dt>
-								<dd><input type="password" value="{$form['password']}" id="password" name="password" /></dd>
-							</dl>
-						
-							<dl style="border: 0px solid green; height: 120px;">
-								<dt><label style="padding-left: 30px;">{$captcha['image']}</label></dt>
-								<dd style="height: 100%;">
-									<input style="width: 70px; margin-top: -20px; padding-top: -20px;" type="text" value="" id="captcha" name="captcha" />
-									<p style="text-align: left; margin: 0px; margin-left: 190px; padding: 0px; padding-top: 0px; padding-bottom: 0px;">{t}Please write here the code you see on the left. (Not case sensitive){/t}</p>
-									<input class="uibutton" type="submit" value="{t}Login{/t}" style="float: right; margin: 0px; padding: 0px; margin-top: 10px; margin-right: 25px;" name="btn_submit" id="btn_submit" />
-								</dd>
-								
-							</dl>
-						</form>
-					</div>				
-				
-				</div>
-				
-			</div>
-			
-		</div>
-	</body>
-</html>
+			<dt><label>{t}Password{/t}</label></dt>
+			<dd><input type="password" value="{$form['password']}" id="password" name="password" /></dd>
+		</dl>
+		
+		<dl>
+			<dt>&nbsp;</dt>
+			<dd><span style="margin-left: 3px;">{$captcha['image']}</span></dd>
+		</dl>
+		
+		<dl>
+			<dt><label>{t}Write here the code you see on the top. (not case sensitive){/t}</label></dt>
+			<dd><input type="text" value="" id="captcha" name="captcha" /></dd>
+		</dl>
+		
+		<a href="#" class="button" style="float: right; margin-right: 50px;" id="button_login">{t}Login{/t}</a>
+		<div style="clear: both;"></div>
+	</form>
+	</div>
+</div>
+{include file="$footer_file"}

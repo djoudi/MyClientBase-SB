@@ -57,7 +57,7 @@ class Login extends CI_Controller {
     			'word'	 => $captcha,
     			'img_path'	 => './captcha/',
     			'img_url'	 => base_url() . 'captcha/',
-    			'img_width'	 => '115',
+    			'img_width'	 => '150',
     			'img_height' => 45,
     			'expiration' => 7200
     	);
@@ -71,9 +71,8 @@ class Login extends CI_Controller {
     	//TODO this should go in mcbsb system messages
     	$data['errors'] = $this->form_validation->get_validation_errors();
     	$data['captcha'] = create_captcha($vals);
-    	 
-    	$this->load->view('login.tpl', $data, false, 'smarty');    	 
-
+    	     	 
+    	$this->load->view('login.tpl', $data, false, 'smarty');
     }
 
     function logout() {

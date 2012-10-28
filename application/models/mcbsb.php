@@ -19,8 +19,11 @@ class Mcbsb  extends CI_Model {
 	public $_version;
 	public $_language = null;  	//like english, italian, russian (always english words i.e. italian, not italiano)
 	public $_locale = null; 		//like en_us, it_it, ru_RU
-	public $_modules = array();
-	public $_top_menu = array();
+	public $_modules = array(
+						'all' => array(),
+						'enabled' => array(),
+						'top_menu' => array(),
+	);
 	
 	public function __construct() {
 		
@@ -198,7 +201,7 @@ class Mcbsb  extends CI_Model {
 			}
 		}		
 		
-		// Update modules table
+		// Reads the modules config files and updates the modules table
 		foreach ($modules as $module) {
 				
 			// This should be the location of the module's config file
@@ -221,6 +224,7 @@ class Mcbsb  extends CI_Model {
 			}
 		}
 		
+		
 		$all_modules_in_db = $this->module->getAllRecords();
 		$this->_modules['all'] = array();
 		$this->_modules['enabled'] = array();
@@ -232,10 +236,12 @@ class Mcbsb  extends CI_Model {
 				$this->_modules['enabled'][] = $record['module_name'];
 				
 				//TODO module ACL here
-				$this->_top_menu[] = array(
-											'item_name' => $record['module_name'],
-											'item_link' => $record['module_path'],
-				);
+				if($record['module_top_menu']) {
+					$this->_modules['top_menu'][] = array(
+												'item_name' => $record['module_name'],
+												'item_link' => '/'.$record['module_path'],
+					);
+				}
 			}
 			
 		}
