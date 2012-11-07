@@ -13,7 +13,6 @@
 {literal}
 <script type="text/javascript">
 	function domo(){
-		//console.log('language ' + language);
 		if(language == 'english' || language == 'italian'){
 	    	jQuery(document).bind('keydown', 'c',function (evt){jQuery('#search-city').focus(); return false; });
 		}
@@ -35,7 +34,6 @@
 		$('.city').click(function(event) {
 			event.preventDefault();
 			city = $(this).attr('href');
-			console.log('city ' + city);
 			$('#search-city').val('');
 			$('#search-by-location').append('<input type="hidden" value="' + city + '" name="city" />');
 		    $('#search-by-location').submit();

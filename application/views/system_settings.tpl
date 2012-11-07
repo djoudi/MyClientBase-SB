@@ -15,7 +15,6 @@
 		
 		var currentURL = window.location;
 		url_hash = currentURL.hash;
-		console.log('url hash' + url_hash);
 		var $tabs = $('#tabs').tabs();
 		$tabs.tabs('select', url_hash);
 		

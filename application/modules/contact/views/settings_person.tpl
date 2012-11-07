@@ -56,10 +56,7 @@
                     		form: formObj,
                 			},
                 error	: errorCallback,                			
-            })
-            .success(function(){
-                console.log('success');
-            })                	   	
+            })        	   	
         });
         
 	});

@@ -97,8 +97,8 @@ function submit_organization(){
 
 
 function search_organization(){
-	console.log('obj_type' + object_type);
-	console.log('con_id' + contact_id);
+//	console.log('obj_type' + object_type);
+//	console.log('con_id' + contact_id);
 	search({ 
 		'procedure':'personToOrganizationMembership', 
 		'form_name': 'search_organization_form', 
@@ -332,8 +332,6 @@ function jqueryForm(params) {
 					break;
 					
 					case 'searchOrganizationToAdd':
-						console.log('procedure searchOrganizationToAdd');
-						console.log(json);
 						if(json.oid){
 							window.location = '/contact/form/oid/' + json.oid;
 						}						
@@ -356,7 +354,7 @@ function jqueryForm(params) {
 
 
 function openJqueryForm(json){
-	console.log('openJqueryForm');
+	//console.log('openJqueryForm');
 	//console.log(json);
 	
 	var tag = $('<div id="mydialog"></div>');
@@ -392,7 +390,7 @@ function openJqueryForm(json){
 				},
 				open: function(){
 					//add something to do when the dialog opens
-					console.log('open dialog');
+					//console.log('open dialog');
 				},
 				close: function(event, ui) {
 					postFormToAjax(json.url,'jsonp','POST',json.form_name,json.object_name,json.related_object_name,json.related_object_id,selected_radio,json.procedure,null);	
@@ -430,7 +428,7 @@ function retrieve_validate_form(form_name){
 }
 
 function postFormToAjax(url, dataType, type, form_name, object_name, related_object_name, related_object_id, selected_radio, procedure, input_params){
-	console.log('postFormToAjax');
+	//console.log('postFormToAjax');
 	//console.log(input_params);
 	
 	url = urldecode(url);
@@ -444,7 +442,7 @@ function postFormToAjax(url, dataType, type, form_name, object_name, related_obj
 		
 		//let's see if the final url is an ajax request
 		if(!url.match(/^\/contact\/ajax/)) {
-			console.log('submitting to page ' + url + ' and leaving');
+			//console.log('submitting to page ' + url + ' and leaving');
 			
 	    	$('#'+form_name).submit();
 	    	return true;
@@ -478,7 +476,6 @@ function postFormToAjax(url, dataType, type, form_name, object_name, related_obj
 		}
 	})        
     .success(function(json) {
-    	console.log('last ajax query has been successfull');
     	if(typeof json.message !== "undefined" && json.message){
 			switch(json.procedure){
 				case 'create_person':
@@ -507,7 +504,7 @@ function postFormToAjax(url, dataType, type, form_name, object_name, related_obj
 function addAutoComplete(input){
 
 	$(input)
-	// don't navigate away from the field on tab when selecting an item
+	// do not navigate away from the field on tab when selecting an item
 	.bind( "keydown", function( event ) {
     	if ( event.keyCode === $.ui.keyCode.TAB && $( this ).data( "autocomplete" ).menu.active ) {
                 event.preventDefault();

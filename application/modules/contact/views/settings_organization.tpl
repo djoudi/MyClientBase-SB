@@ -58,11 +58,7 @@ $(document).ready(function() {
                 			},
                 error	: errorCallback,                			
             })
-            .success(function(){
-                console.log('success');
-            })                	   	
-        });
-        
+        });        
 	});
 </script>
 {/literal}

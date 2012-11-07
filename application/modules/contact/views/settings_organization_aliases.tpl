@@ -23,7 +23,6 @@
                 error	: errorCallback,                			
             })
             .success(function(){
-                console.log('success');
             	//close the accordion
             	jQuery('#organization_accordion').accordion("activate",false);
             	//jQuery('#organization_accordion').accordion("activate",$('.laa'));

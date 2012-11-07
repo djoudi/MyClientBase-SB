@@ -23,7 +23,6 @@ $(document).ready(function() {
             error	: errorCallback,                			
         })
         .success(function(){
-            console.log('success');
         	//close the accordion
         	jQuery('#location_accordion').accordion("activate",false);
         	//jQuery('#location_visible_accordion').accordion("activate",$('.laa'));

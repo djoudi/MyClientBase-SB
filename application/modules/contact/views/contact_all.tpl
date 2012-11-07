@@ -10,7 +10,6 @@
 {literal}
 <script type="text/javascript">
 	function domo(){
-		//console.log('language ' + language);
 		if(language == 'english'){
 	    	jQuery(document).bind('keydown', 's',function (evt){jQuery('#search-box').focus(); return false; });
 		}
