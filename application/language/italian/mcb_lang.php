@@ -603,4 +603,6 @@ $lang['prev'] = 'Precedente';
 $lang['found'] = 'trovato';
 $lang['google'] = 'Google';
 $lang['captcha_text'] = 'Inserisci qui il testo che vede nella immagine di sinistra';
+$lang['last'] = 'ultimo';
+$lang['Last'] = 'Ultimo';
 ?>

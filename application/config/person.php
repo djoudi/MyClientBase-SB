@@ -40,16 +40,7 @@ $config['person_hidden_fields'] = array('uid','client_id');
 $config['person_default_values'] = array(
 				'homePhone' => '+3902',
 				'mozillaHomeState' => 'varese',
-				'homeFacsimileTelephoneNumber' => '+39031',
+				'homeFacsimileTelephoneNumber' => '+3902',
 				'mozillaHomeCountryName' => 'italy',
 				'category' => 'mycat',
-				'cn' => 'unknown',
-				'displayName' => 'unknown',
-				'enabled' => 'TRUE',
-				'entryCreatedBy' => 'unknown',
-				'fileAs' => 'unknown',
-				'givenName' => 'unknown',
-				'sn' => 'unknown',
-				'uid' => '',
-				'userPassword' => '509a77b203525',
 );

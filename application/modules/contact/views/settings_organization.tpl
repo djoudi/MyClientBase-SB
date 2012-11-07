@@ -71,8 +71,7 @@ $(document).ready(function() {
 
 <div id="organization_default_values">	
 	<p style="padding-bottom: 10px;">
-		The object organization can have some attributes prefilled (totally or partially) so that every newly created contact will have the values
-		specified in this form.
+		{t}The object{/t} {t}Organization{/t} {t}can have some attributes prefilled (totally or partially) so that every newly created contact will have the values specified in this form{/t}.
 	</p>
 	<form name="form_organization_default_values" style="margin-bottom: 10px;">
 		<div class="box settings" style="float: right; width: 48%; padding-bottom: 5px; margin-bottom: 5px;">
@@ -126,17 +125,17 @@ $(document).ready(function() {
 	
 {* organizations accordion items *}
 	{$obj = "{t}organization{/t}"}		
-	<h3 class="ova"><a href="#"><span style="font-size: 16px;">{$obj|capitalize}</span>: {t}set visible attributes{/t}</a></h3>
+	<h3 class="ova"><a href="#">{t}Set visible attributes{/t}</a></h3>
 	<div id="org_visible_accordion">
 		{* $settings_organization *} {* this is necessary only if the accordion is shown open at start *}
 	</div>
 
-	<h3 class="ooa"><a href="#"><span style="font-size: 16px;">{$obj|capitalize}</span>: {t}set attributes order{/t}</a></h3>
+	<h3 class="ooa"><a href="#">{t}Set attributes order{/t}</a></h3>
 	<div id="org_order_accordion">
 		{* $settings_organization_order *} {* this is necessary only if the accordion is shown open at start *}
 	</div>
 
-	<h3 class="oaa"><a href="#"><span style="font-size: 16px;">{$obj|capitalize}</span>: {t}set attributes aliases{/t}</a></h3>
+	<h3 class="oaa"><a href="#">{t}Set attributes aliases{/t}</a></h3>
 	<div id="org_aliases_accordion">
 		{* $settings_organization_aliases *} {* this is necessary only if the accordion is shown open at start *}
 	</div>

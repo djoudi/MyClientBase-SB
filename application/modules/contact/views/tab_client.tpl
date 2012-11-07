@@ -1,7 +1,7 @@
 
 
 <div id="profile_summary">
-	<h4>Summary</h4>	
+	<h4>{t}Summary{/t}</h4>	
 	<p style="margin-top: 13px; border-top: 1px solid #ccc; padding-top: 5px;">		
 		{if isset($contact->uid)}
 			{if $contact->enabled == 'TRUE'}				
@@ -68,7 +68,8 @@
 					<td class="field">
 					
 					{if isset($aliases) && isset($aliases.$property_name)}
-						{t}{$contact->aliases.$property_name|regex_replace:"/_/":" "}{/t} :
+						{assign 'property_alias' $contact->aliases.$property_name|regex_replace:"/_/":" "}
+						{t}{$property_alias|trim}{/t} :
 					{else}
 						{t}{$property_name}{/t} :
 					{/if}
@@ -140,14 +141,14 @@
 {if isset($contact->entryCreatedBy)}
 | <i>{t}Created by{/t}</i>: {$contact->entryCreatedBy|default:'-'}
 	{if isset($contact->entryCreationDate)} 
-		on {$contact->entryCreationDate|default:'-'}
+		{t}on {/t} {$contact->entryCreationDate|default:'-'}
 	{/if}
 {/if}
 
 {if isset($contact->entryUpdatedBy)} 
 | <i>{t}Updated by{/t}</i>: {$contact->entryUpdatedBy|default:'-'}
 	{if isset($contact->entryUpdateDate)} 
-		on {$contact->entryUpdateDate|default:'-'}
+		{t}on {/t} {$contact->entryUpdateDate|default:'-'}
 	{/if}
 {/if}
 </p>		

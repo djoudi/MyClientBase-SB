@@ -165,7 +165,7 @@
 					<dl style="margin: 0px; padding: 0px; height: 30px;">
 						<dt style="margin: 0px; padding: 0px; padding-right: 5px; height: 30px;"><label style="font-size: 10px; margin: 0px; padding: 0px;">{t}Organization{/t}:</label></dt>
 						<dd style="margin: 0px; padding: 0px;">
-							<input title="{t}organization name{/t}" size="55" type="text" name="organizationname" id="organization_name" style="width: 165px;"/>
+							<input title="{t}organization name{/t}" size="55" type="text" name="organizationname" id="organization_name" style="width: 150px;"/>
 							<a class="button" id="add_organization_submit" href="#">{t}Ok{/t}</a>
 						</dd>
 					</dl>
@@ -217,7 +217,7 @@
 						<dl style="margin: 0px; padding: 0px; height: 30px;">
 							<dt style="margin: 0px; padding: 0px; padding-right: 5px; height: 30px;"><label style="font-size: 10px; margin: 0px; padding: 0px;">{t}Organization{/t}:</label></dt>
 							<dd style="margin: 0px; padding: 0px;">
-								<input title="{t}search for name, vat, phone, email, website{/t}" size="55" type="text" name="input_search" id="input_search" style="width: 165px;"/>
+								<input title="{t}search for name, vat, phone, email, website{/t}" size="55" type="text" name="input_search" id="input_search" style="width: 150px;"/>
 								<a class="button" id="associate_organization_submit" href="#">{t}Ok{/t}</a>
 							</dd>
 						</dl>

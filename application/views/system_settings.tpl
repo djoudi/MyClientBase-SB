@@ -112,7 +112,7 @@
 								<select name="default_language">
 								{foreach $languages as $lang => $identifier}
 									{$selected=''}
-									{if $lang==$language|capitalize}{$selected='selected="selected"'}{/if}
+									{if $lang==$default_language|capitalize}{$selected='selected="selected"'}{/if}
 									<option value="{$lang}" {$selected}>{t}{$lang}{/t}</option>
 								{/foreach}
 								</select>

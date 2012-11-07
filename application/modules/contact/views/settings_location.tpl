@@ -45,17 +45,17 @@ $(document).ready(function() {
 
 {* locations accordion items *}
 	{$obj = "{t}location{/t}"}				
-	<h3 class="lva"><a href="#"><span style="font-size: 16px;">{$obj|capitalize}</span>: {t}set visible attributes{/t}</a></h3>
+	<h3 class="lva"><a href="#">{t}Set visible attributes{/t}</a></h3>
 	<div id="location_visible_accordion">
 		{* $settings_location *} {* this is necessary only if the accordion is shown open at start *}
 	</div>
 	
-	<h3 class="loa"><a href="#"><span style="font-size: 16px;">{$obj|capitalize}</span>: {t}set attributes order{/t}</a></h3>
+	<h3 class="loa"><a href="#">{t}Set attributes order{/t}</a></h3>
 	<div id="location_order_accordion">
 		{*$settings_location_order*} {* this is necessary only if the accordion is shown open at start *}
 	</div>
 
-	<h3 class="laa"><a href="#"><span style="font-size: 16px;">{$obj|capitalize}</span>: {t}set attributes aliases{/t}</a></h3>
+	<h3 class="laa"><a href="#">{t}Set attributes aliases{/t}</a></h3>
 	<div id="location_aliases_accordion">
 		{*$settings_location_aliases*} {* this is necessary only if the accordion is shown open at start *}
 	</div>

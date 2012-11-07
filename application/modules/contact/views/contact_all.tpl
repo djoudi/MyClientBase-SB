@@ -61,7 +61,7 @@
 	<div class="box" style="padding: 5px;">
 	
 	{if isset($people) && count($people) gt 0}
-		<h4>{"{t}All people{/t}"|capitalize}<span style="padding-left: 5px; font-size: 11px;">({$people_total_number})</span></h4>
+		<h4>{t}All people{/t}<span style="padding-left: 5px; font-size: 11px;">({$people_total_number})</span></h4>
 		
 		<table class="contact_search_result">
 		<tr class="header">
@@ -90,7 +90,7 @@
 	
 	{if isset($orgs) && count($orgs) gt 0}    
 	
-		<h4>{"{t}All organizations{/t}"|capitalize}<span style="padding-left: 5px; font-size: 11px;">({$organizations_total_number})</span></h4>
+		<h4>{t}All organizations{/t}<span style="padding-left: 5px; font-size: 11px;">({$organizations_total_number})</span></h4>
 	
 		<table class="contact_search_result">
 		

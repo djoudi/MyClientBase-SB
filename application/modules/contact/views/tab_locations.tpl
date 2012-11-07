@@ -63,14 +63,14 @@
 			{if isset($loc->entryCreatedBy)}
 			| <i>{t}Created by{/t}</i>: {$loc->entryCreatedBy|default:'-'}
 				{if isset($loc->entryCreationDate)} 
-					on {$loc->entryCreationDate|default:'-'}
+					{t}on {/t} {$loc->entryCreationDate|default:'-'}
 				{/if}
 			{/if}
 			
 			{if isset($loc->entryUpdatedBy)} 
 			| <i>{t}Updated by{/t}</i>: {$loc->entryUpdatedBy|default:'-'}
 				{if isset($loc->entryUpdateDate)} 
-					on {$loc->entryUpdateDate|default:'-'}
+					{t}on {/t} {$loc->entryUpdateDate|default:'-'}
 				{/if}
 			{/if}
 		</p>		

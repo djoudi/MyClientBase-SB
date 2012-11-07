@@ -83,8 +83,14 @@ msgstr "Associa organizzazione"
 msgid "Last Name"
 msgstr "Cognome"
 
+msgid "last name"
+msgstr "cognome"
+
 msgid "First Name"
 msgstr "Nome"
+
+msgid "first name"
+msgstr "nome"
 
 msgid "Name"
 msgstr "Nome"
@@ -95,20 +101,35 @@ msgstr "Indirizzo"
 msgid "Zip"
 msgstr "Cap"
 
+msgid "zip"
+msgstr "cap"
+
+msgid "city"
+msgstr "cittá"
+
 msgid "City"
-msgstr "Citta"
+msgstr "Cittá"
 
 msgid "State"
 msgstr "Provincia"
 
+msgid "state"
+msgstr "provincia"
+
 msgid "Country"
 msgstr "Nazione"
 
-msgid "Mobile"
-msgstr "Cellulare"
+msgid "country"
+msgstr "nazione"
 
-msgid "Home Phone"
-msgstr "Telefono Residenza"
+msgid "mobile"
+msgstr "cellulare"
+
+msgid "home phone"
+msgstr "telefono residenza"
+
+msgid "Home phone"
+msgstr "Telefono residenza"
 
 msgid "enabled"
 msgstr "abilitato"
@@ -185,6 +206,9 @@ msgstr "Titolo"
 msgid "Home Fax"
 msgstr "Fax Residenza"
 
+msgid "Home fax"
+msgstr "Fax residenza"
+
 msgid "Organization Phone"
 msgstr "Telefono Organizzazione"
 
@@ -215,6 +239,15 @@ msgstr "Foto"
 msgid "submit"
 msgstr "invia"
 
+msgid "save"
+msgstr "salva"
+
+msgid "Save"
+msgstr "Salva"
+
+msgid "Cancel"
+msgstr "Cancella"
+
 msgid "cancel"
 msgstr "cancella"
 
@@ -238,12 +271,6 @@ msgstr "Elimina"
 
 msgid "Larger Map"
 msgstr "Mappa Ingrandita"
-
-msgid "city"
-msgstr "citta"
-
-msgid "state"
-msgstr "provincia"
 
 msgid "statistics"
 msgstr "statistiche"
@@ -293,14 +320,14 @@ msgstr "Pannello Azioni"
 msgid "found"
 msgstr "trovati"
 
-msgid "set visible attributes"
-msgstr "scegli quali attributi mostrare"
+msgid "Set visible attributes"
+msgstr "Scegli quali attributi mostrare"
 
-msgid "set attributes order"
-msgstr "imposta ordine degli attributi"
+msgid "Set attributes order"
+msgstr "Imposta ordine degli attributi"
 
-msgid "set attributes aliases"
-msgstr "imposta gli pseudonimi degli attributi"
+msgid "Set attributes aliases"
+msgstr "Imposta gli pseudonimi degli attributi"
 
 msgid "organization"
 msgstr "organizzazione"
@@ -374,8 +401,14 @@ msgstr "Mostra Fatture"
 msgid "Last"
 msgstr "Ultimo"
 
+msgid "last"
+msgstr "ultimo"
+
 msgid "First"
 msgstr "Primo"
+
+msgid "first"
+msgstr "primo"
 
 msgid "Show Inventory Items"
 msgstr "Mostra Pezzi a Magazzino"
@@ -641,8 +674,8 @@ msgstr "Nome dell'organizzazione"
 msgid "Organization type like INC LLC SPA"
 msgstr "Tipo di organizzazione come INC LLC SPA"
 
-msgid "Business category"
-msgstr "Categoria lavorativa"
+msgid "business category"
+msgstr "categoria lavorativa"
 
 msgid "Describes the business activities, like production, repair, sales"
 msgstr "Descrive le attivitá lavorative, es. produzione, riparazione, vendita"
@@ -869,8 +902,17 @@ msgstr "si"
 msgid "no"
 msgstr "no"
 
+msgid "category"
+msgstr "categoria"
+
 msgid "Category"
 msgstr "Categoria"
+
+msgid "Categories"
+msgstr "Categorie"
+
+msgid "categories"
+msgstr "categorie"
 
 msgid "Facebook Page"
 msgstr "Pagina Facebook"
@@ -889,3 +931,125 @@ msgstr "Accetta Comunicazioni"
 
 msgid "Fixed a bug in MCBSB contact editor preventing to update contacts in some situations"
 msgstr "Sistemato un baco nell'editor dei contatti di MCBSB che impediva l'aggiornamento dei dati in alcune situazioni"
+
+msgid "Show all people"
+msgstr "Mostra tutte le persone"
+
+msgid "Show all organizations"
+msgstr "Mostra tutte le organizzazioni"
+
+msgid "Data"
+msgstr "Dati"
+
+msgid "Summary"
+msgstr "Sommario"
+
+msgid "If you add a description for this contact then it will be displayed here"
+msgstr "Se aggiungi una descrizione a questo contatto allora verrá mostrata qui"
+
+msgid "on "
+msgstr "il "
+
+msgid "preferred language"
+msgstr "lingua preferita"
+
+msgid "Show by location"
+msgstr "Mostra per sede"
+
+msgid "Actions panel"
+msgstr "Pannello azioni"
+
+msgid "Your profile"
+msgstr "Tuo profilo"
+
+msgid "All people"
+msgstr "Tutte le persone"
+
+msgid "All organizations"
+msgstr "Tutte le organizzazioni"
+
+msgid "for"
+msgstr "per"
+
+msgid "People"
+msgstr "Persone"
+
+msgid "Orgs"
+msgstr "Org."
+
+msgid "Total"
+msgstr "Totale"
+
+msgid "See on map"
+msgstr "Guarda la mappa"
+
+msgid "showing"
+msgstr "mostro"
+
+msgid "on total of"
+msgstr "su un totale di"
+
+msgid "organization phone"
+msgstr "telefono org."
+
+msgid "organization fax"
+msgstr "fax org."
+
+msgid "address"
+msgstr "via / p.za"
+
+msgid "Organizations"
+msgstr "Organizzazioni"
+
+msgid "Info"
+msgstr "Info"
+
+msgid "Default language"
+msgstr "Lingua preimpostata"
+
+msgid "Date format"
+msgstr "Formato data"
+
+msgid "Results per page"
+msgstr "Risultati per pagina"
+
+msgid "Database backup"
+msgstr "Backup database"
+
+msgid "Run"
+msgstr "Esegui"
+
+msgid "Currency symbol"
+msgstr "Simbolo valuta"
+
+msgid "Currency symbol placement"
+msgstr "Posizionamento valuta"
+
+msgid "Decimal symbol"
+msgstr "Simbolo decimale"
+
+msgid "Thousands separator"
+msgstr "Separatore delle migliaia"
+
+msgid "Save settings"
+msgstr "Salva impostazioni"
+
+msgid "Application"
+msgstr "Appliacazione"
+
+msgid "Person"
+msgstr "Persona"
+
+msgid "State or province"
+msgstr "Provincia o regione"
+
+msgid "Phone number"
+msgstr "Numero di telefono"
+
+msgid "The object"
+msgstr "L'oggetto"
+
+msgid "can have some attributes prefilled (totally or partially) so that every newly created contact will have the values specified in this form"
+msgstr "puó avere alcuni attributi precompilati (totalmente o parzialmente) in modo che ogni nuovo contatto avrá i valori specificati in questo form"
+
+ 

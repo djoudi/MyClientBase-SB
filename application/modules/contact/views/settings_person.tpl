@@ -70,8 +70,7 @@
 	</pre>
 	*}
 	<p style="padding-bottom: 10px;">
-		The object Person can have some attributes prefilled (totally or partially) so that every newly created contact will have the values
-		specified in this form.
+		{t}The object{/t} {t}Person{/t} {t}can have some attributes prefilled (totally or partially) so that every newly created contact will have the values specified in this form{/t}.
 	</p>
 	<form name="form_person_default_values" style="margin-bottom: 10px;">
 		<div class="box settings" style="float: right; width: 48%; padding-bottom: 5px; margin-bottom: 5px;">
@@ -132,17 +131,17 @@
 <div id="person_accordion">	
 {* persons accordion items *}
 	{$obj = "{t}person{/t}"}
-	<h3 class="pva"><a href="#"><span style="font-size: 16px;">{$obj|capitalize}</span>: {t}set visible attributes{/t}</a></h3>
+	<h3 class="pva"><a href="#">{t}Set visible attributes{/t}</a></h3>
 	<div id="person_visible_accordion">	
 		{$settings_person}
 	</div>
 	
-	<h3 class="poa"><a href="#"><span style="font-size: 16px;">{$obj|capitalize}</span>: {t}set attributes order{/t}</a></h3>
+	<h3 class="poa"><a href="#">{t}Set attributes order{/t}</a></h3>
 	<div id="person_order_accordion">
 		{$settings_person_order}
 	</div>
 
-	<h3 class="paa"><a href="#"><span style="font-size: 16px;">{$obj|capitalize}</span>: {t}set attributes aliases{/t}</a></h3>
+	<h3 class="paa"><a href="#">{t}Set attributes aliases{/t}</a></h3>
 	<div id="person_aliases_accordion">
 		{$settings_person_aliases}
 	</div>
