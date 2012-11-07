@@ -1,8 +1,10 @@
 {assign header_file "{$fcpath}application/views/header.tpl"}
+{assign top_file "{$fcpath}application/views/top.tpl"}
 {assign top_menu_file "{$fcpath}application/views/top_menu.tpl"}
 {assign footer_file "{$fcpath}application/views/footer.tpl"}
 
 {include file="$header_file"}
+{include file="$top_file"}
 {include file="$top_menu_file"}
 
 {literal}
@@ -23,7 +25,6 @@
 		$('#search-box').focus();
 
 		$('#button_search').click(function(event) {
-		    $form = $(this).parent("form");
 		    $('#form_contact_search').submit();
 		});
 
@@ -37,8 +38,9 @@
 </script>
 {/literal}
 
+
 <style media="screen" type="text/css">
-	#notification_area {
+	#search_notification_area {
 		min-height: 52px;
 		max-height: 52px;
 		padding: 0px;
@@ -49,9 +51,8 @@
 
 {assign 'people' $contacts.people}
 {assign 'orgs' $contacts.orgs}
-{assign 'total_number' $contacts.total_number}
 
-	{* left column *}
+{* left column *}
 <div class="grid_9">
 
 	<div class="box contact_search">
@@ -62,110 +63,36 @@
 		</form>
 	</div>
 	
+	{if $searched_string != ""}
 	<div class="contact_search_result box">
-	{if count($people) gt 0}
-
-		<h4>{"{t}people{/t}"|capitalize}</h4>
-		
-		<table class="contact_search_result">
-		<tr class="header">
-			{* <td class="counter" style="background-color: black;">&nbsp;</td> *}
-			<th><a href="">{t}Name{/t}</a></th>
-			<th>{t}City{/t}</th>
-			<th>{t}Telephone{/t}</th>
-			<th>{t}Mobile{/t}</th>
-		</tr>
-		{foreach $people as $key => $person}
-	    <tr>
-	    	{assign 'url' value="/contact/details/uid/{$person->uid}"}
-	    	{* <td class="counter">{counter}</td> *}
-	    	<td>{a url=$url text=$person->cn|ucwords|truncate:25:" [...]":true}</td>
-			<td>{$person->mozillaHomeLocalityName|truncate:24:" [...]":true|default:'-'}</td>
-			<td>{$person->homePhone|default:'-'}</td>
-			<td>{$person->mobile|default:'-'}</td>		
-	    </tr> 
-	    {/foreach}
-	    </table>
-
-	{else}
-		{if $made_search}
-		<p>{t}No person found{/t}</p>
-		{/if}
-	{/if}
+		{include 'people_table_small.tpl'}
 	</div>
-	
+	{/if}
 </div>
 
 {* central column *}
 <div class="grid_9">
-
-	<div class="box"  id="notification_area">
-	<p>
-		{if $searched_string != ""}
-			{t}last search{/t} "{$searched_string}" {t}produced{/t} {$total_number|default:0} {t}results{/t}
-		{/if}
-		{*<pre>{$system_messages|print_r}</pre>*}
-	</p>
+	
+	<div class="box" style="min-height: 52px;">
+		<p style="text-align: center; padding-top: 18px;">
+		{t}People{/t}: {$people_total_number}
+		<span style="padding-left: 30px;">{t}Organizations{/t}: {$organizations_total_number}</span>
+		<span style="padding-left: 30px;">{t}Total{/t}: {($people_total_number + $organizations_total_number)}</span>
+		</p>
 	</div>
 	
+	{if $searched_string != ""}
 	<div class="contact_search_result box">
-	{if count($orgs) gt 0}    
-	
-		<h4>{"{t}organizations{/t}"|capitalize}</h4>
-	
-		<table class="contact_search_result">
-		
-		<tr class="header">
-			{* <td class="counter" style="background-color: black;">&nbsp;</td> *}
-			<th>{t}Name{/t}</th>
-			<th>{t}City{/t}</th>
-			<th>{t}Telephone{/t}</th>
-			<th>{t}Mobile{/t}</th>
-		</tr>
-			
-		{foreach $orgs as $key => $organization}
-	    <tr>
-	    	{assign 'url' value="/contact/details/oid/{$organization->oid}"}
-	    	{* <td class="counter">{counter}</td> *}
-	    	<td>{a url=$url text=$organization->o|ucwords|truncate:30:" [...]":true}</td>
-	    	<td>{$organization->l|truncate:24:" [...]":true|default:'-'}</td>
-	    	<td>{$organization->telephoneNumber|default:'-'}</td>
-	    	<td>{$organization->oMobile|default:'-'}</td>
-	    </tr>
-	    {/foreach}
-	    
-	    </table>    
-	{else}
-		{if $made_search}
-		<p>{t}No organization found{/t}</p>
-		{/if}
-	{/if}
+		{include 'orgs_table_small.tpl'}
 	</div>
-	
+	{/if}
 </div>
 
 {* right column *}
 <div class="grid_6">
-	<div class="box">{$actions_panel}</div>
+	<div class="box" style="padding-left: 5px;">{include 'actions_panel.tpl'}</div>
 </div>	
 
-{*
-<div class="grid_5">
-	<div class="box right_side" style="max-height: 50px; overflow: auto;">
-		<h3>{t}Colleagues{/t}</h3>
-		<ul>
-		{foreach $colleagues as $key => $colleague}
-			<li>{$colleague['name']}</li>
-		{/foreach}
-		</ul>
-	</div>
-</div>
-*}
-
-<div class="prefix_7 grid_5" style="text-align: center;">		
-	{if $pager != ""}
-	<div id="pagination">{$pager}</div>
-	{/if}
-</div>
+{include 'pager.tpl'}
 
 {include file="$footer_file"}

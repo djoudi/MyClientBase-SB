@@ -366,8 +366,6 @@ $config['proxy_ips'] = '';
 |
 */
 $config['modules_locations'] = array(	
-// 		APPPATH.'modules_core/' => '../modules_core/',     //TODO delme
-// 		APPPATH.'modules_custom/' => '../modules_custom/'  //TODO delme
 		APPPATH.'modules/' => '../modules/'
 );
 

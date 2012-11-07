@@ -9,15 +9,14 @@ class MY_Loader extends MX_Loader {
 		parent::__construct();	
 	}
 	
-	public function view($view, array $vars = array(), $return = FALSE, $template_engine = 'php', $module_path = '')
+	public function view($view, array $vars = array(), $return = false, $template_engine = 'php', $module_path = '')
 	{
-		//$a = $this->mcbsb;
-		
 		$vars = $this->add_default_vars($vars);
 		
 		if($template_engine == 'smarty'){
 			
-			$html = $this->plenty_parser->parse($view, $vars, $return, 'smarty', $module_path);
+			
+			$html = $this->plenty_parser->parse($view, $vars, $return, $template_engine, $module_path);
 			
 			if($return) return $html;
 			
@@ -31,19 +30,24 @@ class MY_Loader extends MX_Loader {
 	private function add_default_vars(array $vars = array()){
 		
 		$mcbsb_settings = $this->mcbsb->settings->get_all();
-		$a = $this->mcbsb;
 		
 		//TODO maybe including all the settings is too much. We'll see
-		//$vars = array_merge($vars, $mcbsb_settings);
+		$vars = array_merge($vars, $mcbsb_settings);
 		
 		$vars['mcbsb_version'] = $this->mcbsb->_version;
-		$vars['language'] = $this->mcbsb->_language;
 		$vars['environment'] = ENVIRONMENT;  //development or production
+		
+		$vars['language'] = $this->mcbsb->_language;
+		
 		$vars['fcpath'] = FCPATH;
+		$vars['base_url'] = base_url();
 		$vars['site_url'] = site_url($this->uri->uri_string());
 		
+		$vars['enabled_modules'] = $this->mcbsb->_modules['enabled'];
 		$vars['top_menu'] = $this->mcbsb->_modules['top_menu'];
-		$vars['system_messages'] = $this->mcbsb->system_messages->all;
+		$vars['system_messages'] = $this->mcbsb->system_messages->get_all();
+		
+		//FIXME
 		$vars['colleagues'] = array();
 		$vars['colleagues'][0]['name'] = 'pippo';
 		$vars['colleagues'][1]['name'] = 'pluto';		

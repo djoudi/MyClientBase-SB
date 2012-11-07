@@ -303,6 +303,10 @@ class Mdl_Location extends MY_Model {
 		//sets the contactengine key which allows to set the correct baseDN
     	if($this->config->item('ce_key')) $input['ce_key'] = $this->config->item('ce_key');
 		
+    	//automatically add the author of the modification
+    	$input['entryUpdatedBy'] = $this->mcbsb->user->first_name.' '.$this->mcbsb->user->last_name;
+    	$input['entryUpdateDate'] = date("Y-m-d");    	
+    	
 		$this->rest->initialize(array('server' => $this->config->item('rest_server').'/exposeObj/'.$this->objName));		
 
 		$this->crr->importCeReturnObject($this->rest->post('update', $input, 'serialize'));
@@ -322,6 +326,10 @@ class Mdl_Location extends MY_Model {
 		//sets the contactengine key which allows to set the correct baseDN
     	if($this->config->item('ce_key')) $input['ce_key'] = $this->config->item('ce_key');
 		
+    	//automatically add the author of the creation
+    	$input['entryCreatedBy'] = $this->mcbsb->user->first_name.' '.$this->mcbsb->user->last_name;
+    	$input['entryCreationDate'] = date("Y-m-d");    	
+    	
 		$this->rest->initialize(array('server' => $this->config->item('rest_server').'/exposeObj/'.$this->objName));
 		
 		$this->crr->importCeReturnObject($this->rest->post('create', $input, 'serialize'));

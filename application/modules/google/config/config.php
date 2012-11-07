@@ -1,7 +1,7 @@
 <?php (defined('BASEPATH')) OR exit('No direct script access allowed');
 
 $config['module'] = array(
-	'module_name'	=>	$this->lang->line('google'),
+	'module_name'	=>	'Google',
 	'module_path'	=>	'google',
 	'module_order'	=>	2,
 	'module_top_menu'		=>	false,		

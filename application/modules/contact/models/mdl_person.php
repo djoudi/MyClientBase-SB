@@ -55,6 +55,87 @@ class Mdl_Person extends Mdl_Contact {
     	return parent::get($input, $return_rest);
     }   
      
+
+    /**
+     * Returns the total number of people stored in the Contact Engine LDAP database
+     * 
+     * @access		public
+     * @param		none
+     * @return		integer	
+     * @author 		Damiano Venturin
+     * @since		Nov 2, 2012
+     */     
+    public function count_all(){
+    	 
+    	$input = array('filter' => '(objectClass=dueviperson)');
+    	     	 
+    	return parent::count($input);
+    }
+    
+    public function get_default_values(){
+    	$this->load->config('person');
+    	
+    	if(count($this->mandatoryAttributes) == 0) $this->getMandatoryAttributes();
+    	
+    	if(!$default_values = $this->config->item('person_default_values')){
+    		$default_values = array();	
+    	}
+    	
+    	if(!is_array($default_values)) $default_values = array();
+    	
+    	foreach ($this->mandatoryAttributes as $key => $attribute) {
+    		if(!isset($default_values[$attribute]) || empty($default_values[$attribute])){
+	    		switch ($attribute) {
+	    			case 'enabled':
+	    				$default_value = 'TRUE';
+	    			break;
+	    	
+	    			case 'userPassword':
+	    				$default_value = uniqid();
+	    			break;
+	    			
+	    			case 'uid':
+	    				$default_value = null;
+	    			break;
+	    	
+	    			default:
+	    				$default_value = 'unknown';
+	    			break;
+	    		}
+	    		$default_values[$attribute] = $default_value;
+    		}
+    	}
+    		
+    	return $default_values;
+    }
+    
+    public function set_default_values(){
+    	
+    	if(count($this->mandatoryAttributes) == 0) $this->getMandatoryAttributes();
+    	
+    	foreach ($this->get_default_values() as $attribute => $value){
+    		if(empty($this->$attribute)) $this->$attribute = $value;
+    	}
+    	
+    	if(count($this->properties) == 0) $this->getProperties();
+    	foreach ($this->properties as $attribute => $properties) {
+    		switch ($attribute) {    				     				 
+    			case 'cn':
+    				$this->$attribute = $this->sn.' '.$this->givenName;
+    			break;
+    				 
+    			case 'displayName':
+    				$this->$attribute = $this->givenName.' '.$this->sn;
+    			break;
+    				 
+    			case 'fileAs':
+    				$this->$attribute = $this->sn.' '.$this->givenName;
+    			break;
+
+    		}
+    	}    	
+    }
+     
     public function prepareShow()
     {
     	$this->load->config('person');
@@ -88,83 +169,7 @@ class Mdl_Person extends Mdl_Contact {
     	
     	return true;
     }
-    
-    
-    public function validateObj($ignore_uid = false)
-    {
-    	
-    	if( !$ignore_uid && (!isset($this->uid) || empty($this->uid))) return false;
-    	
-    	//rules
-		if(empty($this->sn)) return false;
-    	if(empty($this->givenName)) return false;
-    	 
-    	if($this->getMandatoryAttributes())
-    	{
-    		foreach ($this->mandatoryAttributes as $mandatoryAttribute) {
-    	
-    			if($ignore_uid && $mandatoryAttribute == 'uid') continue; //this is the case for the creation of a new person
-    				
-    			//sets default values for mandatory fields
-    			if(empty($this->$mandatoryAttribute)) {
-    				switch ($mandatoryAttribute) {
-    					case 'entryCreatedBy':
-    						$this->$mandatoryAttribute = $this->session->userdata('last_name').' '.$this->session->userdata('first_name');
-    					break;
-
-    					case 'entryCreationDate':
-    						$this->$mandatoryAttribute = date('Y-m-d');
-    					break;    					
-    							
-    					case 'entryUpdatedBy':
-    						$this->$mandatoryAttribute = $this->session->userdata('last_name').' '.$this->session->userdata('first_name');
-    					break;
-
-    					case 'entryUpdateDate':
-    						$this->$mandatoryAttribute = date('Y-m-d');
-    					break;
-    						    					
-    					case 'category':
-    						$this->$mandatoryAttribute = 'contact';
-    					break;
-    						 
-    					case 'cn':
-    						$this->$mandatoryAttribute = $this->sn.' '.$this->givenName;
-    					break;
-    		    	
-    					case 'displayName':
-    						$this->$mandatoryAttribute = $this->givenName.' '.$this->sn;
-    					break;
-    	
-    					case 'fileAs':
-    						$this->$mandatoryAttribute = $this->sn.' '.$this->givenName;
-    					break;
-    	
-    					case 'userPassword':
-    						$this->$mandatoryAttribute = 'password'; //FIXME
-    					break;
-    	
-    					case 'enabled':
-    						if($this->enabled == 'TRUE') {
-    							$this->$mandatoryAttribute = 'TRUE';
-    						} else {
-    							$this->$mandatoryAttribute = 'FALSE';
-    						}
-    					break;
-    							
-    					default:
-    						if(!isset($left)) $left = array();
-    						$left[] = $mandatoryAttribute;
-    					break;
-    				}
-    			}
-    		}
-    	}
-    	
-    	if(isset($left)) return $left; 
-    	
-    	return true;
-    }   
+      
 
     public function save($with_form = true)
     {

@@ -12,6 +12,9 @@ tr{
 	line-height: 30px;
 }
 
+tr:hover{
+	background-color: #f3f3f3;
+}
 
 td,th {
 	padding-left: 3px;
@@ -27,7 +30,7 @@ th{
 }
 
 tr.header{
-	background-color: #e8e8e8;
+	background-color: #f3f3f3;
 }
 
 table.contact_search_result{

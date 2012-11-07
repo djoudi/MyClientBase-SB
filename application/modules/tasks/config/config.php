@@ -1,7 +1,7 @@
 <?php (defined('BASEPATH')) OR exit('No direct script access allowed');
 
 $config['module'] = array(
-	'module_path'			=>	'tasks',
+	'module_path'			=>	'Tasks',
 	'module_name'			=>	'Tasks',
 	'module_description'	=>	'A simple task manager which allows task based invoice creation.',
 	'module_author'			=>	'Damiano Venturin',

@@ -2,7 +2,7 @@
 
 class Login extends CI_Controller {
 
-    function __construct() {
+    public function __construct() {
 
         parent::__construct();
 
@@ -25,21 +25,22 @@ class Login extends CI_Controller {
     
     public function index() {
     	
-    	//TODO should I add addslashes?
     	$this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[6]|max_length[50]|valid_email');
     	$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]|max_length[50]');
     	$this->form_validation->set_rules('captcha', 'Captcha', 'trim|required|min_length[5]|max_length[5]|callback_check_captcha');
 
+    	$data = array();
     	
     	if ($this->form_validation->run() == TRUE)
     	{
        		if($this->mcbsb->user->login($this->input->post('username'),$this->input->post('password'),true))	{
        			redirect('/contact');
-       		} else {
-       			//TODO set an error    				
-       		}
+       		} 
     	}
     	
+    	//set an error
+    	if($this->input->post('username') || $this->input->post('password')) $data['errors'] = 'Wrong credentials';
+    	   
     	//adds captcha
     	$this->load->helper('captcha');
     	$captcha = rand_string(5);
@@ -57,19 +58,17 @@ class Login extends CI_Controller {
     			'word'	 => $captcha,
     			'img_path'	 => './captcha/',
     			'img_url'	 => base_url() . 'captcha/',
-    			'img_width'	 => '150',
+    			'img_width'	 => '177',
     			'img_height' => 45,
     			'expiration' => 7200
     	);
     	 
-    	$data = array();
+    	//restores previously added values
     	$data['form'] = array(
     						'username' => set_value('username'),
     						'password' => set_value('password')
     	);
     	
-    	//TODO this should go in mcbsb system messages
-    	$data['errors'] = $this->form_validation->get_validation_errors();
     	$data['captcha'] = create_captcha($vals);
     	     	 
     	$this->load->view('login.tpl', $data, false, 'smarty');

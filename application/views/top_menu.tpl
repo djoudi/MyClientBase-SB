@@ -1,12 +1,17 @@
-
-<div class="grid_24"> 	
+<div class="grid_24" style="margin-top: 10px;"> 	
 	<div class="top_menu">
+		
 		<ul class="top_menu" id="navigation">
    			{foreach $top_menu as $key => $item}
-   			{* TODO add class="selected" to the selected tab *}
-   				<li class="top_menu b_light_blue"><a class="top_menu" href="{$item['item_link']}">{t}{$item['item_name']}{/t}</a></li>
+	   			
+   				<a class="top_menu" href="{$item['item_link']}">
+   					{if $item['item_selected']}
+   						<li class="top_menu">{t}{$item['item_name']}{/t}</li>
+   					{else}
+   						<li class="top_menu b_light_blue">{t}{$item['item_name']}{/t}</li>
+   					{/if}
+   				</a>
    			{/foreach}
-			<span style="float: right; margin-right: 5px;">MCB-SB {$mcbsb_version}</span>
 		</ul>
 	</div>
 </div>

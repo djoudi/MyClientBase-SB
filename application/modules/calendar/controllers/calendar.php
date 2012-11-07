@@ -25,7 +25,6 @@ class Calendar extends Admin_Controller {
 	function index() {
 		$data = array();
 		$data['site_url'] = site_url($this->uri->uri_string());
-		$data['base_url'] = base_url();
 		$data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'invoices');
 		$this->load->view('index',$data);
 

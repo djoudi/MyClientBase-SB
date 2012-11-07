@@ -120,8 +120,6 @@ $autoload['model'] = array('mcbsb');
 |	$autoload['sparks'] = array('example-spark/1.0.0');
 |
 */
-// TODO this is not working properly
-//$autoload['sparks'] = array('restclient/2.0.0');
 
 /* End of file autoload.php */
 /* Location: ./application/config/autoload.php */

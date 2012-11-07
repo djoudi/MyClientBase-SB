@@ -58,6 +58,22 @@ class Mdl_Organization extends Mdl_Contact {
     	return parent::get($input, $return_rest);
     }    
     
+    /**
+     * Returns the total number of organizations stored in the Contact Engine LDAP database
+     *
+     * @access		public
+     * @param		none
+     * @return		integer
+     * @author 		Damiano Venturin
+     * @since		Nov 2, 2012
+     */
+    public function count_all(){
+    
+    	$input = array('filter' => '(objectClass=dueviorganization)');
+    
+    	return parent::count($input);
+    }    
+    
     protected function hasProperAddress()
     {
     	//some very basic validation of an address. If the address is validated we can try to save the "Residence" location.
@@ -85,57 +101,6 @@ class Mdl_Organization extends Mdl_Contact {
     }
     
     
-    public function validateObj($ignore_oid = false)
-    {
-    	
-    	if( !$ignore_oid && (!isset($this->oid) || empty($this->oid))) return false;
-    	
-    	//rules
-		if(empty($this->o)) return false;
-    	 
-    	if($this->getMandatoryAttributes())
-    	{
-    		foreach ($this->mandatoryAttributes as $mandatoryAttribute) {
-    	
-    			if($ignore_oid && $mandatoryAttribute == 'oid') continue; //this is the case for the creation of a new organization
-    				
-    			//sets default values for mandatory fields
-    			if(empty($this->$mandatoryAttribute)) {
-    				switch ($mandatoryAttribute) {
-    					case 'entryCreatedBy':
-    						$this->$mandatoryAttribute = $this->session->userdata('last_name').' '.$this->session->userdata('first_name');
-    					break;
-
-    					case 'entryCreationDate':
-    						$this->$mandatoryAttribute = date('Y-m-d');
-    					break;    					
-    							
-    					case 'entryUpdatedBy':
-    						$this->$mandatoryAttribute = $this->session->userdata('last_name').' '.$this->session->userdata('first_name');
-    					break;
-
-    					case 'entryUpdateDate':
-    						$this->$mandatoryAttribute = date('Y-m-d');
-    					break;
-
-    					case 'enabled':
-    						$this->$mandatoryAttribute = 'TRUE';  //FIXME
-    					break;
-    					    					
-    					default:
-    						if(!isset($left)) $left = array();
-    						$left[] = $mandatoryAttribute;
-    					break;
-    				}
-    			}
-    		}
-    	}
-    	
-    	if(isset($left)) return $left; 
-    	
-    	return true;
-    }   
-    
     public function save($with_form = true)
     {
     	$creation = empty($this->oid) ? true : false; //if uid is not set than it's a creation otherwise an update
@@ -149,7 +114,51 @@ class Mdl_Organization extends Mdl_Contact {
     	}
     	
     	return false;
-    }    
+    }   
+
+    public function get_default_values(){
+    	$this->load->config('organization');
+    	 
+    	if(count($this->mandatoryAttributes) == 0) $this->getMandatoryAttributes();
+    	 
+    	if(!$default_values = $this->config->item('organization_default_values')){
+    		$default_values = array();
+    	}
+    	 
+    	if(!is_array($default_values)) $default_values = array();
+    	 
+    	foreach ($this->mandatoryAttributes as $key => $attribute) {
+    		if(!isset($default_values[$attribute]) || empty($default_values[$attribute])){
+    			switch ($attribute) {
+    				case 'enabled':
+    					$default_value = 'TRUE';
+    				break;
+    
+    				case 'oid':
+    					$default_value = null;
+    				break;
+    
+    				default:
+    					$default_value = 'unknown';
+    				break;
+    			}
+    			$default_values[$attribute] = $default_value;
+    		}
+    	}
+    
+    	return $default_values;
+    }
+    
+    public function set_default_values(){
+    	 
+    	if(count($this->mandatoryAttributes) == 0) $this->getMandatoryAttributes();
+    	 
+    	foreach ($this->get_default_values() as $attribute => $value){
+    		if(empty($this->$attribute)) $this->$attribute = $value;
+    	}
+
+    }
+    
 }
 
 ?>

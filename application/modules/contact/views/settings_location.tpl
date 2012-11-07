@@ -1,98 +1,63 @@
+{literal}
 <script type="text/javascript">
-	$(function() {        		
-		$("#LocationAvailableAttributes li").draggable({
-			axis: "x",
-			cursor: 'move',
-			distance: 30,
-			containment: 'document',
-			grid: [400, 0],
-			opacity: 0.6,
-			revert: true,
-			revertDuration: 300,
-			delay: 1,			 
-			stop: function(event, ui){	
-				var input = '&item=' + $(this).attr('id') + '&action=location_addToVisible'; 
-				$.post("/index.php/contact/update_settings", input, function(theResponse){
-        			$("#location_accordion").html(theResponse);  
-        		});            		 	
-            },
-		}).disableSelection();
+$(document).ready(function() {
+		var url = "/contact/contact_settings/update/";
 
-		$("#LocationVisibleAttributes li").draggable({
-			axis: "x",
-			cursor: 'move',
-			distance: 30,
-			containment: 'document',
-			grid: [400, 0],
-			opacity: 0.6,
-			revert: true,
-			revertDuration: 300,
-			delay: 1,			 		 
-			stop: function(event, ui){	
-        		var input = '&item=' + $(this).attr('id') + '&action=location_removeFromVisible'; 
-        		$.post("/index.php/contact/update_settings", input, function(theResponse){
-        			$("#location_accordion").html(theResponse); 
-        		});                		 	        		 		             	
-        	},
-		}).disableSelection();                	     
+		//refreshes the content of div #location_visible_accordion everytime the accordion is clicked
+		$('#location_accordion').accordion({}).find('.lva').click(		
+			function(ev){
+				//alert('refresh');
+				ev.preventDefault();
+			    ev.stopPropagation();
+				var input = '&action=location_visible'; 
+				$.post("/contact/contact_settings/update/", input, function(theResponse){
+					$("#location_visible_accordion").html(theResponse);
+				});
+        });
+
+		//refreshes the content of div #location_order_accordion everytime the accordion is clicked
+		$('#location_accordion').accordion({}).find('.loa').click(
+			function(ev){
+				ev.preventDefault();
+			    ev.stopPropagation();
+				var input = '&action=location_sort'; 
+				$.post("/contact/contact_settings/update/", input, function(theResponse){
+					$("#location_order_accordion").html(theResponse);
+				});          
+        });     
+
+		//refreshes the content of div #person_aliases_accordion everytime the accordion is clicked
+		$('#location_accordion').accordion({}).find('.laa').click(
+			function(ev){
+				ev.preventDefault();
+			    ev.stopPropagation();
+				var input = '&action=location_aliases'; 
+				$.post("/contact/contact_settings/update/", input, function(theResponse){
+					$("#location_aliases_accordion").html(theResponse);
+				});          
+        });  
+
 	});
-</script>  
+</script>
+{/literal}
 
-<p style="background-color: #fffdd0; border: 1px dotted gray;">{t}Drag attributes from the left to the right to make them visible or from the right to the left to hide them{/t}. 
-{t}All the changes are automatically saved{/t}.
-</p>
-<div id="LocationVisibleAttributes" style="float:right; display:inline; width: 48%; border: 1px solid gray; padding: 3px;">
-	<h3>{t}Visible Attributes{/t}<span style="font-size: 13px;"> ({t}found{/t} {$location_visible_attributes|@count})</span></h3>
-	<ul id="LocationVisibleAttributes" class="connectedSortable">
-	{foreach $location_visible_attributes as $key => $attribute_name}
-		<li id="LocationVisibleAttributes_{$attribute_name}" style="margin-top: 3px; padding-bottom: 1px; margin-bottom: 5px; margin-left: 3px; margin-right: 3px; background-color: #FFF; width: 390px; border: 1px solid #e8e8e8;">
-			{if $location_all_attributes[$attribute_name]['required'] == 1}
-				{$color="red"}
-			{else}
-				{$color="black"}
-			{/if}
-			
-			<p style="color:{$color}; margin-bottom: 4px; margin-left: 5px;"><b>{$attribute_name}</b>
-			{if isset($location_aliases) and isset($attribute_name) and isset($location_aliases.$attribute_name)}
-				<span style="font-size: 13px; color: green"> {t}Alias{/t}: {$location_aliases.$attribute_name}</span>
-			{/if}	
-			</p>			 			
-			
-			<p style="margin-left: 15px; margin-bottom: 0px;"><i>
-			{if $location_all_attributes[$attribute_name]['desc'] != ""}
-				{t}{$location_all_attributes[$attribute_name]['desc']}{/t}
-			{else}
-				{t}No description available{/t}.
-			{/if}
-			</i></p>
-		</li>
-	{/foreach}		
-	</ul>
-</div>
+<div id="location_accordion">	
 
-<div style="width: 48%; border: 1px solid gray; padding: 3px;">
+{* locations accordion items *}
+	{$obj = "{t}location{/t}"}				
+	<h3 class="lva"><a href="#"><span style="font-size: 16px;">{$obj|capitalize}</span>: {t}set visible attributes{/t}</a></h3>
+	<div id="location_visible_accordion">
+		{* $settings_location *} {* this is necessary only if the accordion is shown open at start *}
+	</div>
 	
-	<h3>{t}{"available attributes"|ucwords}{/t}<span style="font-size: 13px;"> ({t}found{/t} {$location_available_attributes|@count})</span></h3>
-	<ul id="LocationAvailableAttributes" class="connectedSortable">
-	{foreach $location_available_attributes as $attribute_name => $attribute_features}
-		<li id="LocationAvailableAttributes_{$attribute_name}" style="position: relative; margin-top: 3px; padding-bottom: 1px; margin-bottom: 5px; margin-left: 3px; margin-right: 3px; background-color: #FFF; width: 390px; border: 1px solid #e8e8e8;">
-		
-			{if $attribute_features['required'] == 1}
-				{$color="red"}
-			{else}
-				{$color="black"}
-			{/if}
-			
-			<p style="color:{$color}; margin-bottom: 4px; margin-left: 5px;"><b>{$attribute_name}</b></p> 
-			
-			<p style="margin-left: 15px; margin-bottom: 0px;"><i>
-			{if $attribute_features['desc'] != ""}
-				{t}{$attribute_features['desc']}{/t}
-			{else}
-				{t}No description available{/t}.
-			{/if}
-			</i></p>	
-		</li>
-	{/foreach}
-	</ul>
+	<h3 class="loa"><a href="#"><span style="font-size: 16px;">{$obj|capitalize}</span>: {t}set attributes order{/t}</a></h3>
+	<div id="location_order_accordion">
+		{*$settings_location_order*} {* this is necessary only if the accordion is shown open at start *}
+	</div>
+
+	<h3 class="laa"><a href="#"><span style="font-size: 16px;">{$obj|capitalize}</span>: {t}set attributes aliases{/t}</a></h3>
+	<div id="location_aliases_accordion">
+		{*$settings_location_aliases*} {* this is necessary only if the accordion is shown open at start *}
+	</div>
+	
 </div>

@@ -59,8 +59,17 @@ class Module extends Db_Obj
 	}
 	
 	public function read(){
-		if(is_null($this->obj_ID_value)) return false;
-		return parent::read();
+		if(is_null($this->obj_ID_value) && is_null($this->module_name)) return false;
+		
+		if(!is_null($this->obj_ID_value)) return parent::read();
+		
+		$ids = $this->search(array('module_name' => $this->module_name));
+		if(count($ids) == 1) {
+			$this->obj_ID_value = $ids[0];
+			return $this->read();
+		} else {
+			return false;
+		}
 	}
 	
 	public function update(){

@@ -38,21 +38,41 @@ class Mdl_Contacts extends MY_Model {
     		if(empty($params['client_id']))
     		{
 	    		//looking for all contacts
+	    		
+    			//attributes to retrieve
     			$fields = array('cn','o','mail','omail','mobile','oMobile','homePhone','telephoneNumber','labeledURI','oURL');
-    			$input['filter'] = '';
-    			$subsearches = preg_split('/ /', $params['search']);
-    			$count_subsearches = count($subsearches);
-    			foreach ($fields as $field){
-    				if( $count_subsearches == 2 && $field == 'cn'){
-    					//searches for Mario Rossi and Rossi Mario
-    					$input['filter'] .= '('.$field.'=*'.$subsearches[0].' '.$subsearches[1].'*)';
-    					$input['filter'] .= '('.$field.'=*'.$subsearches[1].' '.$subsearches[0].'*)';
-    				} else {
-    					$input['filter'] .= '('.$field.'=*'.$params['search'].'*)';
-    				}
-    				
+    			
+    			//special search: retrieves all people
+    			if($params['search'] == 'all_people') {
+    				//creates the filter
+    				$input['filter'] = '(&(objectClass=dueviperson)(cn=*))';
     			}
-    			$input['filter'] = '(|'.$input['filter'].')';
+    			
+    			//special search: retrieves all the organizations    			
+    			if($params['search'] == 'all_organizations') {
+    				//creates the filter
+    				$input['filter'] = '(&(objectClass=dueviorganization)(o=*))';
+    			}
+    			
+    			//standard search
+    			if(!isset($input['filter'])){
+    				
+    				//creates the filter
+	    			$input['filter'] = '';
+	    			$subsearches = preg_split('/ /', $params['search']);
+	    			$count_subsearches = count($subsearches);
+	    			foreach ($fields as $field){
+	    				if( $count_subsearches == 2 && $field == 'cn'){
+	    					//searches for Mario Rossi and Rossi Mario
+	    					$input['filter'] .= '('.$field.'=*'.$subsearches[0].' '.$subsearches[1].'*)';
+	    					$input['filter'] .= '('.$field.'=*'.$subsearches[1].' '.$subsearches[0].'*)';
+	    				} else {
+	    					$input['filter'] .= '('.$field.'=*'.$params['search'].'*)';
+	    				}
+	    				
+	    			}
+	    			$input['filter'] = '(|'.$input['filter'].')';
+    			}
     		} else {
     			//looking for a single contact but I don't know if it's an organization or a person
     			$input['filter'] = '(|(uid='.$params['client_id'].')(oid='.$params['client_id'].'))';
@@ -67,38 +87,54 @@ class Mdl_Contacts extends MY_Model {
     	if($by_location) {
     		$input['filter'] = '';
     		
-    		if(is_array($params['search']) && !empty($params['search']['city'])) {
+    		if(!is_array($params['search'])) return false;  //TODO this should be wrong
+    		
+    		$filters = array();
+    		
+    		if(!empty($params['search']['city'])) {
     			$filter = '';
     			$fields = array('mozillaHomeLocalityName','l');
     			foreach ($fields as $field){
+    				//$filter .= '('.$field.'~='.$params['search']['city'].')';
     				$filter .= '('.$field.'=*'.$params['search']['city'].'*)';
     			}
-    			$filter1 = '(|'.$filter.')';
+    			$filters['city'] = '(|'.$filter.')';
     		}
     		
-    		if(is_array($params['search']) && !empty($params['search']['state'])) {
+    		if(!empty($params['search']['state'])) {
     			$filter = '';
     			$fields = array('mozillaHomeState','st');
     			foreach ($fields as $field){
     				$filter .= '('.$field.'=*'.$params['search']['state'].'*)';
     			}
-    			$filter2 = '(|'.$filter.')';
+    			$filters['state'] = '(|'.$filter.')';
     		}
-    		
-    		if(isset($filter1) && isset($filter2)) {
-    			$input['filter'] = '(&'.$filter1.$filter2.')';
+
+    		if(!empty($params['search']['country'])) {
+    			$filter = '';
+    			$fields = array('mozillaHomeCountryName','c');
+    			foreach ($fields as $field){
+    				$filter .= '('.$field.'=*'.$params['search']['country'].'*)';
+    			}
+    			$filters['country'] = '(|'.$filter.')';
+    		}
+
+    		if(count($filters) > 1) {
+    			$input['filter'] = '(&'.implode('', $filters).')';
     		} else {
-    			if(isset($filter1)) $input['filter']  = $filter1;
-    			if(isset($filter2)) $input['filter']  = $filter2;
+    			$input['filter'] = implode('', $filters);
     		}
-    	}
+       	}
     	
     	//defaults
     	isset($params['method']) ? $input['method'] = $params['method'] : $input['method'] = 'POST';
     	isset($params['sort_by']) ? $input['sort_by'] = $params['sort_by'] : $input['sort_by'] = array('sn');
+    	
     	isset($params['flow_order']) ? $input['flow_order'] = $params['flow_order'] : $input['flow_order'] = 'asc';
     	isset($params['wanted_page']) ? $input['wanted_page'] = $params['wanted_page'] : $input['wanted_page'] = '0';
-    	isset($params['items_page']) ? $input['items_page'] = $params['items_page'] :$input['items_page'] = '12';
+    	if(isset($params['paginate']) && $params['paginate']) {
+    		isset($params['items_page']) ? $input['items_page'] = $params['items_page'] :$input['items_page'] = '12';
+    	}
 
 		$rest_return = $this->contact->get($input);
     	
@@ -106,7 +142,7 @@ class Mdl_Contacts extends MY_Model {
     	$rest_info = $rest_return['status'];										
     	
     	//pagination
-    	if(isset($rest_info['results_number'])) {
+    	if(isset($rest_info['results_number']) && isset($input['items_page'])) {
     		$tmp = $rest_info['results_pages'] * $input['items_page'];
     		if($rest_info['results_number'] > ($tmp))
     		{
@@ -120,17 +156,17 @@ class Mdl_Contacts extends MY_Model {
     		$params['total_rows'] = 0;
     	}
     		
-    	$this->_prep_pagination($params);
+    	if(isset($params['paginate']) && $params['paginate']) {    	
+    		$this->_prep_pagination($params);
+    	}
     	
     	//prepare return for output
     	$people = array();
     	$orgs = array();
     	$num = count($rest_return['data']);
     	
-    	//TODO what happens when I get 0 contacts? or went I get an error?
     	if (is_array($rest_return['data'])) {
 	    	foreach ($rest_return['data'] as $item => $contact) {
-	    		//$objectClass = explode(',',$this->getReturnValue('objectClass', $contact));
 	    		if(in_array('dueviPerson', $contact['objectClass']))
 	    		{
 	    			//It's a person
@@ -274,8 +310,17 @@ class Mdl_Contacts extends MY_Model {
     		
     		empty($params['page']) ? $page = uri_assoc('page') : $page = $params['page'];
     		
+    		$controller = $this->uri->rsegment(1);
+    		$controller_function = $this->uri->rsegment(2);
+    		
+    		if($controller == 'contact'){
+    			$base_url = site_url('/contact/' . $controller_function . '/page');
+    		} else {
+    			$base_url =	site_url('/contact/index/page');
+    		}
+    		
     		$config = array(
-        		   					'base_url'			=>	site_url('/contact/index/page'),
+    								'base_url'			=>	$base_url,
         		   					'total_rows'		=>	$params['total_rows'],
         		   					'per_page'			=>	$params['items_page'],
         		   					'next_link'			=>	$this->lang->line('next') . ' >',

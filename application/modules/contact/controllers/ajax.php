@@ -45,6 +45,7 @@ class Ajax extends Admin_Controller {
      */
     private function output(array $to_js)
     {
+    	$to_js['success'] = true; 
     	$output = json_encode($to_js);
     	if(!is_null($this->callback) && $this->callback){
     		echo $this->callback .'('.$output.');';
@@ -58,6 +59,37 @@ class Ajax extends Admin_Controller {
     	$to_js = array();
     	$to_js['error'] = urlencode(trim($message));
     	$this->output($to_js);
+    }
+    
+    public function fill_autocomplete(){
+    	
+    	$searched_object = urldecode(trim($this->input->post('searched_object')));
+    	$attribute = urldecode(trim($this->input->post('attribute')));
+    	
+    	$class = 'Mdl_'.$searched_object;
+    	$contact = new $class();
+    	$input = array();
+    	$input['filter'] = 'objectClass=dueviperson';
+    	$input['wanted_attributes'] = array($attribute);
+    	$rest_return = $contact->get($input,false);
+    	
+    	$return = array();
+    	if($contact->crr->has_no_errors) {
+    		
+    		foreach ($contact->crr->data as $item){
+    			$values = $item[$attribute];
+    			if(is_array($values)){
+	    			foreach ($values as $key => $value) {
+	    				if(!in_array($value, $return)) $return[] = $value;
+	    			}
+    			}
+    		}
+    	}
+    	asort($return);
+    	
+		$to_js = array();
+		$to_js['values'] = $return;
+		$this->output($to_js);
     }
     
     public function getForm(){
@@ -113,12 +145,14 @@ class Ajax extends Admin_Controller {
     	}
     	$input['flow_order'] = 'asc';
     	$input['wanted_page'] = '0';
-    	$input['items_page'] = '15';
+    	$input['items_page'] = '25';
     	
     	$class = 'Mdl_'.$searched_object;
     	$contact = new $class();
     	$rest_return = $contact->get($input);    	
 
+    	if($rest_return['status']['status_code'] != 200) $this->returnError($searched_object.'-form can not be loaded.');
+    	
     	$people = array();
     	$orgs = array();
     	if (is_array($rest_return['data'])) {
@@ -141,51 +175,152 @@ class Ajax extends Admin_Controller {
     	$data['results_number'] = $rest_return['status']['results_number'];
     	$data['results_got_number'] = $rest_return['status']['results_got_number'];
     	
-    	//gets the html
+    	$to_js = array();
+    	
+    	
+    	//gets the html and shows the results
     	switch ($params['procedure']) {
     		case 'personToOrganizationMembership':
-    			$template = 'jquery_search.tpl';
+    			$data['add_radio'] = true;
+    			$template = 'jquery_search_organization.tpl';
     		break;
 
     		case 'searchPersonToAdd':
-    			if(isset($params['first_name'])) $data['first_name'] = $params['first_name'];
-    			if(isset($params['last_name'])) $data['last_name'] = $params['last_name'];
-    			if(isset($params['url'])) $data['url'] = $params['url'];
-    			$template = 'jquery_search_person_to_add.tpl';
+    			if($rest_return['status']['results_number'] == 0) {
+    				
+    				$this->create_person($params);
+    				
+       			} else {
+       				
+    				if(isset($params['first_name'])) $data['first_name'] = $params['first_name'];
+    				if(isset($params['last_name'])) $data['last_name'] = $params['last_name'];
+    				if(isset($params['url'])) $data['url'] = $params['url'];
+    				
+    				$template = 'jquery_search_person.tpl';
+    			}
     		break;
 
     		case 'searchOrganizationToAdd':
-    			if(isset($params['url'])) $data['url'] = $params['url'];
-    			$template = 'jquery_search_organization_to_add.tpl';
+    			if($rest_return['status']['results_number'] == 0) {
+
+    				$this->create_organization($params);
+    				
+    			} else {
+    				if(isset($params['searched_value'])) $data['searched_value'] = $params['searched_value'];
+	    			if(isset($params['url'])) $data['url'] = $params['url'];
+	    			$template = 'jquery_search_organization.tpl';
+
+    			}
     		break;
     			    		
     		default:
-    			$template = 'jquery_search.tpl';
+    			$this->returnError('Unknown procedure');
     		break;
     	}
-    	
-    	$html_form = $this->plenty_parser->parse($template, $data, true, 'smarty', 'ajax');
-    	
-    	//returns the html to js
-    	$to_js = array();
-    	if(!empty($html_form)){
+
+    	if($rest_return['status']['results_number'] > 0) {
+    		//returns the html to js
+    		$html_form = $this->plenty_parser->parse($template, $data, true, 'smarty', 'contact');
     		$to_js['html'] = urlencode($html_form);
-    		if(isset($data['div_id'])) $to_js['div_id'] = urlencode(trim($data['div_id']));
-    		if(isset($data['form_name'])) $to_js['form_name'] = urlencode(trim($data['form_name']));
-    		if(isset($params['procedure'])) $to_js['procedure'] = urlencode(trim($params['procedure']));
-    		 
-    		//these information are used by js to submit the form back to php
-    		if(isset($params['url'])) $to_js['url'] = $url;
-    		if(isset($params['object_name'])) $to_js['object_name'] = $params['object_name'];
-    		if(isset($params['related_object_name'])) $to_js['related_object_name'] = $params['related_object_name'];
-    		if(isset($params['related_object_id'])) $to_js['related_object_id'] = $params['related_object_id'];
-    		 
-    		$this->output($to_js);
+    		
     	} else {
-    		$this->returnError($searched_object.'-form can not be loaded.');
+    		$to_js['html'] = false;
+    		//returns the post parameters sent to this
+    		$to_js['input_params'] = $this->input->post('params');
     	}    	
+  		
+   		if(isset($data['div_id'])) $to_js['div_id'] = urlencode(trim($data['div_id']));
+   		if(isset($data['form_name'])) $to_js['form_name'] = urlencode(trim($data['form_name']));
+   		if(isset($params['procedure'])) $to_js['procedure'] = urlencode(trim($params['procedure']));
+    		 
+   		//these information are used by js to submit the form back to php
+   		if(isset($params['url'])) $to_js['url'] = $url;
+   		if(isset($params['object_name'])) $to_js['object_name'] = $params['object_name'];
+   		if(isset($params['related_object_name'])) $to_js['related_object_name'] = $params['related_object_name'];
+   		if(isset($params['related_object_id'])) $to_js['related_object_id'] = $params['related_object_id'];
+    		 
+   		$this->output($to_js);
     }
     
+    public function create_person(array $params = null){
+    	$check_post = false;
+    	
+    	if(!isset($params['first_name']) || !isset($params['last_name'])) $check_post = true;
+    	
+    	if($check_post){
+    		$params = array();
+    		if($form = $this->input->post('form')) {
+    			foreach ($form as $item => $values){
+    				if($values['field'] == 'first_name') $params['first_name'] = $values['value'];
+    				if($values['field'] == 'last_name') $params['last_name'] = $values['value'];
+    			}
+    		}
+    	}
+
+    	if(!isset($params['first_name']) || !isset($params['last_name'])){
+    		$message = 'First and last name are missing';
+    	}
+    	
+    	if(isset($message)) $this->returnError($message);
+    		
+    	
+    	//I'm ready to create the person
+    	$person = new Mdl_Person();
+    	$person->givenName = $params['first_name'];
+    	$person->sn = $params['last_name'];
+    	$person->set_default_values();
+    	if($person->save(false)) {
+    		$to_js['uid'] = $person->uid;
+    		if(isset($params['procedure'])) {
+    			$to_js['procedure'] = $params['procedure'];
+    		} else {
+    			$to_js['procedure'] = 'create_person';
+    		}
+    		$to_js['message'] = 'Person has been created';
+    		$this->output($to_js);
+    	} else {
+    		$this->returnError('Person has not been created');
+    	}
+    }
+    
+    public function create_organization(array $params = null){
+    	$check_post = false;
+    	 
+    	if(!isset($params['searched_value'])) $check_post = true;
+    	 
+    	if($check_post){
+    		$params = array();
+    		if($form = $this->input->post('form')) {
+    			foreach ($form as $item => $values){
+    				if($values['field'] == 'searched_value') $params['searched_value'] = $values['value'];
+    			}
+    		}
+    	}
+    
+    	if(!isset($params['searched_value'])){
+    		$message = 'Organization name is missing';
+    	}
+    	 
+    	if(isset($message)) $this->returnError($message);
+    
+    	 
+    	//I'm ready to create the person
+    	$organization = new Mdl_Organization();
+    	$organization->o = $params['searched_value'];
+    	$organization->set_default_values();
+    	if($organization->save(false)) {
+    		$to_js['oid'] = $organization->oid;
+    		if(isset($params['procedure'])) {
+    			$to_js['procedure'] = $params['procedure'];
+    		} else {
+    			$to_js['procedure'] = 'create_organization';
+    		}
+    		$to_js['message'] = 'Organization has been created';
+    		$this->output($to_js);
+    	} else {
+    		$this->returnError('Organization has not been created');
+    	}
+    }    
     protected function getClassicForm(array $params){
     	
     	if(isset($params['object_name'])) $object_name = urlencode(trim($params['object_name']));
@@ -233,7 +368,7 @@ class Ajax extends Admin_Controller {
     	$data['form_name'] = 'jquery-form-'.$object_name;
 
     	//gets the html
-    	$html_form = $this->plenty_parser->parse('jquery_form.tpl', $data, true, 'smarty', 'ajax');
+    	$html_form = $this->plenty_parser->parse('jquery_form.tpl', $data, true, 'smarty', 'contact');
     	
     	//returns the html to js
     	$to_js = array();
@@ -243,7 +378,7 @@ class Ajax extends Admin_Controller {
     		$to_js['form_name'] = urlencode(trim($data['form_name']));
     		 
     		//these information are used by js to submit the form back to php
-    		$to_js['url'] = urlencode('/ajax/update'.ucwords(urlencode(trim($object_name))));
+    		$to_js['url'] = urlencode('/contact/ajax/update'.ucwords(urlencode(trim($object_name))));
     		$to_js['related_object_name'] = $params['related_object_name'];
     		$to_js['related_object_id'] = $params['related_object_id'];
     		 
@@ -341,7 +476,7 @@ class Ajax extends Admin_Controller {
     				 
     				if($person->save(false)){
     					$message = $person->cn." has been associated to ".$organization_name;
-    					$tab = "#tab_memberOf";
+    					$tab = "#tab_member_of";
     						
     				} else {
     					$this->returnError('The association process failed.');
@@ -400,7 +535,7 @@ class Ajax extends Admin_Controller {
 	    			if($person->save(false)){
 	    				$to_js = array();
 	    				$to_js['message'] = $message;
-	    				$to_js['focus_tab'] = '#tab_memberOf';	    				 
+	    				$to_js['focus_tab'] = '#tab_member_of';	    				 
 	    			} else {
 	    				$this->returnError('The process failed.');
 	    			}	    			
@@ -609,7 +744,7 @@ class Ajax extends Admin_Controller {
 	    			if($person->save(false)){
 	    				$to_js = array();
 	    				$to_js['message'] = $person->cn." has been disassociated from ".$organization_name;
-	    				$to_js['focus_tab'] = '#tab_memberOf';	    				
+	    				$to_js['focus_tab'] = '#tab_member_of';	    				
 		    		} else {
 		    			$this->returnError('The association process failed.');
 		    		}

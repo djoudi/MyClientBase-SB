@@ -1,98 +1,152 @@
+{literal}
 <script type="text/javascript">
-	$(function() {        		
-		$("#PersonAvailableAttributes li").draggable({
-			axis: "x",
-			cursor: 'move',
-			distance: 30,
-			containment: 'document',
-			grid: [400, 0],
-			opacity: 0.6,
-			revert: true,
-			revertDuration: 300,
-			delay: 1,			 
-			stop: function(event, ui){	
-				var input = '&item=' + $(this).attr('id') + '&action=person_addToVisible'; 
-				$.post("/index.php/contact/update_settings", input, function(theResponse){
-        			$("#person_accordion").html(theResponse);  
-        		});            		 	
-            },
-		}).disableSelection();
+	$(document).ready(function() {
+		var url = "/contact/contact_settings/update/";
 
-		$("#PersonVisibleAttributes li").draggable({
-			axis: "x",
-			cursor: 'move',
-			distance: 30,
-			containment: 'document',
-			grid: [400, 0],
-			opacity: 0.6,
-			revert: true,
-			revertDuration: 300,
-			delay: 1,			 		 
-			stop: function(event, ui){	
-        		var input = '&item=' + $(this).attr('id') + '&action=person_removeFromVisible'; 
-        		$.post("/index.php/contact/update_settings", input, function(theResponse){
-        			$("#person_accordion").html(theResponse); 
-        		});                		 	        		 		             	
-        	},
-		}).disableSelection();                	     
+		//refreshes the content of div #person_accordion everytime the accordion is clicked
+		$('#person_accordion').accordion({}).find('.pva').click(		
+			function(ev){
+				ev.preventDefault();
+			    ev.stopPropagation();
+				var input = '&action=person_visible'; 
+				$.post("/contact/contact_settings/update/", input, function(theResponse){
+					$("#person_visible_accordion").html(theResponse);
+				});
+        });
+        		
+		//refreshes the content of div #person_order_accordion everytime the accordion is clicked
+		$('#person_accordion').accordion({}).find('.poa').click(		
+			function(ev){
+				ev.preventDefault();
+			    ev.stopPropagation();
+				var input = '&action=person_sort'; 
+				$.post("/contact/contact_settings/update/", input, function(theResponse){
+					$("#person_order_accordion").html(theResponse);
+				});
+        });
+
+		//refreshes the content of div #person_aliases_accordion everytime the accordion is clicked
+		$('#person_accordion').accordion({}).find('.paa').click(
+			function(ev){
+				ev.preventDefault();
+			    ev.stopPropagation();
+				var input = '&action=person_aliases'; 
+				$.post("/contact/contact_settings/update/", input, function(theResponse){
+					$("#person_aliases_accordion").html(theResponse);
+				});          
+        });
+
+        $("#save_person_default_values").click(function() {
+
+        	form_name = 'form_person_default_values';
+            url = "/contact/contact_settings/update/";
+            dataType = "html";    	
+    		type = 'POST';
+    		action = 'person_defaultvalues';
+    		form = document.forms[form_name];
+    		formObj = retrieveForm(form);
+    		   
+            jQuery.ajax({
+            	url		: url,
+            	dataType: dataType,
+            	type	: type,
+                data    : {
+                			action: action,
+                    		save: true,
+                    		form: formObj,
+                			},
+                error	: errorCallback,                			
+            })
+            .success(function(){
+                console.log('success');
+            })                	   	
+        });
+        
 	});
-</script>  
+</script>
+{/literal}
 
-<p style="background-color: #fffdd0; border: 1px dotted gray;">{t}Drag attributes from the left to the right to make them visible or from the right to the left to hide them{/t}. 
-{t}All the changes are automatically saved{/t}.
-</p>
-
-{* list of all the visible attributes *}
-<div id="PersonVisibleAttributes" style="float:right; display:inline; width: 48%; border: 1px solid gray; padding: 3px;">
-	<h3>{t}Visible Attributes{/t}<span style="font-size: 13px;"> ({t}found{/t} {$person_visible_attributes|@count})</span></h3>
-	<ul id="PersonVisibleAttributes" class="connectedSortable">
-	{foreach $person_visible_attributes as $key => $attribute_name}
-		<li id="PersonVisibleAttributes_{$attribute_name}" style="margin-top: 3px; padding-bottom: 1px; margin-bottom: 5px; margin-left: 3px; margin-right: 3px; background-color: #FFF; width: 390px; border: 1px solid #e8e8e8;">
-			{if $person_all_attributes[$attribute_name]['required'] == 1}
-				{$color="red"}
-			{else}
-				{$color="black"}
-			{/if}
-						
-			<p style="color:{$color}; margin-bottom: 4px; margin-left: 5px;"><b>{$attribute_name}</b>
-			{if isset($person_aliases) and isset($attribute_name) and isset($person_aliases.$attribute_name)}
-				<span style="font-size: 13px; color: green"> {t}Alias{/t}: {$person_aliases.$attribute_name}</span>
-			{/if}	
-			</p>
-				
-			<p style="margin-left: 15px; margin-bottom: 0px;"><i>
-			{if $person_all_attributes[$attribute_name]['desc'] != ""}
-				{t}{$person_all_attributes[$attribute_name]['desc']}{/t}
-			{else}
-				{t}No description available{/t}.
-			{/if}
-			</i></p>
-		</li>
-	{/foreach}		
-	</ul>
+<div id="person_default_values">
+	{*
+	<pre style="font-size: 11px;">
+	{$mandatory_attributes|print_r}
+	</pre>
+	*}
+	<p style="padding-bottom: 10px;">
+		The object Person can have some attributes prefilled (totally or partially) so that every newly created contact will have the values
+		specified in this form.
+	</p>
+	<form name="form_person_default_values" style="margin-bottom: 10px;">
+		<div class="box settings" style="float: right; width: 48%; padding-bottom: 5px; margin-bottom: 5px;">
+			<dl>
+				{$value=''}{if isset($default_values.homePhone)}{$value=$default_values.homePhone}{/if}
+				<dt>{t}Home phone{/t}</dt>
+				<dd><input type="text" name="homePhone" value="{$value}" /></dd>
+			</dl>
+	
+			<dl>
+				{$value=''}{if isset($default_values.mozillaHomeState)}{$value=$default_values.mozillaHomeState}{/if}
+				<dt>{t}State or province{/t}</dt>
+				<dd><input type="text" name="mozillaHomeState" value="{$value}" /></dd>
+			</dl>
+			
+		</div>
+		
+		<div class="box settings" style="width: 48%;  padding-bottom: 5px; margin-bottom: 5px;">
+			{*
+			<dl>
+				<dt>{t}User password{/t}</dt>
+				<dd><input type="text" name="userPassword" value="{$default_values.userPassword}"/></dd>
+			</dl>
+			*}
+			
+			<dl>
+				{$value=''}{if isset($default_values.homeFacsimileTelephoneNumber)}{$value=$default_values.homeFacsimileTelephoneNumber}{/if}
+				<dt>{t}Home fax{/t}</dt>
+				<dd><input type="text" name="homeFacsimileTelephoneNumber" value="{$value}"/></dd>
+			</dl>
+			
+			<dl>
+				{$value=''}{if isset($default_values.mozillaHomeCountryName)}{$value=$default_values.mozillaHomeCountryName}{/if}
+				<dt>{t}Country{/t}</dt>
+				<dd><input type="text" name="mozillaHomeCountryName" value="{$value}"/></dd>
+			</dl>
+			
+			<dl>
+				{$value=''}{if isset($default_values.category)}{$value=$default_values.category}{/if}
+				<dt>{t}Category{/t}</dt>
+				<dd><input type="text" name="category" value="{$value}"/></dd>
+			</dl>			
+			{*
+			<dl>
+				<dt>{t}Preferred language{/t}</dt>
+				<dd><input type="text" name="preferredLanguage" /></dd>
+			</dl> *}			
+		</div>
+		
+		<div style="clear: both;"></div>
+		
+		<a class="button" id="save_person_default_values" href="#" style="float: right;">{t}Save{/t}</a>
+		
+		<div style="clear: both;"></div>
+	</form>
 </div>
 
-{* list of all the available attributes *}
-<div style="width: 48%; border: 1px solid gray; padding: 3px;">
-	<h3>{t}Available Attributes{/t}<span style="font-size: 13px;"> ({t}found{/t} {$person_available_attributes|@count})</span></h3>
-	<ul id="PersonAvailableAttributes" class="connectedSortable">
-	{foreach $person_available_attributes as $attribute_name => $attribute_features}
-		<li id="PersonAvailableAttributes_{$attribute_name}" style="position: relative; margin-top: 3px; padding-bottom: 1px; margin-bottom: 5px; margin-left: 3px; margin-right: 3px; background-color: #FFF; width: 390px; border: 1px solid #e8e8e8;">
-		
-			{if $attribute_features['required'] == 1}
-				{$color="red"}
-			{else}
-				{$color="black"}
-			{/if}
-			<p style="color:{$color}; margin-bottom: 4px; margin-left: 5px;"><b>{$attribute_name}</b></p> 
-			<p style="margin-left: 15px; margin-bottom: 0px;"><i>
-			{if $attribute_features['desc'] != ""}
-				{t}{$attribute_features['desc']}{/t}
-			{else}
-				{t}No description available{/t}.
-			{/if}
-			</i></p>	
-		</li>
-	{/foreach}
-	</ul>
+<div id="person_accordion">	
+{* persons accordion items *}
+	{$obj = "{t}person{/t}"}
+	<h3 class="pva"><a href="#"><span style="font-size: 16px;">{$obj|capitalize}</span>: {t}set visible attributes{/t}</a></h3>
+	<div id="person_visible_accordion">	
+		{$settings_person}
+	</div>
+	
+	<h3 class="poa"><a href="#"><span style="font-size: 16px;">{$obj|capitalize}</span>: {t}set attributes order{/t}</a></h3>
+	<div id="person_order_accordion">
+		{$settings_person_order}
+	</div>
+
+	<h3 class="paa"><a href="#"><span style="font-size: 16px;">{$obj|capitalize}</span>: {t}set attributes aliases{/t}</a></h3>
+	<div id="person_aliases_accordion">
+		{$settings_person_aliases}
+	</div>
 </div>

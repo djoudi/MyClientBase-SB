@@ -23,20 +23,17 @@ class Admin_Controller extends MX_Controller {
 				'mcb_invoice_amount', 'mcb_invoice_item',
 				'mcb_invoice_payment', 'mcb_numbers'));
 
-			$this->load->model(array('mcb_data/mdl_mcb_userdata'));
+			$this->load->model(array('mcb_data/mdl_mcb_userdata'));  //TODO is this necessary?
 
-			//TODO fixme
-            //$this->mcbsb->top_menu->check_permission($this->uri->uri_string(), $this->mcbsb->user->is_admin);
+			$this->load->language('mcb', strtolower($this->mcbsb->settings->setting('default_language')));
 
-			//$this->mdl_mcb_modules->load_custom_languages();
-
-			$this->load->language('mcb', $this->mcbsb->settings->setting('default_language'));
-
-            $this->load->model('fields/mdl_fields');
+            $this->load->model('fields/mdl_fields'); //TODO is this necessary?
 
 			$this->load->library(array('form_validation', 'redir'));
-
-			$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+ 
+			//customization of validation_errors()
+			$this->form_validation->set_error_delimiters('|', ''); //TODO maybe this should go in mcbsb class 
+			//$this->form_validation->set_error_delimiters('<div class="error">', '</div>');  //TODO delme
 
             if ($this->mcbsb->settings->setting('enable_profiler')) {
 

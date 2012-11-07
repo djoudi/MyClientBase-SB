@@ -11,39 +11,57 @@
   			$('#form_login').submit();
 		});
 		$('#username').focus();
+
+		$('#captcha').keypress(function(event){
+			
+			//this intercepts the Enter key
+			if (event.which == 13)
+			{
+				return $('#form_login').submit();
+			} else {
+			   return true;
+			}
+		});				
 	});
 </script>
 {/literal}
 
-<div class="push_1 grid_7">
-
-	{* <pre>{$errors|print_r}</pre> *}
-	<div class="box" style="padding: 10px; padding-left: 25px;">
+<div class="container_24">
+	<div class="grid_7 push_1">
 	
-	<h3 style="margin-bottom: 20px;">MCB-SB</h3>
-	 
-	<form method="post" action="/login" id="form_login">
-		<dl>
-			<dt><label>{t}Email{/t}</label></dt>
-			<dd><input type="text" value="{$form['username']}" id="username" name="username" /></dd>
-				
-			<dt><label>{t}Password{/t}</label></dt>
-			<dd><input type="password" value="{$form['password']}" id="password" name="password" /></dd>
-		</dl>
+		<img src="/layout/images/mcbsb_logo.png" />
 		
-		<dl>
-			<dt>&nbsp;</dt>
-			<dd><span style="margin-left: 3px;">{$captcha['image']}</span></dd>
-		</dl>
+		<div class="box" style="margin-top: 20px; padding: 10px; padding-left: 25px;">
+		 
+		<form method="post" action="/login" id="form_login">
+			<dl>
+				<dt style="width: 100px;"><label>{t}Email{/t}</label></dt>
+				<dd><input type="text" value="{$form['username']}" id="username" name="username" /></dd>
+					
+				<dt style="width: 100px;"><label>{t}Password{/t}</label></dt>
+				<dd><input type="password" value="{$form['password']}" id="password" name="password" /></dd>
+			</dl>
+			
+			<dl>
+				<dt style="width: 100px;">&nbsp;</dt>
+				<dd><span style="margin-left: 3px;">{$captcha['image']}</span></dd>
+			</dl>
+			
+			<dl>
+				<dt style="width: 100px;"><label>{t}Write here the code you see on the top. (not case sensitive){/t}</label></dt>
+				<dd><input type="text" value="" id="captcha" name="captcha" /></dd>
+			</dl>
+			
+			<a href="#" class="button" style="float: right; margin-right: 10px;" id="button_login">{t}Login{/t}</a>
+			<div style="clear: both;"></div>
+		</form>
+		</div>
 		
-		<dl>
-			<dt><label>{t}Write here the code you see on the top. (not case sensitive){/t}</label></dt>
-			<dd><input type="text" value="" id="captcha" name="captcha" /></dd>
-		</dl>
-		
-		<a href="#" class="button" style="float: right; margin-right: 50px;" id="button_login">{t}Login{/t}</a>
-		<div style="clear: both;"></div>
-	</form>
+		{if $errors}
+		<div class="box b_dark_red" style="color: white; min-height: 25px; margin-top: 5px;text-align: center; padding-top: 5px; font-weight: bold;">
+			{t}{$errors}{/t}
+		</div>
+		{/if}
 	</div>
-</div>
-{include file="$footer_file"}
+
+	{include file="$footer_file"}

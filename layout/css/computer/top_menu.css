@@ -16,6 +16,7 @@ li.top_menu {
 	list-style: none; 
 	list-style-type: none; 
 	display: inline;
+	color: #207fca;
 	
 	padding-top: 4px;
 	padding-bottom: 5px;
@@ -40,12 +41,9 @@ li.top_menu {
 
 li.top_menu:hover{
 	background-color: white;
+	color: #207fca;
 }
 
 a.top_menu {
-	text-decoration: none;	
-}
-
-.selected{
-	color: black;
+	text-decoration: none;
 }

@@ -23,7 +23,7 @@
 					foreach ($modules as $module) { 
 					$counter ++;
 					$color='';
-					if($counter % 2) $color='style="background-color: #e8e8e8;"'; 
+					if($counter % 2) $color='style="background-color: #f3f3f3;"'; 
 				?>
 
 				<tr valign="top" <?php echo $color; ?>>

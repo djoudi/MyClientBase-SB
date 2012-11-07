@@ -3,7 +3,7 @@
 class Mcbsb_User extends User {
 
 /* 
-	Attributes coming for the object User
+	Attributes coming from the object User in IonAuth
   	public $active = null;
 	public $email = null;
 	public $first_name = null;
@@ -75,11 +75,11 @@ class Mcbsb_User extends User {
 		
 		//security checks. Most of these security checks are already performed by the controller
 		foreach (get_defined_vars() as $var_name => $var_value){
-			if(is_null($var_value)) return false; //TODO maybe add a system error?
-			if(is_array($var_value)) return false; //TODO maybe add a system error?
+			if(is_null($var_value)) return false;
+			if(is_array($var_value)) return false;
 		
 			if($var_name == 'email') {
-				if(!valid_email($var_value)) return false; //TODO maybe add a system error?
+				if(!valid_email($var_value)) return false;
 			}
 			
 			if($var_name == 'remember') {

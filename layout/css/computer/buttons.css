@@ -1,6 +1,9 @@
 .button, .big_button {
     background-color:#207fca;
-    padding: 3px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
     position: relative;
     font-size: 13px;
     text-decoration: none;
@@ -17,4 +20,9 @@
 .button:hover, .big_button:hover{
 	background-color: #daefff;
 	color: #2280c9;
+}
+
+input.button {
+	height: 25px; 
+	padding-bottom: 10px;
 }

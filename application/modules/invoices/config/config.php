@@ -1,7 +1,7 @@
 <?php (defined('BASEPATH')) OR exit('No direct script access allowed');
 
 $config['module'] = array(
-	'module_name'	=>	$this->lang->line('invoices'),
+	'module_name'	=>	'Invoices',
 	'module_path'	=>	'invoices',
 	'module_order'	=>	3,
 	'module_top_menu' => true,

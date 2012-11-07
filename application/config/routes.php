@@ -38,12 +38,12 @@
 |
 */
 
-$route['default_controller'] = "contact";
+$route['default_controller'] = "contact/search";
 $route['404_override'] = '';
 
 $route['logout'] = 'login/logout/';
-$route['contact/search/:any'] = 'contact/index/';
-$route['contact/order_by/:any'] = 'contact/index/order_by/';
+//$route['contact/index/:any'] = 'contact/search/';
+$route['contact/order_by/:any'] = 'contact/search/order_by/';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

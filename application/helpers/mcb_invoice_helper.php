@@ -1,6 +1,5 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-//TODO these 2 lines are not present in 0.12. Should I remove them too?
 $CI =& get_instance();
 $CI->load->helper(array('mcb_invoice_amount', 'mcb_invoice_item', 'mcb_invoice_payment', 'mcb_numbers'));
 

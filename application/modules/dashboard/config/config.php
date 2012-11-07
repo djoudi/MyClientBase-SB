@@ -1,7 +1,7 @@
 <?php (defined('BASEPATH')) OR exit('No direct script access allowed');
 
 $config['module'] = array(
-	'module_name'	=>	$this->lang->line('dashboard'),
+	'module_name'	=>	'Dashboard',
 	'module_path'	=>	'dashboard',
 	'module_order'	=>	10,
 	'module_top_menu'		=>	true,		

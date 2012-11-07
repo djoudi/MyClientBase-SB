@@ -1,7 +1,7 @@
 <?php (defined('BASEPATH')) OR exit('No direct script access allowed');
 
 $config['module'] = array(
-	'module_name'	=>	$this->lang->line('email'),
+	'module_name'	=>	'Mailer',
 	'module_path'	=>	'mailer',
 	'module_order'	=>	5,
 	'module_top_menu' => false,

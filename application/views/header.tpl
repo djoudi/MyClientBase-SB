@@ -21,13 +21,22 @@
 		<script type="text/javascript" src="/js/jquery-1.8.2.js"></script>
 		<script type="text/javascript" src="/js/jquery-ui-1.9.1.js"></script>
 		<script type="text/javascript" src="/js/jquery.hotkeys.js"></script> {* provides shortcuts *}
+		<script type="text/javascript" src="/js/util.js"></script>
 		
 		{* global var language *}
 		<script type="text/javascript">
 			language = "{$language}";
 		</script>
-		
+	
 		<script type="text/javascript" src="/js/mcbsb.js"></script>
+	
+		{literal}
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$('.datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
+			});		
+		</script>
+		{/literal}	
 		
 		{if $environment == 'development'}
 		{literal}
@@ -63,6 +72,20 @@
 
 	</head>
 	<body>
-	<div class="container_24">
-	{* top anchor *}
-	<a id="top" name="top"></a>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

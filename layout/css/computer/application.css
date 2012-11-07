@@ -1,3 +1,11 @@
+::-moz-selection{
+	background:#daefff ;
+}
+
+::selection{
+	background:#daefff; 
+}
+
 body {
   background: white;
   color: #555555;
@@ -113,8 +121,8 @@ dl {
 dl dt {
     float:left; 
     margin-right:10px; 
-    padding:5px;  
-    width:100px;
+    padding:5px; 
+    /* width:100px; */
 }
 
 dl dd {
@@ -122,8 +130,7 @@ dl dd {
     padding:5px 0;
 }
 
-input { 
-	height: 20px;
+input, textarea{
 	border: 1px solid #ccc;
 	-webkit-appearance: none;
 	-webkit-border-radius: 4px; 
@@ -131,14 +138,23 @@ input {
 	border-radius: 4px; 
 }
 
-input:focus {
+input { 
+	height: 20px;
+}
+
+input:focus, textarea:focus {
+	outline: none;
 	border-color: #2280c9; 
 }
 
 #notification_area {
+	min-height: 103px;
+	max-height: 103px; 
 	overflow: auto;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	/* background-color: #daefff; */
 }
-
 
 .box {	
 	padding: 0px;
@@ -173,4 +189,60 @@ input:focus {
 	margin-top: 5px; 
 	margin-right: 5px;"
 	border-left: 1px solid #ccc; 
+}
+
+ul.ap {
+	margin: 7px;
+	list-style: none;
+}
+
+ul.accordion {
+	list-style: none;
+}
+
+ul.accordion li{
+	margin-top: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	background-color: #f3f3f3;
+}
+
+ul.accordion li.enabled{
+	background-color: #daefff;
+}
+
+li.ap {
+	margin: 0px;
+	padding-top: 7px;
+	padding-bottom: 7px;
+}
+
+/* this is the selected item in the pagination links */
+.active_link {
+	font-weight: bold;
+	padding-left: 7px;
+	padding-right: 2px;
+}
+
+.settings dl{
+	min-height: 30px;
+	width: 95%;
+	margin: 0px;
+	margin-left: 5px;
+	margin-right: 5px;
+	border-bottom: 1px dashed #ccc;
+}
+
+.settings dt{
+	width: 185px;
+	padding-top: 9px;
+}
+
+.settings dd{
+}
+
+.multivalue:hover{
+	cursor: help;
 }

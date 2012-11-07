@@ -1,9 +1,18 @@
 <?php (defined('BASEPATH')) OR exit('No direct script access allowed');
 
-//TODO all these methods should be migrated in mcbsb Class
 
 class Settings extends MY_Model {
 
+	/**
+	 * Retrieves MCBSB settings stored in the mysql database 
+	 * 
+	 * @access		public
+	 * @param		string $key Setting to retrieve			
+	 * @return		boolean
+	 * 
+	 * @author 		Damiano Venturin
+	 * @since		Nov 5, 2012
+	 */
 	public function get($key) {
 
 		$this->db->select('mcb_value');
@@ -13,17 +22,10 @@ class Settings extends MY_Model {
 		$query = $this->db->get('mcb_data');
 
 		if ($query->row()) {
-			$a = $query->row();
 			return $query->row()->mcb_value;
+		} 
 
-		}
-
-		else {
-
-			return false;
-
-		}
-
+		return false;
 	}
 
 	/**
@@ -52,6 +54,8 @@ class Settings extends MY_Model {
 		return $settings;
 	}
 	
+
+	
 	public function save($key, $value, $only_if_null = FALSE) {
 
 		if (!is_null($this->get($key)) and !$only_if_null) {
@@ -70,11 +74,7 @@ class Settings extends MY_Model {
 
 			if ($only_if_null) {
 
-				if (!is_null($this->get($key))) {
-
-					return;
-
-				}
+				if (!is_null($this->get($key))) return;
 
 			}
 
@@ -84,9 +84,7 @@ class Settings extends MY_Model {
 			);
 
 			$this->db->insert('mcb_data', $db_array);
-
 		}
-
 	}
 
 	public function delete($key) {

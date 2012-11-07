@@ -11,8 +11,8 @@
 
 class Mdl_Contact extends MY_Model {
 
-	public $possibleObjects;
-	public $mandatoryAttributes;
+	public $possibleObjects = array('person','organization', 'contact');
+	public $mandatoryAttributes = array();
 	public $objClass;
 	public $objName;
 	public $properties;
@@ -32,15 +32,14 @@ class Mdl_Contact extends MY_Model {
         //some self-references
         $this->objClass = get_class($this); //one of these (Mdl_Person, Mdl_Organization, Mdl_Contact)
         $this->objName = 'contact'; //one of these ('person','organization', 'contact')
-        $this->mandatoryAttributes = array();
         
-        $this->possibleObjects = array('person','organization', 'contact'); //lists all the possible children for this obj
+        //$this->possibleObjects = array('person','organization', 'contact'); //lists all the possible children for this obj
         
         // Load curl
         $this->load->spark('curl/1.2.1');
         
         // Load the configuration file
-        $a = $this->load->config('rest');
+        $this->load->config('rest');
          
         // Load the rest client
         $this->load->spark('restclient/2.1.0');
@@ -103,6 +102,30 @@ class Mdl_Contact extends MY_Model {
     	return false;
 	}
     
+	
+	public function count(array $input){
+		$this->rest->initialize(array('server' => $this->config->item('rest_server').'/exposeObj/'.$this->objName));
+		 
+		//performing the query to contact engine
+		$this->crr->importCeReturnObject($this->rest->post('count', $input, 'serialize'));
+		
+		if($this->crr->has_no_errors) {
+			return $this->crr->data['total_entries'];
+		}
+		return false;
+	}
+	
+	public function count_all(array $input){
+	
+		$this->get($input, false);
+		$people_total_number = 0;
+		
+		if ($this->crr->has_no_errors) {
+			$people_total_number = count($this->crr->data);
+		}
+		return $people_total_number;
+	}
+		
     public function getProperties($objName = null)
     {
     	//checks
@@ -204,10 +227,6 @@ class Mdl_Contact extends MY_Model {
 						
 			//do not mess with LDAP system fields
 			if($this->properties[$property]['no-user-modification'] == 1) continue;
-	
-			if($property == 'locRDN') {
-				$a= '';
-			}
 			
 			if($this->properties[$property]['single-value'] == 1) {
 				if(!is_array($this->$property)) {
@@ -218,13 +237,15 @@ class Mdl_Contact extends MY_Model {
 				}
 			} else {
 				if(is_array($this->$property)) {
-					$output[$property] = $this->$property;
+					//array_filter removes the items with empty value
+					$output[$property] = array_filter(array_map('trim',$this->$property));
 				} else {
 					if(empty($this->$property))
 					{
 						$output[$property] = array();
 					} else {
 						$output[$property] = explode(',', $this->$property);
+						$output[$property] = array_filter(array_map('trim',$output[$property]));
 					}
 				}
 			}
@@ -242,7 +263,7 @@ class Mdl_Contact extends MY_Model {
 		{
 			if(is_array($data[$attribute]))
 			{
-				$value = implode(',',$data[$attribute]);
+				$value = implode(', ',$data[$attribute]); //shows array attributes as a string of values separated by ', '
 			} else {
 				$value = $data[$attribute];
 			}
@@ -263,11 +284,9 @@ class Mdl_Contact extends MY_Model {
 				//adds to the form rules only the mandatory fields that are shown in the form.
 				//all the other mandatory fields (like cn, objectClass ...  will be set in the validate method
 	
-				//FIXME figure out what to do with the enabled field: it's currently in the "settings" form, so it's not included in the "info form"
-				if(in_array($mandatoryAttribute, $this->show_fields) && $mandatoryAttribute != 'enabled' && $mandatoryAttribute != 'category')
+				if(in_array($mandatoryAttribute, $this->show_fields) && $mandatoryAttribute != 'enabled' && $mandatoryAttribute != 'entryCreatedBy')
 				{
 					//gets the alias for the mandatory field
-					//TODO I still have to fix the localization
 					if(isset($this->aliases[$mandatoryAttribute]))
 					{
 						$field = $this->aliases[$mandatoryAttribute];
@@ -284,11 +303,7 @@ class Mdl_Contact extends MY_Model {
 	public function save($creation, $with_form = true)
 	{
 		if(!is_bool($creation)) return false;
-		
-		//TODO add here the notification messages for each case of failure
-		 
-		//($this->enabled) ? $this->enabled = 'TRUE' : $this->enabled = 'FALSE';
-		$this->enabled = 'TRUE'; //FIXME		
+		if(!is_bool($with_form)) return false;
 		
 		//did the user fill all the mandatory fields present in the form ?
 		if($with_form) {
@@ -334,10 +349,17 @@ class Mdl_Contact extends MY_Model {
  			}
  		}
 		 
-		//validates the object before sending data to Contact Engine
+		//validates the object before sending data to Contact Engine.
+		//Important: the form validation is different from the object validation.
+		//For instance in the form validation only the visible mandatory attributes can be validated:
+		//if there are mandatory attributes not visible then they won't be validated and the post to
+		//Contact Engine will fail
 		$left = $this->validateObj($creation);
 		if(is_array($left)) {
-			//TODO add the content of left to the notification message
+			foreach ($left as $key => $attribute)
+			{
+				$this->mcbsb->system_messages->error = 'Mandatory attribute '.$attribute.' is not set';
+			}
 			return false;
 		}
 		 	 
@@ -349,14 +371,53 @@ class Mdl_Contact extends MY_Model {
 					
 	}	
 	
+	private function validateObj($ignore_id = false)
+	{
+		if($this->objName == 'person') {
+			if( !$ignore_id && (!isset($this->uid) || empty($this->uid))) return false;
+			 
+			//rules
+			if(empty($this->sn)) return false;
+			if(empty($this->givenName)) return false;
+		}
+		
+		if($this->objName == 'organization') {
+			if( !$ignore_id && (!isset($this->oid) || empty($this->oid))) return false;
+				
+			//rules
+			if(empty($this->o)) return false;			
+		}
+		
+		$this->set_default_values();
+		
+		if($this->getMandatoryAttributes())
+		{
+			$left = array();
+			foreach ($this->mandatoryAttributes as $mandatoryAttribute) {
+				 
+				if($ignore_id && ($mandatoryAttribute == 'uid' || $mandatoryAttribute == 'oid')) continue; //this is the case for the creation of a new person or organization
+		
+				//sets default values for mandatory fields
+				if(empty($this->$mandatoryAttribute)) {
+					$left[] = $mandatoryAttribute;
+				}
+			}
+		}
+		 
+		if(count($left) > 0) return $left;
+		 
+		return true;
+	}	
+	
 	protected function update(array $input)
 	{
 		//sets the contactengine key which allows to set the correct baseDN
     	if($this->config->item('ce_key')) $input['ce_key'] = $this->config->item('ce_key');
 
     	//automatically add the author of the modification
-    	$input['entryUpdatedBy'] = $this->session->userdata('last_name').' '.$this->session->userdata('first_name');
+    	$input['entryUpdatedBy'] = $this->mcbsb->user->first_name.' '.$this->mcbsb->user->last_name;
     	$input['entryUpdateDate'] = date("Y-m-d");
+    	
 		$this->rest->initialize(array('server' => $this->config->item('rest_server').'/exposeObj/'.$this->objName));		
 
 		$this->crr->importCeReturnObject($this->rest->post('update', $input, 'serialize'));
@@ -376,11 +437,10 @@ class Mdl_Contact extends MY_Model {
     	if($this->config->item('ce_key')) $input['ce_key'] = $this->config->item('ce_key');
 		
 		$this->rest->initialize(array('server' => $this->config->item('rest_server').'/exposeObj/'.$this->objName));
-		
+			
 		//automatically add the author of the creation
-		$input['entryCreatedBy'] = $this->session->userdata('last_name').' '.$this->session->userdata('first_name');
+		$input['entryCreatedBy'] = $this->mcbsb->user->first_name.' '.$this->mcbsb->user->last_name;
 		$input['entryCreationDate'] = date("Y-m-d");
-		$input['enabled'] = "TRUE";
 		
 		$this->crr->importCeReturnObject($this->rest->post('create', $input, 'serialize'));
 		

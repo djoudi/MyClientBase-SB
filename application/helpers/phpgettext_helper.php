@@ -31,7 +31,6 @@ function setupPhpGettext() {
 		log_message('debug','File '.$CI->config->item('gettextInc').' can not be found.');
 	}
 	
-	$supported_locales = array_keys($CI->config->item('gettextSupportedLocales'));
 	$encoding = $CI->config->item('gettextEncoding');
 	
 	$locale = $smarty_locale = $CI->mcbsb->_locale;
@@ -39,7 +38,7 @@ function setupPhpGettext() {
 	return array(
 				'locale' => $locale,
 				'encoding' => $encoding,
-				'supported_locales' => $supported_locales,
+				'supported_locales' => $CI->mcbsb->_languages,
 				'project_dir' => PROJECT_DIR,
 				'locale_dir' => LOCALE_DIR,
 				'default_locale' => DEFAULT_LOCALE,
