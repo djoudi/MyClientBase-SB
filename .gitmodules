@@ -1,0 +1,3 @@
+[submodule "sparks/ion_auth/2.3.3"]
+	path = sparks/ion_auth/2.3.3
+	url = https://github.com/damko/ci-contact-engine-ionauth.git
