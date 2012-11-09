@@ -104,6 +104,9 @@ class Mdl_Contact extends MY_Model {
     
 	
 	public function count(array $input){
+		
+		if($this->config->item('ce_key')) $input['ce_key'] = $this->config->item('ce_key');
+		
 		$this->rest->initialize(array('server' => $this->config->item('rest_server').'/exposeObj/'.$this->objName));
 		 
 		//performing the query to contact engine

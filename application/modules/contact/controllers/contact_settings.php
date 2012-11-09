@@ -66,7 +66,6 @@ class Contact_Settings extends Admin_Controller {
 				
  		$obj = new Mdl_Organization();
  		$obj->getProperties();
- 		$data['prop'] = $obj->properties;
  		$data['default_values'] = $obj->get_default_values();
 						
 		$this->load->view('settings_organization.tpl', $data, false, 'smarty','contact');
@@ -185,7 +184,7 @@ class Contact_Settings extends Admin_Controller {
 			
 		$obj->getProperties();
 		$obj->prepareShow();
-		$obj->default_values = $obj->get_default_values();
+		if($objName != 'location') $obj->default_values = $obj->get_default_values();
 		
 		$tpl = null;
 	

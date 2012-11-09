@@ -44,7 +44,7 @@
 			
 			//DAM This rewrites all the PHP errors at the bottom of the page and hides the original ones
 			$(document).ready(function(){
-			
+
 				var html = '';
 				jQuery('.php_error').each(function(index){
 					html = html + '<div class="php_error" style="border:1px solid #990000; padding-left:20px; margin:0 0 10px 0;"> [error #' + index + '] '+ jQuery(this).html() + '</div>';
