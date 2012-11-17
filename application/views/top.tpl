@@ -40,13 +40,13 @@
 			
 			
 			<p style="margin-top: 7px;">
-				{if !$user->tj_org_oid}
+				{if !$tj_org_oid}
 				<span class="dark_red">
 					{t}Please set your organization{/t}.						
 					<a id="a1_right" href="#"><img src="/layout/images/question_mark.png" /></a>
 				{else}
 					<a id="a1_right" href="#" style="display: none;"><img src="/layout/images/question_mark.png" /></a>
-					<a href="/contact/details/oid/{$user->tj_org_oid}">{t}This is your organization{/t}</a>
+					<a href="/contact/details/oid/{$tj_org_oid}">{t}This is your organization{/t}</a>
 				{/if}
 					<div id="tip1_right" style="display:none;">
 						{t}Create your organization and mark it as "your organization"{/t}.

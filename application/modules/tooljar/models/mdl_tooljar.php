@@ -9,11 +9,6 @@ class Mdl_Tooljar extends MY_Model {
 	public function __construct() {
 
 		parent::__construct();
-
-// 		if (!$this->mdl_mcb_modules->check_enable('tooljar')) {
-// 			//redirect('/contact');
-// 			return false;
-// 		}
 		
 		//loads the config file from the folder "config" contained in this module
 		$this->config->load('tooljar', false, true, 'tooljar');
@@ -57,6 +52,8 @@ class Mdl_Tooljar extends MY_Model {
 		
 		if($this->crr->has_errors) return false;
 		
+		$this->mcbsb->set_tj_org_oid($oid);
+		
 		return true;
 	}
 	
@@ -72,8 +69,11 @@ class Mdl_Tooljar extends MY_Model {
 		$this->crr->importCeReturnObject($rest_return);
 	
 		if($this->crr->has_errors) return false;
-	
-		return $this->crr->data[0];
+		
+		$oid = $this->crr->data[0];
+		$this->mcbsb->set_tj_org_oid($oid);
+		
+		return $oid;
 	}	
 	
 	public function get_tj_admin_email(){

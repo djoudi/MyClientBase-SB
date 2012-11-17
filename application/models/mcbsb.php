@@ -5,6 +5,7 @@ class Mcbsb  extends CI_Model {
 	protected $_error;
 	protected $_success;
 	protected $_warning;
+	public $_tj_org_oid = null;
 	public $system_messages;  		//equal to: $this->load->model('system_messages');
 	public $settings;				//equal to: $this->load->model('settings');
 	public $user;				//equal to: $this->load->model('mcbsb_user');
@@ -51,10 +52,6 @@ class Mcbsb  extends CI_Model {
         	if(!in_array('login',$this->uri->segment_array())) redirect('/login');
         }
         
-/*         if($this->user->is_tj_admin()){
-
-        } */
-        
         //this check is required to increase security in a multi hosting environment where different urls
         //point to different installations of MCBSB
         //the current base_url has to match the value stored in session
@@ -70,9 +67,6 @@ class Mcbsb  extends CI_Model {
         $this->_get_supported_languages();
         
         $this->_load_language();
-		
-                
-		$a = '';
 	}
 	
 	private function _initialize() {
@@ -133,6 +127,19 @@ class Mcbsb  extends CI_Model {
 		//this is executed after the controller has been unloaded
 		
 		//TODO I think I can load the header from here
+	}
+	
+	public function set_tj_org_oid($oid){
+		
+		if(!is_string($oid) || empty($oid)) return;
+		
+		$this->_tj_org_oid = $oid;
+		$this->session->set_userdata('tj_org_oid',$oid);
+	}
+	
+	public function get_tj_org_oid(){
+		$this->_tj_org_oid = $this->session->userdata('tj_org_oid');
+		return $this->_tj_org_oid;
 	}
 	
 	/**

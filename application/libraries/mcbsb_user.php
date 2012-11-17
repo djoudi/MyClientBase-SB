@@ -19,7 +19,6 @@ class Mcbsb_User extends User {
 	private $ion_auth = null;
 	public $groups = array();
 	public $member_of_groups = array();
-	public $tj_org_oid = null;
 	public $colleagues = array();
 	
 	public function __construct(){
@@ -46,19 +45,18 @@ class Mcbsb_User extends User {
 		$this->preferred_language = $this->session->userdata('preferred_language');
 		$this->lastlogin = $this->session->userdata('old_last_login');
 		$this->authenticated_for_url = $this->session->userdata('authenticated_for_url');
-		$this->tj_org_oid = $this->session->userdata('tj_org_oid');
 		$this->colleagues = $this->session->userdata('colleagues');
 	}
 	
 	private function get_colleagues(){
 
-		if(is_null($this->tj_org_oid)) return false;
+		$oid = $this->mcbsb->get_tj_org_oid();
+		
+		if(is_null($this->mcbsb->get_tj_org_oid())) return false;
 		
 		$this->load->model('contact/mdl_contact');
 		$this->load->model('contact/mdl_person');
 		$contact = new Mdl_Person();
-		
-		$oid = $this->tj_org_oid;
 		
 		$input = array('filter' => '(&(oRDN='.$oid.')(enabled=TRUE))');
 		$rest_return = $contact->get($input,true);
@@ -115,11 +113,10 @@ class Mcbsb_User extends User {
 			//check that the tj_admin already set the organization
 			$this->load->model('tooljar/mdl_tooljar','tooljar');
 			$this->tooljar = new Mdl_Tooljar();
-			$this->tj_org_oid = $this->tooljar->get_my_tj_organization();
-			$this->session->set_userdata('tj_org_oid', $this->tj_org_oid);
+			$this->tooljar->get_my_tj_organization();
 			unset($this->tooljar);
 
-			$this->get_colleagues();
+			//$this->get_colleagues();
 		} else {
 			//TODO what happens if the tooljar module is not enabled?
 		}
