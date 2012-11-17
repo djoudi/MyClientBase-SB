@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-$config['organization_show_fields'] = array('o','oType','description','category','businessCategory','businessActivity','businessAudience','vatNumber','codiceFiscale','street','postalCode','l','st','c','postOfficeBox','physicalDeliveryOfficeName','preferredDeliveryMethod','oMobile','telephoneNumber','facsimileTelephoneNumber','oURL','omail','enabled');
+$config['organization_show_fields'] = array('o','oType','description','category','businessCategory','businessActivity','businessAudience','vatNumber','codiceFiscale','street','postalCode','l','st','c','postOfficeBox','physicalDeliveryOfficeName','preferredDeliveryMethod','oMobile','telephoneNumber','facsimileTelephoneNumber','oURL','omail','skypeID','otherPhone');
 $config['organization_attributes_aliases'] = array(
 				'o' => 'organization',
 				'oType' => 'organization_type',
@@ -30,8 +30,8 @@ $config['organization_default_values'] = array(
 				'facsimileTelephoneNumber' => '+39031',
 				'c' => 'Italia',
 				'category' => 'company',
-				'enabled' => 'TRUE',
 				'entryCreatedBy' => 'unknown',
 				'o' => 'unknown',
 				'oid' => '',
 );
+$config['organization_never_display_fields'] = array('adminUid','destinationIndicator','enabled','entryCreatedBy','entryCreationDate','entryUpdateDate','entryUpdatedBy','lastAssignmentDate','lastPurchaseDate','locRDN','memberUid','objectClass','oid','postalAddress','registeredAddress','searchGuide','seeAlso','userPassword','x121Address');

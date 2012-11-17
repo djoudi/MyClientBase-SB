@@ -12,10 +12,9 @@ class Google extends Admin_Controller {
         parent::__construct();
 
         $this->config->load('google',false,true);
+        
         //TODO loads the config file from the folder "config" contained in this module
         //$this->config->load('google', false, true, 'google');
-        
-        $this->enabled_modules = $this->mdl_mcb_modules->get_enabled();
         
         $this->config_items = array('google_contact_sync','google_domain','google_admin_email','google_admin_password');
     }
@@ -30,7 +29,8 @@ class Google extends Admin_Controller {
      	foreach ($this->config_items as $item_name) {
      		$data[$item_name] = $this->config->item($item_name);
      	}
-    	$this->plenty_parser->parse('settings.tpl', $data, false, 'smarty', 'google');
+     	$this->load->view('settings.tpl', $data, false, 'smarty','google');
+    	//$this->plenty_parser->parse('settings.tpl', $data, false, 'smarty', 'google');
     }
     
    
@@ -76,7 +76,14 @@ class Google extends Admin_Controller {
      			break;
        		}
      	}
-    	 
-    	return write_config($configfile, $this->config_items, true) ? true : false;
+
+     	//TODO add system message
+    	if(write_config($configfile, $this->config_items, true)){
+    		$this->mcbsb->system_messages->success = "Google settings have been saved";
+    	} else {
+    		$this->mcbsb->system_messages->success = "Google settings have not been saved";
+    	}
+    	
+    	redirect('/system_settings/#tab_Google');
     }    
 }

@@ -10,16 +10,16 @@
 				<img src="/layout/images/gold_star_20.jpg" style="width: 20px; margin-left: 10px;" />
 				<span style="font-size: 12px; margin-left: 3px;">({t}manager{/t})</span>
 				{/if}
+				<span style="padding: 10px; width: 300px; float: right; text-align: right; font-size: 13px;">
+					{if {preg_match pattern=$org->oid subject=$contact->oAdminRDN}} 
+						<a class="button" href="#" onClick="jqueryAssociate({ 'procedure':'personAdminOfOrganization','object_name':'organization','object_id':'{$org->oid}','related_object_name':'{$object_type}','related_object_id':'{$contact_id}','hash':'set_here_the_hash' })">{t}Remove administration{/t}</a>
+					{else}
+						<a class="button" href="#" onClick="jqueryAssociate({ 'procedure':'personAdminOfOrganization','object_name':'organization','object_id':'{$org->oid}','related_object_name':'{$object_type}','related_object_id':'{$contact_id}','hash':'set_here_the_hash' })">{t}Make administrator{/t}</a>
+					{/if}
+						<a class="button" href="#" onClick="jqueryDelete({ 'procedure':'deleteOrganizationMembership','object_name':'organization','object_id':'{$org->oid}','related_object_name':'{$object_type}','related_object_id':'{$contact_id}','hash':'set_here_the_hash' })">{t}Delete Association{/t}</a>
+				</span>
 			</h3>
-			<div style="padding: 10px; width: 300px;">
-				{if {preg_match pattern=$org->oid subject=$contact->oAdminRDN}} 
-					<a class="button" href="#" onClick="jqueryAssociate({ 'procedure':'personAdminOfOrganization','object_name':'organization','object_id':'{$org->oid}','related_object_name':'{$object_type}','related_object_id':'{$contact_id}','hash':'set_here_the_hash' })">{t}Remove administration{/t}</a>
-				{else}
-					<a class="button" href="#" onClick="jqueryAssociate({ 'procedure':'personAdminOfOrganization','object_name':'organization','object_id':'{$org->oid}','related_object_name':'{$object_type}','related_object_id':'{$contact_id}','hash':'set_here_the_hash' })">{t}Make administrator{/t}</a>
-				{/if}
-					<a class="button" href="#" onClick="jqueryDelete({ 'procedure':'deleteOrganizationMembership','object_name':'organization','object_id':'{$org->oid}','related_object_name':'{$object_type}','related_object_id':'{$contact_id}','hash':'set_here_the_hash' })">{t}Delete Association{/t}</a>
-			</div>
-			
+			<div style="clear: both;"></div>
 			<table>
 				{foreach $org->show_fields as $index => $property_name}
 					{if $org->$property_name != ""}

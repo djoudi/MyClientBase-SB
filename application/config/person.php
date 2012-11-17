@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-$config['person_show_fields'] = array('title','sn','givenName','codiceFiscale','homePostalAddress','mozillaHomePostalCode','mozillaHomeLocalityName','mozillaHomeState','mozillaHomeCountryName','mobile','homePhone','homeFacsimileTelephoneNumber','companyPhone','facsimileTelephoneNumber','mail','managerName','assistantName','assistantPhone','labeledURI','calendarURI','freeBusyURI','preferredLanguage','birthDate','enabled','acceptsCommercialCommunications','category','businessCategory','facebookURI','githubURI','googleplusURI','linkedinURI','twitterURI','dbId','note','userPassword','description','jpegPhoto');
+$config['person_show_fields'] = array('title','sn','givenName','codiceFiscale','homePostalAddress','mozillaHomePostalCode','mozillaHomeLocalityName','mozillaHomeState','mozillaHomeCountryName','mobile','homePhone','homeFacsimileTelephoneNumber','companyPhone','facsimileTelephoneNumber','mail','managerName','assistantName','assistantPhone','labeledURI','calendarURI','preferredLanguage','birthDate','acceptsCommercialCommunications','category','businessCategory','facebookURI','githubURI','googleplusURI','linkedinURI','twitterURI','dbId','note','description','jpegPhoto','youtubeURI','skypeID');
 $config['person_attributes_aliases'] = array(
 				'title' => 'title',
 				'sn' => 'last_name',
@@ -25,7 +25,6 @@ $config['person_attributes_aliases'] = array(
 				'freeBusyURI' => 'online_free-busy',
 				'preferredLanguage' => 'preferred_language',
 				'birthDate' => 'birthdate',
-				'enabled' => 'enabled',
 				'acceptsCommercialCommunications' => 'we_can_send_communications',
 				'category' => 'category',
 				'businessCategory' => 'business_category',
@@ -43,4 +42,12 @@ $config['person_default_values'] = array(
 				'homeFacsimileTelephoneNumber' => '+3902',
 				'mozillaHomeCountryName' => 'italy',
 				'category' => 'mycat',
+				'cn' => 'unknown',
+				'displayName' => 'unknown',
+				'entryCreatedBy' => 'unknown',
+				'fileAs' => 'unknown',
+				'givenName' => 'unknown',
+				'sn' => 'unknown',
+				'uid' => '',
 );
+$config['person_never_display_fields'] = array('audio','categories','cn','destinationIndicator','displayName','enabled','entryCreatedBy','entryCreationDate','entryUpdateDate','entryUpdatedBy','fileAs','initials','l','lastAssignmentDate','lastPurchaseDate','locRDN','mailer','manager','o','oAdminRDN','oRDN','objectClass','ou','photo','postalCode','radio','registeredAddress','seeAlso','street','st','tty','uid','userCertificate','userPKCS12','userSMIMECertificate','x500uniqueIdentifier','x121Address');

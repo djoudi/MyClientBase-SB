@@ -16,12 +16,7 @@ class System_Settings extends Admin_Controller {
 		if(!is_string($settings_view)) return false;
 		if(!is_null($tab_name) && !is_string($tab_name)) return false;
 		
-		//TODO fixme
-		if($module->module_name != 'Tooljar') {
-			$html = modules::run($settings_view);
-		} else {
-			$html = '';
-		}
+		$html = modules::run($settings_view);
 			
 		return array(
 				'path'			=>	$module->module_path,
@@ -91,6 +86,8 @@ class System_Settings extends Admin_Controller {
 	}
 
 	public function save(){
+		
+		//TODO I don't like it very much ... it's gonna save anything sent by post ...
 		foreach ($this->input->post() as $key => $value) {
 			$this->mcbsb->settings->save($key,$value);
 		}
@@ -122,23 +119,6 @@ class System_Settings extends Admin_Controller {
 		}
 
 	}
-
-	/*
-	//TODO maybe this will be handy in the future
-	function _core_save() {
-
-		foreach ($this->mdl_mcb_modules->core_modules as $module) {
-
-			if (isset($module->module_config['settings_save'])) {
-
-				modules::run($module->module_config['settings_save']);
-
-			}
-
-		}
-
-	}
-	*/
 
 }
 

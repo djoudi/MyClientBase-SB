@@ -10,10 +10,10 @@ class Mdl_Tooljar extends MY_Model {
 
 		parent::__construct();
 
-		if (!$this->mdl_mcb_modules->check_enable('tooljar')) {
-			//redirect('/contact');
-			return false;
-		}
+// 		if (!$this->mdl_mcb_modules->check_enable('tooljar')) {
+// 			//redirect('/contact');
+// 			return false;
+// 		}
 		
 		//loads the config file from the folder "config" contained in this module
 		$this->config->load('tooljar', false, true, 'tooljar');
@@ -31,8 +31,9 @@ class Mdl_Tooljar extends MY_Model {
         $this->load->model('contact/rest_return_object');
         $this->crr = new Rest_Return_Object();
         $host_sliced = explode('.', $_SERVER['HTTP_HOST']);
+        
         if(count($host_sliced) < 3) {
-        	$this->organization = 'acme';
+        	$this->organization = 'acme'; //this is for nitro dev environment
         } else {
         	$this->organization = $host_sliced[0];
         } 
@@ -74,4 +75,24 @@ class Mdl_Tooljar extends MY_Model {
 	
 		return $this->crr->data[0];
 	}	
+	
+	public function get_tj_admin_email(){
+		$this->rest->initialize(array('server' => $this->tooljar_server));
+		$method = 'get_tj_admin_email';
+		$input = array();
+		if($this->config->item('ce_key')) {
+			$input['ce_key'] = $this->config->item('ce_key');
+		} else {
+			return false;
+		}
+
+		$rest_return = $this->rest->get($method, $input, 'serialize');
+		
+		$this->crr->importCeReturnObject($rest_return);
+		
+		if($this->crr->has_errors) return false;
+		
+		return $this->crr->data['email'];
+		
+	}
 }

@@ -65,13 +65,31 @@ class Mdl_Contact extends MY_Model {
     public function get(array $input = null, $return_rest = true)
     {
     	//I need at least somethig to send as input to retrieve the contact
-    	if((is_null($input) || (count($input)==0)) && is_null($this->client_id)) return false;
+    	if(is_null($input) || (count($input)==0)) {
+    		if(is_null($this->client_id) && is_null($this->uid) && is_null($this->oid)){
+    			return false;
+    		}
+    	}
     	
 		//sets the contactengine key which allows to set the correct baseDN
     	if($this->config->item('ce_key')) $input['ce_key'] = $this->config->item('ce_key');
 
     	
-    	if(empty($input['filter'])) $input['filter'] = '(|(uid='.$this->client_id.')(oid='.$this->client_id.'))';
+    	if(!isset($input['filter']) || empty($input['filter'])) {
+    		
+    		if(is_null($this->uid) && is_null($this->oid)){
+    			$input['filter'] = '(|(uid='.$this->client_id.')(oid='.$this->client_id.'))';
+    		}
+    		
+    		if(!is_null($this->uid)){
+    			$input['filter'] = '(uid='.$this->uid.')';
+    		}
+    		
+    		if(!is_null($this->oid)){
+    			$input['filter'] = '(oid='.$this->oid.')';
+    		}
+    		
+    	}
     	
     	$this->rest->initialize(array('server' => $this->config->item('rest_server').'/exposeObj/'.$this->objName));
     	

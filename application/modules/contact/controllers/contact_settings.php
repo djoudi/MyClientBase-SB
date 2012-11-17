@@ -14,6 +14,7 @@ class Contact_Settings extends Admin_Controller {
 		parent::__construct();
 	
 		$this->load->model('mdl_contacts');
+	
 	}
 	
 	/**
@@ -87,10 +88,6 @@ class Contact_Settings extends Admin_Controller {
 	public function display_location()
 	{
 		$data = array();
-						
-// 		$obj = new Mdl_Location();
-// 		$obj->getProperties();
-// 		$obj->prepareShow();
 			
 		return $this->load->view('settings_location.tpl', $data, true, 'smarty','contact');
 	}	
@@ -111,16 +108,27 @@ class Contact_Settings extends Admin_Controller {
 		if(!is_object($obj)) return false;
 		if(!is_string($tpl) && !is_null($tpl)) return false;
 	
+		//the config file can be manually edit to set a list of LDAP attributes that will be never displayed
+		//in the configuration accordion. This is necessary because inetorg, core and cosine schema have 
+		//some particular fields that have few to do with MCBSB contact management.
+		//It's recomemmended to remove any field classified as LDAP RDN (Contact Engine can not handle errors on those fields)
+		$never_display_fields = $this->config->item($obj->objName.'_never_display_fields');
+		$properties = $obj->properties;
+		foreach ($properties as $property => $value) {
+			if(in_array($property, $never_display_fields)) unset($properties[$property]);
+		}
+
+		
 		//collects data for the tpl files
 		$data = array(
-				$obj->objName.'_all_attributes' => $obj->properties,
+				$obj->objName.'_all_attributes' => $properties, //$obj->properties,
 				$obj->objName.'_visible_attributes' => $obj->show_fields,
 				$obj->objName.'_aliases' => $obj->aliases,
 		);
 			
 		if(is_array($obj->properties) and is_array($obj->show_fields))
 		{
-			$data[$obj->objName.'_available_attributes'] = array_diff_key($obj->properties, array_flip($obj->show_fields));
+			$data[$obj->objName.'_available_attributes'] = array_diff_key($properties, array_flip($obj->show_fields));
 		} else {
 			$data[$obj->objName.'_available_attributes'] = array();
 		}
@@ -324,12 +332,18 @@ class Contact_Settings extends Admin_Controller {
 		 
 		//update the configuration file
 		$this->load->helper('configfile');
-		 
+		
+		$never_display_fields = $this->config->item($obj->objName.'_never_display_fields');
+		$this->config->set_item($obj->objName.'_never_display_fields',$never_display_fields);
 		$this->config->set_item($obj->objName.'_show_fields', $obj->show_fields);
 		$this->config->set_item($obj->objName.'_attributes_aliases', $obj->aliases);
 		$this->config->set_item($obj->objName.'_default_values', $obj->default_values);
 		
-		if(write_config($configfile, array($obj->objName.'_show_fields', $obj->objName.'_attributes_aliases', $obj->objName.'_hidden_fields',$obj->objName.'_default_values'),true))
+		if(write_config($configfile, array($obj->objName.'_show_fields', 
+											$obj->objName.'_attributes_aliases', 
+											$obj->objName.'_hidden_fields',
+											$obj->objName.'_default_values',
+											$obj->objName.'_never_display_fields'),true))
 		{
 			$obj->prepareShow();  //refreshes the object with the new values
 			$this->mcbsb->system_messages->success = 'Contact settings have been updated' ;
@@ -362,8 +376,8 @@ class Contact_Settings extends Admin_Controller {
 	
 	//this is used by mcbsb
 	//TODO should I remove this?
-	public function save()
+/* 	public function save()
 	{
 		return true;
-	}	
+	}	 */
 }

@@ -77,7 +77,11 @@
 	    	{* 'cn','o','mail','omail','mobile','oMobile','homePhone','telephoneNumber','labeledURI','oURL' *}
 	    	{assign 'url' value="/contact/details/uid/{$person->uid}"}
 	    	{* <td class="counter">{counter}</td> *}
-	    	<td>{a url=$url text=$person->cn|ucwords|truncate:25:"[..]":true}</td>
+	    	{if $person->enabled == 'TRUE'}
+	    		<td>{a url=$url text=$person->cn|ucwords|truncate:25:"[..]":true}</td>
+	    	{else}
+	    		<td><strike>{a url=$url text=$person->cn|ucwords|truncate:25:"[..]":true}</strike></td>	
+	    	{/if}
 			<td>{$person->mozillaHomeLocalityName|truncate:25:"[..]":true|default:'-'}</td>
 			<td style="font-size: 11px;">{$person->homePhone|default:'-'}</td>
 			<td style="font-size: 11px;">{$person->mobile|default:'-'}</td>
@@ -107,7 +111,11 @@
 	    <tr>
 	    	{assign 'url' value="/contact/details/oid/{$organization->oid}"}
 	    	{* <td class="counter">{counter}</td> *}
-	    	<td>{a url=$url text=$organization->o|ucwords|truncate:25:"[..]":true}</td>
+	    	{if $organization->enabled == 'TRUE'}
+	    		<td>{a url=$url text=$organization->o|ucwords|truncate:25:"[..]":true}</td>
+	    	{else}
+	    		<td><strike>{a url=$url text=$organization->o|ucwords|truncate:25:"[..]":true}</strike></td>
+	    	{/if}
 	    	<td>{$organization->l|truncate:25:"[..]":true|default:'-'}</td>
 	    	<td style="font-size: 11px;">{$organization->telephoneNumber|default:'-'}</td>
 	    	<td style="font-size: 11px;">{$organization->oMobile|default:'-'}</td>

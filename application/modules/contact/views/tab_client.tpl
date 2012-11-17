@@ -4,15 +4,13 @@
 	<h4>{t}Summary{/t}</h4>	
 	<p style="margin-top: 13px; border-top: 1px solid #ccc; padding-top: 5px;">		
 		{if isset($contact->uid)}
-			{if $contact->enabled == 'TRUE'}				
-				{if $contact->jpegPhoto}
-					{$src="data:image/jpeg;base64,{$contact->jpegPhoto}"}
-				{else}
-					{$src="/layout/images/no-face-100.png"}
-				{/if}
+					
+			{if $contact->jpegPhoto}
+				{$src="data:image/jpeg;base64,{$contact->jpegPhoto}"}
 			{else}
-				{$src="/layout/images/no-face-disabled-100.png"}
+				{$src="/layout/images/no-face-100.png"}
 			{/if}
+			
 		{else}
 			{$src="/layout/images/no-org-100.png"}
 		{/if}	
@@ -21,7 +19,7 @@
 	<p>
 		<h6>{t}Description{/t}:</h6>
 		{if $contact->description !=""}
-			<p>{$contact->description|wordwrap:45:" ":true}</p>
+			<p style="line-height: 18px; white-space: pre-wrap;">{$contact->description}</p>
 		{else}
 			{t}If you add a description for this contact then it will be displayed here{/t}
 		{/if}	
@@ -91,17 +89,17 @@
 						{/if}
 						
 						{if $property_name == "mail" or $property_name == "omail"}
-							<a href="mailto:{$contact->$property_name}">{$contact->$property_name|wordwrap:60:"<br/>":true}</a>
+							<a href="mailto:{$contact->$property_name}">{$contact->$property_name|truncate:45:"[..]":true}</a>
 							{$already_wrote=1}
 						{/if}	
 	
-						{if $property_name == "labeledURI" or $property_name == "oURL"}
-							<a href="{$contact->$property_name}" target="_blank">{$contact->$property_name|wordwrap:60:"<br/>":true}</a>
+						{if $property_name == 'oURL' || preg_match('/.*(?:URI)$/', $property_name)}
+							<a href="{$contact->$property_name}" target="_blank">{$contact->$property_name|truncate:35:"[..]":true}</a>
 							{$already_wrote=1}
 						{/if}
 	
 						{if $property_name=="note"}
-							{* skip the item. I take care of the note in the Summary *}
+							<p style="line-height: 18px; white-space: pre-wrap; max-width: 320px; padding-top: 5px; padding-bottom: 5px;">{$contact->$property_name}</p>
 							{$already_wrote=1}
 						{/if}				
 						
@@ -111,19 +109,19 @@
 						{/if}				
 	
 						{if $property_name=="managerName" && $contact->$property_name != ""}
-							<a href="/contact/search/{$contact->$property_name}">{$contact->$property_name}</a>
+							<a href="/contact/search/{$contact->$property_name}">{$contact->$property_name|truncate:45:"[..]":true}</a>
 							{$already_wrote=1}
 						{/if}
 																
 						{if $property_name=="assistantName" && $contact->$property_name != ""}
-							<a href="/contact/search/{$contact->$property_name}">{$contact->$property_name}</a>
+							<a href="/contact/search/{$contact->$property_name}">{$contact->$property_name|truncate:45:"[..]":true}</a>
 							{$already_wrote=1}
 						{/if}	
 						
 						{* /particular cases *}
 								
 						{if $already_wrote==0} 
-							{$contact->$property_name|wordwrap:60:"<br/>":true}
+							{$contact->$property_name|truncate:45:"[..]":true}
 						{/if}
 					</td>						
 				</tr>

@@ -22,6 +22,10 @@
 		<script type="text/javascript" src="/js/jquery-ui-1.9.1.js"></script>
 		<script type="text/javascript" src="/js/jquery.hotkeys.js"></script> {* provides shortcuts *}
 		<script type="text/javascript" src="/js/util.js"></script>
+		<script type="text/javascript" src="/js/jquery-bubbletip-1.0.6.js"></script>
+		<script type="text/javascript" src="/js/jquery.tubeplayer.js"></script>
+		<script type="text/javascript" src="/js/jquery.jcarousel.min.js"></script>
+		<script type="text/javascript" src="/js/password_strength_plugin.js"></script>
 		
 		{* global var language *}
 		<script type="text/javascript">
@@ -34,9 +38,69 @@
 		<script type="text/javascript">
 			$(document).ready(function(){
 				$('.datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
+
+				//videos stuff	
+				$("#hide_video").click(function() {
+					$("#current_video").tubeplayer("stop");
+					$("#video_section").hide();
+				});		
+			
+				$('.tj_videos').live('click', function (){
+					var video_id = $(this).attr("href");
+
+					
+					$("#current_video").tubeplayer({
+						autoPlay: true,
+						width: 853, // the width of the player
+						height: 480, // the height of the player
+						allowFullScreen: "false", // true by default, allow user to go full screen
+						initialVideo: video_id, // why tooljar
+						preferredQuality: "hd720",// preferred quality: default, small, medium, large, hd720
+						modestbranding: false,
+						loadSWFObject: false,
+						onPlay: function(id){}, // after the play method is called
+						onPlayerUnstarted: function(id){}, 
+						onPlayerCued: function(id){}, 
+						onPause: function(){}, // after the pause method is called
+						onStop: function(){}, // after the player is stopped
+						onSeek: function(time){}, // after the video has been seeked to a defined point
+						onMute: function(){}, // after the player is muted
+						onUnMute: function(){}, // after the player is unmuted
+						// Player State Change Specific Functionality
+						onPlayerUnstarted: function(){}, // when the player returns a state of unstarted
+						onPlayerEnded: function(){}, // when the player returns a state of ended
+						onPlayerPlaying: function(){}, //when the player returns a state of playing
+						onPlayerPaused: function(){}, // when the player returns a state of paused
+						onPlayerBuffering: function(){}, // when the player returns a state of buffering
+						onPlayerCued: function(){}, // when the player returns a state of cued
+						onQualityChange: function(quality){}, // a function callback for when the quality of a video is determined
+						// Error State Specific Functionality
+						onErrorNotFound: function(){}, // if a video cant be found
+						onErrorNotEmbeddable: function(){}, // if a video isnt embeddable
+						onErrorInvalidParameter: function(){} // if we've got an invalid param					
+					});
+					
+					$("#video_section").show();
+					
+					$("#current_video").tubeplayer("stop");
+					$("#current_video").tubeplayer("unmute");
+					$("#current_video").tubeplayer("cue", video_id);
+					$("#current_video").tubeplayer("play");
+
+					window.scrollTo(0,0);
+					
+					return false;				
+				});		
+
+			    $('#video_menu_carousel').jcarousel({
+			        vertical: true,
+			        scroll: 2
+			    });			
+			    		 
 			});		
 		</script>
 		{/literal}	
+	
 		
 		{if $environment == 'development'}
 		{literal}
@@ -62,16 +126,12 @@
 		{/literal}
 		{/if}
 		
-		{* <script src="/assets/jquery/jquery.maskedinput-1.2.2.min.js" type="text/javascript"></script> *}
-		{* <script src="/assets/jquery/util.js" type="text/javascript"></script> *}
-		{* <script src="/assets/jquery/superfish.js" type="text/javascript"></script> *}
-		{* <script src="/assets/jquery/supersubs.js" type="text/javascript"></script> *}
-		
-		
-		{* <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' /> *}
+
 
 	</head>
+
 	<body>
+
 	
 	
 	

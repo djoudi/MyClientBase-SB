@@ -1,12 +1,12 @@
 {if isset($contact)}
-	{if {preg_match pattern="dueviPerson" subject=$contact->objectClass}}
+	{if isset($contact->uid)}
 		{$contact_ref = $contact->cn}
 		{$contact_id = $contact->uid}
 		{$contact_id_key = "uid"}
 		{$object_type = 'person'}
 	{/if}		
 	
-	{if {preg_match pattern="dueviOrganization" subject=$contact->objectClass}}
+	{if isset($contact->oid)}
 		{$contact_ref = $contact->o}
 		{$contact_id = $contact->oid}
 		{$contact_id_key = "oid"}
@@ -18,10 +18,7 @@
 	//global vars
 	contact_id = "{$contact_id}";
 	object_type = "{$object_type}";
-</script>
-
-{literal}
-<script type="text/javascript">
+	
 	function shortcuts_ap(){
 		if(language == 'english' || language == 'italian'){
 	    	jQuery(document).bind('keydown', 'p',function (evt){
@@ -30,17 +27,13 @@
 		    	$('#last_name').val('');
 				return false; 
 			});
-		}
 
-		if(language == 'english' || language == 'italian'){
 	    	jQuery(document).bind('keydown', 'o',function (evt){
 		    	toggle_animate('add_organization','organization_name');
 		    	$('#organization_name').val('');
 				return false; 
 			});
-		}
 
-		if(language == 'english' || language == 'italian'){
 	    	jQuery(document).bind('keydown', 'a',function (evt){
 	    		toggle_animate('search_organization','input_search');
 		    	$('#input_search').val('');
@@ -51,74 +44,176 @@
 		//this will be Add Location
 		if(language == 'english'){
 	    	jQuery(document).bind('keydown', 'l',function (evt){
+	    		$('#button_add_location').trigger("click");
+				return false; 
+			});
+		}
+		if(language == 'italian'){
+	    	jQuery(document).bind('keydown', 's',function (evt){
+	    		$('#button_add_location').trigger("click");
 				return false; 
 			});
 		}		
+
+		//this will be Edit Profile
+		if(language == 'english'){
+	    	jQuery(document).bind('keydown', 'e',function (evt){
+	    		$('#button_edit_profile')[0].click();
+				return false; 
+			});
+		}
+		if(language == 'italian'){
+	    	jQuery(document).bind('keydown', 'm',function (evt){
+	    		$('#button_edit_profile')[0].click();
+				return false; 
+			});
+		}		
+
+		//this will Back to profile
+		if(language == 'english'){
+	    	jQuery(document).bind('keydown', 'b',function (evt){
+	    		$('#button_back_to_profile')[0].click();
+				return false; 
+			});
+		}		
+		if(language == 'italian'){
+	    	jQuery(document).bind('keydown', 't',function (evt){
+	    		$('#button_back_to_profile')[0].click();
+				return false; 
+			});
+		}		
+		
 	}
 	
 	$(document).ready(function() {
 
 		shortcuts_ap();	
 
-		$("#add_person_button").click(function(){
+		$("#button_toggle_enable").click(function(){
+			toggle_enable();
+		});
+
+
+
+		
+
+		
+
+		$("#button_add_person").click(function(){
 			toggle_animate('add_person','first_name');
 	    	$('#first_name').val('');
 	    	$('#last_name').val('');
 		});
 		
 		$('#add_person_submit').click(function(){
+			window.onbeforeunload = null;
 			return submit_person();
 		});
 		
 		$('#last_name').keypress(function(event){
 			
-			//this intercepts the press enter on the second input box of the person form and performs a submit
 			if (event.which == 13)
 			{
+				window.onbeforeunload = null;
 				return submit_person();
 			} else {
 			   return true;
 			}
 		});		
 
+
+
 		
-		//--------------
 		
-		
-		$("#add_organization_button").click(function(){
+	
+		$("#button_add_organization").click(function(){
 			toggle_animate('add_organization','organization_name', '5');
 			$('#organization_name').val('');
 		});
 
 		$('#add_organization_submit').click(function(){
+			window.onbeforeunload = null;
 			return submit_organization();
 		});
 				
 		$('#add_organization_form').submit(function() {
+			window.onbeforeunload = null;
 			return submit_organization();
 		});			
 
 		
-		//--------------
+
 		
 		
-		$("#associate_organization_button").click(function(){
+		
+		$("#button_associate_organization").click(function(){
 			toggle_animate('search_organization','input_search');
 			$('#input_search').val('');
 		});
 
 		$('#associate_organization_submit').click(function(){
+			window.onbeforeunload = null;
 			return search_organization();
 		});
 		
 		
 		$('#search_organization_form').submit(function() {
+			window.onbeforeunload = null;
 			return search_organization();
 		});
 
+
+
+
+
+		$('#password').passStrength({
+			userid: '#first_name',
+		});
+
+		$("#confirm_password").keyup(function(){
+
+			if($('#confirm_password').val() == "") {
+				$('#no_match_password').hide();
+				$('#match_password').hide();
+				return false;
+			}
+			
+			if( $('#password').val() != $('#confirm_password').val()){
+				$('#match_password').hide();
+				$('#no_match_password').show();
+				return false;	
+			} else {
+				$('#no_match_password').hide();
+				$('#match_password').show();
+				return false;
+			}
+		});
+		
+		$("#button_set_password").click(function(){
+			toggle_animate('set_password','password');
+	    	$('#password').val('');
+	    	$('#confirm_password').val('');
+		});
+		
+		$('#set_password_submit').click(function(){
+			window.onbeforeunload = null;
+			return submit_password();
+		});
+		
+		$('#confirm_password').keypress(function(event){
+			
+			if (event.which == 13)
+			{
+				window.onbeforeunload = null;
+				return submit_password();
+			} else {
+			   return true;
+			}
+		});				
+
 	});
 </script>
-{/literal}
+
 
 	
 	<h4>{t}Actions panel{/t}</h4>
@@ -126,12 +221,12 @@
 	<ul class="ap">
 
 		<li class="ap">
-			<a class="button" id="add_person_button" href="#">
+			<a class="button" id="button_add_person" href="#">
 				{if $language == 'english'}
 					{t u=7}Add a person{/t}
 				{/if}
 				{if $language == 'italian'}
-					{t u=14}Add a person{/t}
+					{t u=10}Add a person{/t}
 				{/if}				
 			</a>
 			<div id="add_person" title="Form" style="display: none;">		
@@ -152,12 +247,12 @@
 		</li>
 		
 		<li class="ap">
-			<a class="button" id="add_organization_button" href="#" >
+			<a class="button" id="button_add_organization" href="#" >
 				{if $language == 'english'}
 					{t u=8}Add an organization{/t}
 				{/if}
 				{if $language == 'italian'}
-					{t u=14}Add an organization{/t}
+					{t u=10}Add an organization{/t}
 				{/if}						
 			</a>
 			<div id="add_organization" title="Form" style="display: none;">
@@ -188,16 +283,17 @@
 	</ul>
 
 
-{if isset($contact_id)}
-	<hr>
+{if isset($contact_id)  && $contact->enabled == 'TRUE'}
+	
 	<ul class="ap">
-		
+		<hr style="margin-top: 10px; margin-bottom: 10px;"/>
+			
 		{if !$profile_view}
-			<li class="ap"><a class="button" id="back_to_profile" href="/contact/details/{$contact_id_key}/{$contact_id}">{t}Back to profile{/t}</a></li>
+			<li class="ap"><a class="button" id="button_back_to_profile" href="/contact/details/{$contact_id_key}/{$contact_id}">{t u=1}Back to profile{/t}</a></li>
 		{/if}
 		
 		{if $profile_view && $contact_id != ""}
-			<li class="ap"> <a class="button" id="edit_profile" href="/contact/form/{$contact_id_key}/{$contact_id}">{t}Edit profile{/t}</a></li>
+			<li class="ap"> <a class="button" id="button_edit_profile" href="/contact/form/{$contact_id_key}/{$contact_id}">{t u=1}Edit profile{/t}</a></li>
 		{/if}
 		
 		{if $contact->enabled=='TRUE'}
@@ -205,13 +301,13 @@
 				<li class="ap">
 					{assign u 5}
 					{if $language == 'italian'} {assign u 10} {/if}
-					<a class="button" href="#" onClick="jqueryForm({ 'form_type':'form','object_name':'location','related_object_name':'{$object_type}','related_object_id':'{$contact_id}','hash':'set_here_the_hash' })">{t u=$u}Add location{/t}</a>
+					<a class="button" id="button_add_location" href="#" onClick="jqueryForm({ 'form_type':'form','object_name':'location','related_object_name':'{$object_type}','related_object_id':'{$contact_id}','hash':'set_here_the_hash' })">{t u=$u}Add location{/t}</a>
 				</li>
 			{/if}
 			
 			{if $object_type == 'person'}
 			<li class="ap">
-				<a class="button" id="associate_organization_button" href="#">{t u=1}Associate Organization{/t}</a>
+				<a class="button" id="button_associate_organization" href="#">{t u=1}Associate Organization{/t}</a>
 				<div id="search_organization" title="Form" style="display: none;">
 					<form id="search_organization_form" style="margin-top: 15px; padding: 0px;">
 						<dl style="margin: 0px; padding: 0px; height: 30px;">
@@ -244,16 +340,67 @@
 				</form>
 			</li>
 			 -->
-		{/if}						
+		{/if}	
+		
+		{if $profile_view && $object_type == 'person' && $contact_id != "" && $contact->enabled == 'TRUE'}
+			<li class="ap">
+				<a class="button" id="button_set_password" href="#">{t}Set password{/t}</a>
+				<div id="set_password" title="Form" style="display: none;">		
+					<form id="set_password_form" style="margin-top: 15px; padding: 0px;">
+					{if $object_type=='person'}
+						<input type="hidden" id="contact_uid" name="uid" value="{$contact_id}"/>
+						<input type="hidden" id="contact_email" name="email" value="{$contact->mail}"/>
+					{/if}
+					{if $object_type=='organization'}
+						<input type="hidden" id="contact_oid" name="oid" value={$contact_id}/>
+						<input type="hidden" id="contact_email" name="email" value="{$contact->omail}"/>
+					{/if}
+					
+						<dl style="margin: 0px; padding: 0px; height: 35px;">
+							<dt style="margin: 0px; padding: 0px; padding-right: 5px; height: 30px; width: 50px;">
+								<label style="font-size: 10px; margin: 0px; padding: 0px;">{t}Password{/t}:</label>
+							</dt>
+							<dd style="margin: 0px; padding: 0px;">
+								<input title="{t}password{/t}" size="20" type="password" name="userPassword" id="password" style="width: 120px;" />
+							</dd>
+						</dl>
+						<dl style="margin: 0px; padding: 0px; height: 35px;">
+							<dt style="margin: 0px; padding: 0px; padding-right: 5px; height: 30px; width: 50px;">
+								<label style="font-size: 10px; margin: 0px; padding: 0px;">{t}Confirm{/t}:</label>
+							</dt>
+							<dd style="margin: 0px; padding: 0px;">
+								<input title="{t}last name{/t}"  size="20" type="password" name="confirm_password" id="confirm_password" style="width: 120px;"/>
+								<span id="no_match_password" class="pwdtest badPass" style="display: none;"><span>{t}No match{/t}</span></span>
+								<span id="match_password" class="pwdtest strongPass" style="display: none;"><span>{t}Matches{/t}</span></span>								
+							</dd>
+						</dl>
+						<dl>
+							<a style="float: right; margin-top: 5px;" class="button" id="set_password_submit" href="#">{t}Ok{/t}</a>
+							<div style="clear: both;"></div>						
+						</dl>
+					</form>
+				</div>
+			</li>
+		{/if}	
 	</ul>
-
 {/if}
 
-{if isset($contact_id)}
-	{if $tooljar_module_is_enabled && $object_type == 'organization'}
-	
-		<ul class="ap" >
+{if $contact_id != ""}
+	<ul class="ap">
+		<hr style="margin-top: 10px; margin-bottom: 10px;"/>
+		{if $tooljar_module_is_enabled && $object_type == 'organization' && $contact->enabled == 'TRUE'}
 			<li class="ap"><a class="button" href="#" onClick="set_as_my_tj_organization({ 'oid':'{$contact_id}','hash':'set_here_the_hash' })">{t}This is my organization{/t}</a></li>
-		</ul>
-	{/if}
+		{/if}
+		
+		{if $profile_view}
+			<li class="ap">
+				{if $contact->enabled == 'TRUE'}
+					{assign var="label" value="Disable"}
+				{else}
+					{assign var="label" value="Enable"}
+				{/if}
+				<a class="button" id="button_toggle_enable" href="#">{t}{$label}{/t}</a>
+			</li>
+		{/if}
+	</ul>	
 {/if}

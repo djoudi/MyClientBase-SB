@@ -6,8 +6,9 @@ class Ajax extends Admin_Controller {
 
 	private $callback;
 	
-    function __construct() {
+    public function __construct() {
 		
+    	$a = '';
         parent::__construct();
 
         global $callback;
@@ -831,5 +832,116 @@ class Ajax extends Admin_Controller {
     		$to_js['message'] = 'No ToolJar organization has been set yet';
     	}
     	$this->output($to_js);
-    }    
+    }
+
+    public function update_password() {
+    
+    	$message = 'Unknown contact id';
+    	if(!$this->input->post('uid')) {
+    		$to_js['status'] = false;
+    		$to_js['message'] = $message;
+    		$this->output($to_js);
+    	}
+    
+    	$message = 'Password can not be empty';
+    	if(!$this->input->post('password')) {
+    		$to_js['status'] = false;
+    		$to_js['message'] = $message;
+    		$this->output($to_js);
+    	}
+    	if(!$this->input->post('confirm_password')) {
+    		$to_js['status'] = false;
+    		$to_js['message'] = $message;
+    		$this->output($to_js);
+    	}
+    
+    	if($this->input->post('password') != $this->input->post('confirm_password')) {
+    		$message = 'Passwords do not match';
+    		$to_js['status']= false;
+    		$to_js['message'] = $message;
+    		$this->output($to_js);
+    	}
+    	 
+    	if(strlen($this->input->post('password')) < 7 ) {
+    		$message = 'Passwords is too short';
+    		$to_js['status'] = false;
+    		$to_js['message'] = $message;
+    		$this->output($to_js);
+    	}
+    
+    	$input = array();
+    	$contact = new Mdl_Person();
+   		$contact->uid = $this->input->post('uid');
+ 
+    	if($contact->get(null,false)){
+    		$contact->userPassword = '{SHA}'.base64_encode(pack("H*",sha1($this->input->post('password'))));
+    		if($contact->save(false)){
+    			$to_js['status'] = true;
+    			$to_js['message'] = 'Password successfully set for ' . $contact->cn;
+    			$this->output($to_js);    			
+    		}
+    	}
+    	
+    	$to_js['status'] = false;
+    	$to_js['message'] = 'Password not set for ' . $contact->cn;
+    	$this->output($to_js);
+    	 
+    }
+    
+    public function toggle_enable() {
+    
+    	$message = 'Unknown contact';
+    	if(!$this->input->post('contact_id') || !$this->input->post('object_type')) {
+    		$to_js['status'] = false;
+    		$to_js['message'] = $message;
+    		$this->output($to_js);
+    	}
+        
+    	$message = 'Unknown object';
+    	if($this->input->post('object_type') != "person" && $this->input->post('object_type') != "organization" ) {
+    		$to_js['status'] = false;
+    		$to_js['message'] = $message;
+    		$this->output($to_js);
+    	}
+    	 
+    	$person = false;
+    	if($this->input->post('object_type') == 'person') {
+    		$person = true; 
+    	} 
+    	    	 
+    	$input = array();
+    	$to_js = array();
+
+    	if($person) {
+	    	$contact = new Mdl_Person();
+	    	$contact->uid = $this->input->post('contact_id');
+    	} else {
+    		$contact = new Mdl_Organization();
+    		$contact->oid = $this->input->post('contact_id');
+    	}
+    	 
+    	if(is_object($contact) && $contact->get(null,false)){
+
+    		$name = $person ? $contact->cn : $contact->o;
+    		
+    		if($contact->enabled == 'TRUE') {
+    			$contact->enabled = 'FALSE';
+    			$to_js['message'] = $name . ' has been disabled';
+    		} else {
+    			$contact->enabled = 'TRUE';
+    			$to_js['message'] = $name . ' has been enabled';
+    		}
+  
+    		if($to_js['status'] = $contact->save(false)){
+    			$this->output($to_js);
+    		}
+    	}
+    	 
+    	$to_js['status'] = false;
+    	$to_js['message'] = 'Error while enabling or disabling ' . $name;
+    	$this->output($to_js);
+    
+    }
+    
+    
 }

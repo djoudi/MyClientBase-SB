@@ -44,10 +44,16 @@ class Mcbsb  extends CI_Model {
 		
 		$this->_initialize();
 		
+		$this->_refresh_modules();
+		
         if(!$this->user->logged_in()){
         	//check if segments have login to avoid infinite loop
         	if(!in_array('login',$this->uri->segment_array())) redirect('/login');
         }
+        
+/*         if($this->user->is_tj_admin()){
+
+        } */
         
         //this check is required to increase security in a multi hosting environment where different urls
         //point to different installations of MCBSB
@@ -65,7 +71,6 @@ class Mcbsb  extends CI_Model {
         
         $this->_load_language();
 		
-        $this->_refresh_modules();
                 
 		$a = '';
 	}
@@ -279,12 +284,13 @@ class Mcbsb  extends CI_Model {
 	private function _set_top_menu(){
 		
 		//adds mandatory items for top menu
-		$this->_modules['top_menu'][] = array(
-				'item_name' => 'Your profile',
-				'item_link' => '/contact/details/uid/'.$this->user->id,
-				'item_selected' => false,
-		);
-				
+/* 		if(!$this->user->is_tj_admin){
+			$this->_modules['top_menu'][] = array(
+					'item_name' => 'Your profile',
+					'item_link' => '/contact/details/uid/'.$this->user->id,
+					'item_selected' => false,
+			);
+		}		 */
 		$this->_modules['top_menu'][] = array(
 				'item_name' => 'System Settings',
 				'item_link' => '/system_settings',

@@ -19,8 +19,6 @@ class Tooljar extends Admin_Controller {
 	}
 	
 	public function index(){
-		$oid = '123';
-		
-		$this->mcbsb->tooljar->set_as_tj_organization($oid);
+		redirect('/');
 	}
 }

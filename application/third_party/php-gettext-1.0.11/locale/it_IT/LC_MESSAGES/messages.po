@@ -527,8 +527,8 @@ msgstr "Aggiungi Modello Ricevuta Pagamento"
 msgid "Confirm password"
 msgstr "Conferma password"
 
-msgid "By enabling Google Contacts synchronization, all the contacts set in MCBSB will be synchronized with you Google Account"
-msgstr "Abilitando la sincronizzazione dei Google Contacts, tutti i contatti salvati in MCBSB saranno sincronizzati con il tuo Google Account"
+msgid "By enabling Google Contacts synchronization, all the contacts will be synchronized with you Google Account"
+msgstr "Abilitando la sincronizzazione dei Contatti Google, tutti i contatti saranno sincronizzati con il tuo Google Account"
 
 msgid "for further information"
 msgstr "per ulteriori informazioni"
@@ -542,8 +542,8 @@ msgstr "qui"
 msgid "Email autocomplete when you write a new email"
 msgstr "Autocompletamento dell'email quando ne scrivi una nuova"
 
-msgid "This will provide"
-msgstr "Questo ti offrirá"
+msgid "Google Contacts synchronization will provide"
+msgstr "La sincronizzazione dei Contatti Google ti offrirá"
 
 msgid "Possibility to import any business contact into your personal contacts. Consequently you'll find all your personal contacts inside you mobile phone address book"
 msgstr "Possibilitá di importare qualunque contatto aziendale nei tuoi contatti personali. Di conseguenza troverai tutti i tuoi contatti personali nella rubrica del tuo cellulare"
@@ -563,11 +563,11 @@ msgstr "Possibilitá di usare"
 msgid "to connect gadgets, applications, and spreadsheets to your data"
 msgstr "per connettere gadgets, applicazioni e fogli di calcolo ai tuoi dati"
 
-msgid "Enable Google contacts synchronization"
-msgstr "Abilitare la sincronizzazione dei Google Contacts"
+msgid "Enable synchronization"
+msgstr "Abilitare sincronizzazione"
 
-msgid "Google business domain"
-msgstr "Dominio aziendale di Google"
+msgid "Google domain"
+msgstr "Dominio Google"
 
 msgid "Admin email"
 msgstr "Email amministratore"
@@ -1035,7 +1035,7 @@ msgid "Save settings"
 msgstr "Salva impostazioni"
 
 msgid "Application"
-msgstr "Appliacazione"
+msgstr "Applicazione"
 
 msgid "Person"
 msgstr "Persona"
@@ -1052,4 +1052,8 @@ msgstr "L'oggetto"
 msgid "can have some attributes prefilled (totally or partially) so that every newly created contact will have the values specified in this form"
 msgstr "puó avere alcuni attributi precompilati (totalmente o parzialmente) in modo che ogni nuovo contatto avrá i valori specificati in questo form"
 
- 
+msgid "Hide video"
+msgstr "Nascondi video"
+
+msgid "Go"
+msgstr "Vai" 

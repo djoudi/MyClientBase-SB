@@ -17,8 +17,9 @@ CREATE TABLE `groups` (
 #
 
 INSERT INTO `groups` (`id`, `name`, `description`) VALUES
-	(1,'admin','Administrator'),
-	(2,'members','General User');
+	(1,'tj_admin','Tooljar Administrator'),
+	(2,'admin','Administrator'),
+	(3,'members','User');
 
 
 
@@ -95,6 +96,7 @@ ALTER TABLE  `users` CHANGE  `id`  `id` MEDIUMINT( 8 ) UNSIGNED NULL;
 ALTER TABLE  `users` CHANGE  `id`  `id` INT( 20 ) UNSIGNED NOT NULL DEFAULT  '0';
 ALTER TABLE  `users` ADD  `preferred_language` VARCHAR( 50 ) NULL DEFAULT  'english' AFTER  `phone`;
 TRUNCATE TABLE `users`;
+ALTER TABLE `users_groups` CHANGE `user_id` `user_id` INT( 20 ) UNSIGNED NOT NULL;
 TRUNCATE TABLE `users_groups`;
 
 DROP TABLE IF EXISTS `mcb_users`;

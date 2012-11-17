@@ -57,9 +57,11 @@
 		</form>
 		</div>
 		
-		{if $errors}
+		{if count($errors) > 0}
 		<div class="box b_dark_red" style="color: white; min-height: 25px; margin-top: 5px;text-align: center; padding-top: 5px; font-weight: bold;">
-			{t}{$errors}{/t}
+			{foreach $errors as $key => $error}
+				<p>{t}{$error}{/t}</p>
+			{/foreach}
 		</div>
 		{/if}
 	</div>

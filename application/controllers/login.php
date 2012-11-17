@@ -18,29 +18,44 @@ class Login extends CI_Controller {
     	$saved_captcha = strtolower($this->session->userdata('captcha'));
     	 
     	if($posted_captcha == $saved_captcha) return true;
-    	
-    	$this->form_validation->set_message('check_captcha', 'Wrong captcha');
+  
     	return false;	
     }
     
     public function index() {
+    	$this->login();
+    }
+    
+    public function login() {
+    	
+    	$this->form_validation->set_error_delimiters('|', '');
     	
     	$this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[6]|max_length[50]|valid_email');
     	$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]|max_length[50]');
-    	$this->form_validation->set_rules('captcha', 'Captcha', 'trim|required|min_length[5]|max_length[5]|callback_check_captcha');
-
+    	$this->form_validation->set_rules('captcha', 'Captcha', 'trim|required|min_length[5]|max_length[5]'); // |callback_check_captcha
+    	
     	$data = array();
+    	$data['errors'] = array();
     	
     	if ($this->form_validation->run() == TRUE)
     	{
-       		if($this->mcbsb->user->login($this->input->post('username'),$this->input->post('password'),true))	{
-       			redirect('/contact');
-       		} 
+    		if(!$this->check_captcha()){
+    			$data['errors'][] = 'Wrong captcha';
+    		} else {    		    		
+	       		if($this->mcbsb->user->login($this->input->post('username'),$this->input->post('password'),true))	{
+	       			redirect('/contact');
+	       		} else {
+	       			$data['errors'][] = 'Wrong credentials';
+	       		}
+    		}
     	}
     	
     	//set an error
-    	if($this->input->post('username') || $this->input->post('password')) $data['errors'] = 'Wrong credentials';
-    	   
+    	if($this->input->post('username') || $this->input->post('password')) {
+    		//adds validation errors
+    		$data['errors'] = array_merge($data['errors'], array_filter(explode('|', validation_errors())));
+    	}
+    	      	
     	//adds captcha
     	$this->load->helper('captcha');
     	$captcha = rand_string(5);

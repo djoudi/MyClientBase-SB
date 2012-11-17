@@ -7,6 +7,13 @@
 {include file="$top_file"}
 {include file="$top_menu_file"}
 
+<script type="text/javascript">
+
+	$(window).bind('beforeunload', function() {
+		return "You have unsaved changes";
+	})
+</script>
+
 {literal}
 <script type="text/javascript">
 
@@ -19,48 +26,64 @@
 	function extractLast( term ) {
 	    return split( term ).pop();
 	}
+
+	function show_validation_icon(valid, element_id, message){
+		if(valid){
+			$('#validation_' + element_id).html('<img src="/layout/images/success.png" />');
+		} else {
+			$('#validation_' + element_id).html('<img src="/layout/images/error.png" /> ' + message);
+		}		
+	}
+
 	
 	$(document).ready(function() {
+
+		$("[id^=a_autocomplete_]").each(function(){
+			var item_num = this.id.split('_');
+			item_num = item_num[2];
+			$('#'+this.id).bubbletip($('#tip_autocomplete_'+item_num), { deltaDirection: 'right', calculateOnShow: true });
+		});
 		
 		$('.phone').keyup(function() {
 			var phone = $(this).val();
-			if(phone == '') return false;
+			if(phone == '') {
+				$('#validation_' + $(this).attr("id")).html('');
+				return false;
+			}
 			valid = validate_phone(phone);
-			if(valid){
-				$('#validation_' + $(this).attr("id")).html('<img src="/layout/images/success.png" />');
-			} else {
-				$('#validation_' + $(this).attr("id")).html('<img src="/layout/images/error.png" /> Standard: +{country_code}{prefix}{phone_number} Ex: +3906123456789');
-			}
+			show_validation_icon(valid, $(this).attr("id"), 'Standard: +{country_code}{prefix}{phone_number} Ex: +3906123456789');
 		});
 
-		$('.url').keyup(function() {
+		$('.url').bind("keyup input paste", function() {
 			var url = $(this).val();
-			if(url == '') return false;
-			valid = validate_url(url);
-			if(valid){
-				$('#validation_' + $(this).attr("id")).html('<img src="/layout/images/success.png" />');
-			} else {
-				$('#validation_' + $(this).attr("id")).html('<img src="/layout/images/error.png" /> Ex: "http://www.website.com"');
+			if(url == '') {
+				$('#validation_' + $(this).attr("id")).html('');
+				return false;
 			}
+			valid = validate_url(url);
+			show_validation_icon(valid, $(this).attr("id"), 'Ex: http://www.website.com');
 		});
-
+				
 		$('.email').keyup(function() {
 			var email = $(this).val();
-			if(email == '') return false;
-			valid = validate_email(email);
-			if(valid){
-				$('#validation_' + $(this).attr("id")).html('<img src="/layout/images/success.png" />');
-			} else {
-				$('#validation_' + $(this).attr("id")).html('<img src="/layout/images/error.png" /> Ex: "john@website.com"');
+			if(email == '') {
+				$('#validation_' + $(this).attr("id")).html('');
+				return false;
 			}
+			valid = validate_email(email);
+			show_validation_icon(valid, $(this).attr("id"), 'Ex: john@website.com');
 		});
 		
 		addAutoComplete('#businessCategory');
 		addAutoComplete('#businessActivity');
 		addAutoComplete('#businessAudience');		 
 		addAutoComplete('#category');
-		addAutoComplete('#preferredLanguage');
-						
+		//addAutoComplete('#preferredLanguage');
+
+		$('#contact_save').live("click", function() {			
+			window.onbeforeunload = null;
+			$('#form_contact').submit();
+		});				
 	});
 
 </script>
@@ -104,7 +127,7 @@
 	{if $property == "businessAudience"}{$fields[$property]['autocomplete'] = true}{/if}
 	{if $property == "businessCategory"}{$fields[$property]['autocomplete'] = true}{/if}
 	{if $property == "category"}{$fields[$property]['autocomplete'] = true}{/if}
-	{if $property == "preferredLanguage"}{$fields[$property]['autocomplete'] = true}{/if}
+	{*{if $property == "preferredLanguage"}{$fields[$property]['autocomplete'] = true}{/if}*}
 		
 	
 	{* at the end of the loop the array "fields" will contain all the items and values for the form *}
@@ -203,7 +226,7 @@
 		{/if}
 		
 							
-		<form method="post" action={$form_url} {$form_addon} style="padding-bottom: 20px; padding-left: 10px; padding-right: 10px; margin-top: 10px;">
+		<form id="form_contact" method="post" action={$form_url} {$form_addon} style="padding-bottom: 20px; padding-left: 10px; padding-right: 10px; margin-top: 10px;">
 	
 		{* <pre>{$fields|print_r}</pre> *} 
 		
@@ -251,7 +274,7 @@
 						</dd>
 					{else}
 						<dd>
-							
+							{$item_button=''}
 							{$field_value=$fields[$property]["value"]}
 							
 							{if $fields[$property]["type"]=="checkbox"}
@@ -274,6 +297,9 @@
 									{assign class 'class="url"'}
 									{$fields[$property]["max_length"] = 254}
 									{$fields[$property]["max_size"] = $max_size}
+									{if $field_value!=""}
+										{$item_button="<a href=\"{$field_value}\" target=\"_blank\" class=\"button\">{t}Go{/t}</a>"}
+									{/if}
 								{/if}						
 								
 								{if $property == 'mail' || $property == 'omail'}
@@ -287,8 +313,20 @@
 								{*{$property} {$class} *}
 								
 								<input {$class} style="margin: 0px;" title="{t}{$fields[$property]["desc"]}{/t}  ({$fields[$property]["max_length"]} {t}char.{/t})" maxlength="{$fields[$property]["max_length"]}" size="{$fields[$property]["max_size"]}" type="{$fields[$property]["type"]}" name="{$property}" id="{$property}" value="{$field_value}" {$disabled} /> 
-								{if $fields[$property]["autocomplete"]}<img class="multivalue" alt="{t}This field is multivalue{/t}" src="/layout/images/autocomplete.png" />{/if}
+								{if $fields[$property]["autocomplete"]}
+									{$num={counter}}
+									<a id="a_autocomplete_{$num}" href="#">
+										<img alt="{t}This field is multivalue and autocomplete{/t}" src="/layout/images/question_mark.png" />
+									</a>
+									<div id="tip_autocomplete_{$num}" style="display: none;">
+										<p style="font-weight: bold;">{t}Autocomplete field{/t}</p>
+										<p style="margin-top: 5px;">{t}This field can contain multiple values: it will use the "comma" as a separator between value.{/t}</p>
+										<p style="margin-top: 5px;">{t}When you type, it will also show you values previously used for this field.{/t}</p>
+										<p style="margin-top: 5px;">{t}If you type a new value and then save the form, the new value will be available for all the other contacts{/t}</p>
+									</div>
+								{/if}
 								<span id="validation_{$property}" style="font-size: 11px;"></span>{* validation message container: do not remove *}
+								{$item_button}
 								
 							{/if}
 							
@@ -304,7 +342,6 @@
 									{$focus_set = true}
 								{/if}
 							{/if}
-							
 						</dd>
 					{/if}
 				</dl>										
@@ -313,8 +350,8 @@
 
 		<dl style="padding-top: 20px;">
 			<span style="color: red;">*</span> <span style="text-size: 12px; margin-bottom: 5px;">{t}means mandatory field{/t}</span>
-			<input class="button" style="float: right;  margin-right: 20px;" type="submit" id="contact_save"  name="contact_save" value="{t}Save{/t}" />
-			{* <input class="uibutton" style="margin-top: 10px; margin-right: 10px;" type="reset" id="btn_cancel"  name="btn_cancel" value="{t}cancel{/t}" /> *}
+			<input type="hidden" name="contact_save" value="true" />
+			<a class="button" href="#" style="float: right;  margin-right: 20px;" id="contact_save">{t}Save{/t}</a>
 		</dl>
 		
 		</form>

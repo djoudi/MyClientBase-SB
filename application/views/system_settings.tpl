@@ -147,7 +147,7 @@
 					
 					<div style="clear: both;"></div>
 					
-					<input  class="button" style="float: right; margin-top: 10px; margin-right: 10px;" type="submit" name="btn_save_settings" value="{t}Save settings{/t}" />
+					<input  class="button" style="float: right; margin-top: 10px; margin-right: 10px;" type="submit" name="btn_save_settings" value="{t}Save{/t}" />
 					
 					<div style="clear: both;"></div>
 				</form>

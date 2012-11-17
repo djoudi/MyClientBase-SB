@@ -112,6 +112,95 @@ function search_organization(){
 	return false;
 }
 
+function check_password(password,confirm_password,email){
+	
+	if(password != confirm_password) {
+		show_message('Passwords do not match','error');
+		return false;
+	}	
+	 
+	if(password == email) {
+		show_message('Your email can not be your password','error');
+		return false;		
+	}
+	
+	var option = {}; 
+	strength = $.fn.teststrength(password,email,option);
+	
+	if(strength != "Good" && strength != "Strong") {
+		show_message('Password is not strong enough','error');
+		return false;
+	}
+	
+	return true;
+}
+
+function submit_password(){
+
+	var email = $('#contact_email').val();
+	if(!email) {
+		show_message('A password can be set only if the contact has an email set.','error');
+		return false;
+	}
+
+	console.log('email ' + email);
+	
+	var uid = $('#contact_uid').val();
+	var password = $('#password').val();
+	var confirm_password = $('#confirm_password').val();
+	
+	if(!check_password(password,confirm_password,email)) return false;
+	
+	$.ajax({
+		async: true,
+		type: 'POST',
+		dataType : 'jsonp',
+		url : '/contact/ajax/update_password',
+		data: {
+			uid: uid,
+			password: password,
+			confirm_password: confirm_password,
+			},
+		success : function(json){
+			if(json.status) {
+				toggle_animate('set_password','password');
+				show_message(json.message,'success');
+				return false;
+			} else {
+				show_message(json.message,'error');
+			}
+		}, 
+		error: errorCallback,		
+	});
+}
+
+function toggle_enable(){
+	var agree=confirm("Are you sure ?");
+	if (agree)
+	{			
+		$.ajax({
+			async: true,
+			type: 'POST',
+			dataType : 'jsonp',
+			url : '/contact/ajax/toggle_enable',
+			data: {
+				contact_id: contact_id,
+				object_type: object_type,
+				},
+			success : function(json){
+				if(json.status) {
+					show_message(json.message,'success');
+					window.setTimeout(function(){location.reload()},1000);
+					return false;
+				} else {
+					show_message(json.message,'error');
+				}
+			}, 
+			error: errorCallback,		
+		});
+	}
+}
+
 function retrieveForm(form) {
 
 	var dataObj = {};
@@ -551,5 +640,28 @@ function addAutoComplete(input){
 			return false;
 		}				
 	});			
+		
 }
 
+function addZero(i)
+{
+	if (i<10){
+		i="0" + i;
+	}
+	return i;
+}
+
+function show_message(message,type){
+	
+	var now = new Date();
+	var current_time = addZero(now.getHours())+':'+addZero(now.getMinutes())+':'+addZero(now.getSeconds());
+	var css_class = '';
+	
+	if(type=='error') css_class = 'dark_red';
+	if(type=='success') css_class = 'dark_green';
+	
+	message = '<li class="system_message ' + css_class + '">' + current_time + ' - '+ message + '</li>';
+	
+	$('#notification_area_messages').prepend(message);
+	
+}

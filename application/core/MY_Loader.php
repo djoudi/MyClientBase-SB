@@ -47,10 +47,12 @@ class MY_Loader extends MX_Loader {
 		$vars['top_menu'] = $this->mcbsb->_modules['top_menu'];
 		$vars['system_messages'] = $this->mcbsb->system_messages->get_all();
 		
+		$vars['user'] = $this->mcbsb->user;
+		
 		//FIXME
-		$vars['colleagues'] = array();
-		$vars['colleagues'][0]['name'] = 'pippo';
-		$vars['colleagues'][1]['name'] = 'pluto';		
+// 		$vars['colleagues'] = array();
+// 		$vars['colleagues'][0]['name'] = 'pippo';
+// 		$vars['colleagues'][1]['name'] = 'pluto';		
 // 		foreach ($this->mcbsb->user->colleagues as $key => $colleague){
 // 			$vars['colleagues'][$key] = $colleague->name;
 // 		}

@@ -844,7 +844,7 @@ class Contact extends Admin_Controller {
     }
     
     
-    function _post_handler() {
+/*     function _post_handler() {
 
         if ($this->input->post('btn_save')) {
 
@@ -882,7 +882,7 @@ class Contact extends Admin_Controller {
 
         }
 
-    }
+    } */
 
     
     

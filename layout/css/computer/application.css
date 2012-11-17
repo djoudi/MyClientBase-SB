@@ -132,15 +132,23 @@ dl dd {
 
 input, textarea{
 	border: 1px solid #ccc;
-	-webkit-appearance: none;
+	/* -webkit-appearance: none; */
 	-webkit-border-radius: 4px; 
 	-moz-border-radius: 4px; 
 	border-radius: 4px; 
+	font-size: 13px;
+	font-family: sans-serif;
+	padding-top: 3px;
+	padding-bottom: 3px;
 }
 
-input { 
+/* input { 
 	height: 20px;
 }
+
+input.checkbox {
+	height: auto;
+} */
 
 input:focus, textarea:focus {
 	border-color: #2280c9; 
@@ -240,8 +248,4 @@ li.ap {
 }
 
 .settings dd{
-}
-
-.multivalue:hover{
-	cursor: help;
 }
