@@ -26,10 +26,30 @@ class Login extends CI_Controller {
     	$this->login();
     }
     
+    public function with_profile(){
+    	
+    	$login_settings = $this->session->userdata('login_settings');
+    	
+    	$this->session->unset_userdata('login_settings');
+    	
+    	$security_key = $this->input->post('security_key');
+    	
+    	if(!isset($login_settings['security_key'])) redirect('login');
+    	
+    	if($security_key != $login_settings['security_key']) redirect('/login');
+    	
+    	$email = $this->input->post('email');
+    	$password = $this->input->post('password');
+    	$remember = $this->input->post('remember');
+    	$profile = $this->input->post('profile'); 
+    	if($this->mcbsb->user->login($email,$password,$remember,$profile)) redirect('/contact');
+    	
+    	redirect('/login');
+    }
+    
     public function login() {
     	
     	$this->form_validation->set_error_delimiters('|', '');
-    	
     	$this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[6]|max_length[50]|valid_email');
     	$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]|max_length[50]');
     	$this->form_validation->set_rules('captcha', 'Captcha', 'trim|required|min_length[5]|max_length[5]'); // |callback_check_captcha
@@ -40,14 +60,17 @@ class Login extends CI_Controller {
     	if ($this->form_validation->run() == TRUE)
     	{
     		if(!$this->check_captcha()){
+    			
     			$data['errors'][] = 'Wrong captcha';
-    		} else {    		    		
-	       		if($this->mcbsb->user->login($this->input->post('username'),$this->input->post('password'),true))	{
-	       			redirect('/contact');
-	       		} else {
-	       			$data['errors'][] = 'Wrong credentials';
-	       		}
-    		}
+    			
+    		} else {		
+    
+	      		if($this->mcbsb->user->login($this->input->post('username'),$this->input->post('password'),true))	{
+	      			redirect('/contact');
+	      		} else {
+	      			$data['errors'][] = 'Wrong credentials';
+	      		}
+    		}      		      		
     	}
     	
     	//set an error
@@ -89,7 +112,13 @@ class Login extends CI_Controller {
     	$this->load->view('login.tpl', $data, false, 'smarty');
     }
 
-    function logout() {
+    public function choose_profile() {
+    	if(!$data = $this->session->userdata('login_settings')) redirect('/');
+    	
+    	$this->load->view('choose_profile.tpl', $data, false, 'smarty');
+    }
+    
+    public function logout() {
 
     	$this->mcbsb->user->logout();
 		$this->session->sess_destroy();
@@ -97,7 +126,7 @@ class Login extends CI_Controller {
 		redirect('/login');
     }
 
-    function recover() {
+    public function recover() {
 		redirect('/contact');
     }
 

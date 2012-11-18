@@ -6,6 +6,10 @@ class System_Settings extends Admin_Controller {
 
 		parent::__construct();
 
+		if($this->mcbsb->module->is_enabled('tooljar')){
+			if(!$this->mcbsb->user->is_tj_admin()) redirect('/');
+		}
+		
 		$this->_post_handler();
 
 	}
@@ -52,7 +56,7 @@ class System_Settings extends Admin_Controller {
 					$settings_views = array_filter(array_map('trim',$settings_views));
 					
 					foreach ($settings_views as $key => $settings_view){
-						!is_numeric($key)? $tab_name = $key : $tab_name = null;
+						$tab_name = !is_numeric($key)? $key : null;
 						if($tab = $this->get_settings_tabs($module, $settings_view, $tab_name)){
 							$tabs[] = $tab;
 						} 

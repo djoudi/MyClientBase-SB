@@ -14,12 +14,11 @@ class Mcbsb_User extends User {
 */		
 	public $lastlogin = null;    //TODO I guess this should go in the User class
 	public $authenticated_for_url = null;
-	//public $is_tj_admin = false;
 	//public $is_admin = false;
 	private $ion_auth = null;
 	public $groups = array();
 	public $member_of_groups = array();
-	public $colleagues = array();
+	public $team = array();
 	
 	public function __construct(){
 		
@@ -45,39 +44,87 @@ class Mcbsb_User extends User {
 		$this->preferred_language = $this->session->userdata('preferred_language');
 		$this->lastlogin = $this->session->userdata('old_last_login');
 		$this->authenticated_for_url = $this->session->userdata('authenticated_for_url');
-		$this->colleagues = $this->session->userdata('colleagues');
+		$this->team = $this->session->userdata('team');
 	}
 	
-	private function get_colleagues(){
+	public function set_team(){
 
-		$oid = $this->mcbsb->get_tj_org_oid();
+		if($this->mcbsb->module->is_enabled('tooljar')){
+			 //check that the tj_admin already set the organization
+			$this->load->model('tooljar/mdl_tooljar','tooljar');
+			$this->tooljar = new Mdl_Tooljar();
+			$this->tooljar->get_my_tj_organization();
+			unset($this->tooljar);
+		} else {
+			//TODO what happens if the tooljar module is not enabled?
+			//ref https://github.com/damko/MyClientBase-SB/issues/131
+		}
+		 		
+		$oid = $this->mcbsb->get_mcbsb_org_oid();
 		
-		if(is_null($this->mcbsb->get_tj_org_oid())) return false;
+		if(!$oid) return false;
+		
+		$this->team = array();
 		
 		$this->load->model('contact/mdl_contact');
 		$this->load->model('contact/mdl_person');
 		$contact = new Mdl_Person();
 		
-		$input = array('filter' => '(&(oRDN='.$oid.')(enabled=TRUE))');
+		$input = array();
+		$input['filter'] = '(&(oRDN='.$oid.')(enabled=TRUE))';
+		$input['wanted_attributes'] = array('cn','mail','uid'); 
 		$rest_return = $contact->get($input,true);
 		
-		if($contact->crr->has_no_errors) {
-			$this->load->library('colleague');
+		if($contact->crr->has_no_errors) {	
 			foreach ($contact->crr->data as $key => $item){
-				 $colleague = new Colleague();
-				 if(isset($item['cn'][0])) $colleague->name = $item['cn'][0];
-				 if(isset($item['mail'][0])) $colleague->email = $item['mail'][0];
-				 if(isset($item['uid'][0])) $colleague->uid = $item['uid'][0];
-				 $colleague->oid = $oid;
-				 $this->colleagues[] = $colleague; 
+				 $colleague = array();
+				 if(isset($item['cn'][0])) $colleague['name'] = $item['cn'][0];
+				 if(isset($item['mail'][0])) $colleague['email'] = $item['mail'][0];
+				 if(isset($item['uid'][0])) $colleague['uid'] = $item['uid'][0];
+				 $colleague['oid'] = $oid;
+				 $this->team[] = $colleague; 
 			}
 		}
 		
-		$this->session->set_userdata(array('colleagues' => $this->colleagues));		
+		$this->session->set_userdata('team',$this->team);		
 	}
 	
-	public function login($email,$password,$remember = false){
+	public function login($email,$password,$remember = false, $profile = false){
 		
+		if(!$this->pre_login_checks($email, $password, $remember)) return false;
+		
+		$this->set_team();
+		
+		
+		if(!$profile) $profile = $this->login_as($email, $password,$remember);
+		
+		switch ($profile) {
+			case 'tj_admin':
+				if(!$logged_in = $this->login_tj_admin($email,$password,$remember)) return false;		
+			break;
+			
+			default:
+				//he should be one of the team members
+				
+				//TODO there is something wrong here. I'm not supposed to load the model by hand: it should load automatically
+				$this->load->model('ion_auth_contact_engine_model');
+				$this->ion_auth = new Ion_auth_contact_engine_model();
+				
+				if(!$logged_in = $this->ion_auth->login($email, $password, $remember)) return false;
+			break;
+		}
+				
+		$this->get_groups();
+		
+		//it saves current base_url into session. This should solve problems in multisite installations => this session is valid only for this subdomain
+		$this->session->set_userdata(array('authenticated_for_url' => base_url()));
+		
+		$this->read_from_session();
+		
+		return true;
+	}
+	
+	private function pre_login_checks($email,$password,$remember = false){
 		$this->load->helper('email');
 		
 		//for test purposes
@@ -85,45 +132,62 @@ class Mcbsb_User extends User {
 		
 		//security checks. Most of these security checks are already performed by the controller
 		foreach (get_defined_vars() as $var_name => $var_value){
-			if(is_null($var_value)) return false;
+			
+			//I want plain valid strings as parameters
 			if(is_array($var_value)) return false;
+			if(is_null($var_value) || empty($var_value)) return false;
 		
+			$var_value = trim($var_value);
+			
 			if($var_name == 'email') {
 				if(!valid_email($var_value)) return false;
 			}
-			
+				
 			if($var_name == 'remember') {
 				if(!is_bool($var_value)) $remember = false;
 			}
 		}
 		
-		if(!$logged_in = $this->ion_auth->login($email, $password, $remember)) {
+		return true;	
+	}
 	
-			//maybe the user is a tooljar administrator
-			if(!$logged_in = $this->login_tj_admin($email,$password,$remember)) return false;
-			
-		}
-
-		$this->get_groups();
-				
-		//it saves current base_url into session. This should solve problems in multisite installations => this session is valid only for this subdomain
-		$this->session->set_userdata(array('authenticated_for_url' => base_url()));
-
-		if($this->mcbsb->module->is_enabled('tooljar')){
-			//check that the tj_admin already set the organization
+	private function login_as($email,$password,$remember = false){
+		
+		if ($this->mcbsb->is_module_enabled('tooljar')) {
+					
+			//is it the tj admin?
 			$this->load->model('tooljar/mdl_tooljar','tooljar');
-			$this->tooljar = new Mdl_Tooljar();
-			$this->tooljar->get_my_tj_organization();
+			$tj_admin_email = $this->tooljar->get_tj_admin_email();
 			unset($this->tooljar);
-
-			//$this->get_colleagues();
-		} else {
-			//TODO what happens if the tooljar module is not enabled?
+			
+			if($tj_admin_email == $email) {
+						
+				//does this email also belong to one of the team members
+				$is_team_member = false;
+				foreach ($this->team as $key => $member) {
+					if(isset($member['email']) && $member['email'] == $email) $is_team_member = true;
+				}
+				
+				if($is_team_member){
+					
+					//ask if he wants to login an team user or as tooljar administrator
+					$login_settings = array();
+					$login_settings['email'] = $email;
+					$login_settings['password'] = $password;
+					$login_settings['remember'] = $remember;
+					$login_settings['security_key'] = uniqid();
+					$this->session->set_userdata('login_settings',$login_settings);
+					redirect('/login/choose_profile');
+				
+				} else {
+					
+					return 'tj_admin';
+					
+				}
+			}
 		}
-		
-		$this->read_from_session();
-		
-		return $logged_in;
+
+		return 'user';
 	}
 	
 	private function get_groups(){
@@ -134,9 +198,6 @@ class Mcbsb_User extends User {
 				$this->member_of_groups[] = $group->name;
 			}
 		}		
-		
-// 		$this->session->set_userdata(array('groups' => $this->groups));
-// 		$this->session->set_userdata(array('member_of_groups' => $this->groups));
 	}
 	
 	private function login_tj_admin($email,$password,$remember){
@@ -154,7 +215,8 @@ class Mcbsb_User extends User {
 			if($this->config->item('tooljar_ce_key')) {
 		
 				unset($this->ion_auth);
-					
+				
+				//TODO there is something wrong here. I'm not supposed to load the model by hand: it should load automatically
 				$this->load->model('ion_auth_contact_engine_model');
 				$this->ion_auth = new Ion_auth_contact_engine_model();
 				$this->ion_auth->ce_key = $this->config->item('tooljar_ce_key');
@@ -164,11 +226,6 @@ class Mcbsb_User extends User {
 					$this->id = $this->session->userdata('user_id');
 					$this->ion_auth->remove_from_group(3,$this->id);
 					return $this->ion_auth->add_to_group(1);
-					
-// 					$this->is_tj_admin = true;
-// 					
-// 					$this->is_admin = false;
-// 					$this->session->set_userdata(array('is_admin' => $this->is_admin));
 		
 				} else {
 					return false;

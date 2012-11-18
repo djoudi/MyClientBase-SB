@@ -43,22 +43,13 @@ class MY_Loader extends MX_Loader {
 		$vars['base_url'] = base_url();
 		$vars['site_url'] = site_url($this->uri->uri_string());
 		
-		$vars['tj_org_oid'] = $this->mcbsb->get_tj_org_oid();
+		$vars['mcbsb_org_oid'] = $this->mcbsb->get_mcbsb_org_oid();
 		$vars['enabled_modules'] = $this->mcbsb->_modules['enabled'];
 		$vars['top_menu'] = $this->mcbsb->_modules['top_menu'];
 		$vars['system_messages'] = $this->mcbsb->system_messages->get_all();
 		
 		$vars['user'] = $this->mcbsb->user;
-		
-		//FIXME
-		$colleagues = (array) unserialize (serialize ($this->mcbsb->user->colleagues));
-		
-// 		$vars['colleagues'] = array();
-// 		$vars['colleagues'][0]['name'] = 'pippo';
-// 		$vars['colleagues'][1]['name'] = 'pluto';		
-// 		foreach ($this->mcbsb->user->colleagues as $key => $colleague){
-// 			$vars['colleagues'][$key] = $colleague->name;
-// 		}
+
 		return $vars;
 	}
 }

@@ -1,4 +1,7 @@
-{* CONTACT PROFILE TABS *}		
+{* CONTACT PROFILE TABS *}
+<div style="float: right; line-height: 30px; border-left: 1px solid #ccc; background-color: #f3f3f3; font-size: 18px; padding: 2px; padding-right: 5px; text-align: left;">
+	{$contact_ref|truncate:30:"[..]":true}
+</div>		
 <ul>
 	<li><a href="#tab_client">{t}Info{/t}</a></li>
 
@@ -35,4 +38,6 @@
 	{if isset($invoices_html) and {$invoices|count} > 0}
 		<li><a href="#tab_invoices">{citranslate lang=$language text='invoices'} ({$invoices|count})</a></li>
 	{/if}	
-</ul>	
+</ul>
+
+<div style="clear: both;"></div>

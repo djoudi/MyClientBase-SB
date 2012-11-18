@@ -52,7 +52,7 @@ class Mdl_Tooljar extends MY_Model {
 		
 		if($this->crr->has_errors) return false;
 		
-		$this->mcbsb->set_tj_org_oid($oid);
+		$this->mcbsb->set_mcbsb_org_oid($oid);
 		
 		return true;
 	}
@@ -71,7 +71,7 @@ class Mdl_Tooljar extends MY_Model {
 		if($this->crr->has_errors) return false;
 		
 		$oid = $this->crr->data[0];
-		$this->mcbsb->set_tj_org_oid($oid);
+		$this->mcbsb->set_mcbsb_org_oid($oid);
 		
 		return $oid;
 	}	

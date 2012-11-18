@@ -5,7 +5,7 @@ class Mcbsb  extends CI_Model {
 	protected $_error;
 	protected $_success;
 	protected $_warning;
-	public $_tj_org_oid = null;
+	protected $_mcbsb_org_oid = null;
 	public $system_messages;  		//equal to: $this->load->model('system_messages');
 	public $settings;				//equal to: $this->load->model('settings');
 	public $user;				//equal to: $this->load->model('mcbsb_user');
@@ -129,17 +129,17 @@ class Mcbsb  extends CI_Model {
 		//TODO I think I can load the header from here
 	}
 	
-	public function set_tj_org_oid($oid){
+	public function set_mcbsb_org_oid($oid){
 		
 		if(!is_string($oid) || empty($oid)) return;
 		
-		$this->_tj_org_oid = $oid;
-		$this->session->set_userdata('tj_org_oid',$oid);
+		$this->_mcbsb_org_oid = $oid;
+		$this->session->set_userdata('mcbsb_org_oid',$oid);
 	}
 	
-	public function get_tj_org_oid(){
-		$this->_tj_org_oid = $this->session->userdata('tj_org_oid');
-		return $this->_tj_org_oid;
+	public function get_mcbsb_org_oid(){
+		$this->_mcbsb_org_oid = $this->session->userdata('mcbsb_org_oid');
+		return $this->_mcbsb_org_oid;
 	}
 	
 	/**
@@ -291,18 +291,17 @@ class Mcbsb  extends CI_Model {
 	private function _set_top_menu(){
 		
 		//adds mandatory items for top menu
-/* 		if(!$this->user->is_tj_admin){
-			$this->_modules['top_menu'][] = array(
-					'item_name' => 'Your profile',
-					'item_link' => '/contact/details/uid/'.$this->user->id,
-					'item_selected' => false,
-			);
-		}		 */
-		$this->_modules['top_menu'][] = array(
-				'item_name' => 'System Settings',
-				'item_link' => '/system_settings',
-				'item_selected' => false,
-		);
+		
+		if($this->module->is_enabled('tooljar')){
+			if($this->user->is_tj_admin()) {
+				$this->_modules['top_menu'][] = array(
+						'item_name' => 'System Settings',
+						'item_link' => '/system_settings',
+						'item_selected' => false,
+				);
+			}
+			//TODO also add something for the MCBSB admin user?
+		}		
 
 		$this->_modules['top_menu'][] = array(
 				'item_name' => 'Logout',

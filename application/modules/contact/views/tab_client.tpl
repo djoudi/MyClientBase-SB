@@ -2,7 +2,10 @@
 
 <div id="profile_summary">
 	<h4>{t}Summary{/t}</h4>	
-	<p style="margin-top: 13px; border-top: 1px solid #ccc; padding-top: 5px;">		
+	<p style="margin-top: 13px; border-top: 1px solid #ccc; padding-top: 5px;">
+	
+		{if $contact->enabled == 'FALSE'}<h4 class="dark_red" style="margin-bottom: 20px;">{t}This contact is disabled{/t}</h4>{/if}		
+		
 		{if isset($contact->uid)}
 					
 			{if $contact->jpegPhoto}
@@ -47,9 +50,7 @@
 </div>				
 
 <div style="padding-left: 10px; padding-top: 5px;">
-	<h4>{t}Data{/t}
-		{if $contact->enabled == 'FALSE'}<span class="dark_red" style="font-size: 15px; padding-left: 10px;">{t}This contact is disabled{/t}</span>{/if}
-	</h4>		
+	<h4>{t}Data{/t}</h4>		
 	<table class="contact_profile" style="width: 500px;">
 		{$count = 0}
 		{foreach $contact->show_fields as $key => $property_name}

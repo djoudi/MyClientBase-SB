@@ -31,7 +31,7 @@
 			</p>
 			
 			<p style="margin-top: 7px;">
-				{t}You are a {/t}
+				{t}Groups you belong to{/t}:
 				
 				{foreach $user->groups as $key => $group}
 					{$group->description}&nbsp;
@@ -40,13 +40,13 @@
 			
 			
 			<p style="margin-top: 7px;">
-				{if !$tj_org_oid}
+				{if !$mcbsb_org_oid}
 				<span class="dark_red">
 					{t}Please set your organization{/t}.						
 					<a id="a1_right" href="#"><img src="/layout/images/question_mark.png" /></a>
 				{else}
 					<a id="a1_right" href="#" style="display: none;"><img src="/layout/images/question_mark.png" /></a>
-					<a href="/contact/details/oid/{$tj_org_oid}">{t}This is your organization{/t}</a>
+					<a href="/contact/details/oid/{$mcbsb_org_oid}">{t}This is your organization{/t}</a>
 				{/if}
 					<div id="tip1_right" style="display:none;">
 						{t}Create your organization and mark it as "your organization"{/t}.
@@ -57,9 +57,9 @@
 				</span>
 			</p>
 			
-			{if $user->colleagues && $user->tj_org_oid}
+			{if $user->team && $mcbsb_org_oid && !in_array('tj_admin',$user->member_of_groups)}
 			<p style="margin-top: 7px;">
-				{t}You have{/t} {$user->colleagues|count} <a href="/contact/details/oid/{$user->tj_org_oid}#tab_members">{t}collegues{/t}</a> 
+				{t}You have{/t} {($user->team|count - 1)} <a href="/contact/details/oid/{$mcbsb_org_oid}#tab_members">{t}collegues{/t}</a> 
 			</p>
 			{/if}
 		</div>
