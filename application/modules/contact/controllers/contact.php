@@ -466,20 +466,20 @@ class Contact extends Admin_Controller {
     	}
     
     	//allows creations of tasks for the contact
-    	if($this->mcbsb->is_module_enabled('tasks')) {
-    		$this->mcbsb->load('tasks/task','task');
+//     	if($this->mcbsb->is_module_enabled('tasks')) {
+//     		$this->mcbsb->load('tasks/task','task');
     
-    		//TODO add a filter to get only the tasks of this contact
-    		$params = array();
-    		$params['where']['client_id'] = $contact->client_id;
-    		if(strtolower($contact->objName) == 'person') $params['where']['client_id_key'] = 'uid';
-    		if(strtolower($contact->objName) == 'organization') $params['where']['client_id_key'] = 'oid';
+//     		//TODO add a filter to get only the tasks of this contact
+//     		$params = array();
+//     		$params['where']['client_id'] = $contact->client_id;
+//     		if(strtolower($contact->objName) == 'person') $params['where']['client_id_key'] = 'uid';
+//     		if(strtolower($contact->objName) == 'organization') $params['where']['client_id_key'] = 'oid';
     		 
-    		if($tasks = $this->mcbsb->task->readAll($params)) {
-    			$data['tasks'] = $tasks;
-    			$data['tasks_html'] = $this->plenty_parser->parse('tasks_table.tpl', array('tasks' => $tasks), true, 'smarty', 'contact');
-    		}
-    	}
+//     		if($tasks = $this->mcbsb->task->readAll($params)) {
+//     			$data['tasks'] = $tasks;
+//     			$data['tasks_html'] = $this->plenty_parser->parse('tasks_table.tpl', array('tasks' => $tasks), true, 'smarty', 'contact');
+//     		}
+//     	}
     
     	if(isset($contact_locs)) $data['contact_locs'] = $contact_locs;
     	if(isset($contact_orgs)) $data['contact_orgs'] = $contact_orgs;
@@ -497,9 +497,68 @@ class Contact extends Admin_Controller {
     
     	$data['tooljar_module_is_enabled'] = $this->mcbsb->is_module_enabled('tooljar');
     
+    	//looking for tabs provided by other modules
+		$data['extra_tabs'] = $this->get_extra_tabs($contact);
+    	
     	//loading Smarty templates
     	$this->load->view('contact_details.tpl', $data, false, 'smarty','contact');
     
+    }
+    
+    public function get_extra_tabs($contact){
+    
+    	$tabs = array();
+    	
+    	foreach ($this->mcbsb->_modules['enabled'] as $item) {
+    			
+    		$module = new Module();
+    		$module->module_name = $item;
+    		if($module->read()){
+
+    			if (!empty($module->module_config['contact_tabs'])) {
+    					
+    				$contact_tabs = $module->module_config['contact_tabs'];
+    					
+    				//transform the value in array to simplify the process
+    				if(!is_array($contact_tabs)){
+    					$tmp = $contact_tabs;
+    					$contact_tabs = array($tmp);
+    				}
+    					
+    				//clean up
+    				$contact_tabs = array_filter(array_map('trim',$contact_tabs));
+    					
+    				foreach ($contact_tabs as $key => $selected_module_path){
+    					$tmp = array();
+    					$html = '';
+    					$tab_name = !is_numeric($key)? $key : null;
+    					if($return = $this->get_tab_content($selected_module_path, $contact)){
+    						$tabs[]= array(
+    								'title' => $tab_name,
+    								'counter' => $return['counter'],
+    								'buttons' => $return['buttons'],
+    								'html' => $return['html']
+    						);
+    					}
+    						
+    				}    				
+    			}
+    		}
+    	}
+
+    	return $tabs;
+    }    
+    
+    private function get_tab_content($selected_module_path, $contact){
+    	
+    	$module_name = array_pop(array_filter(preg_split('/\//', $selected_module_path)));
+    	$this->load->model($selected_module_path,$module_name);
+    	
+    	if(method_exists($this->$module_name,'contact_tab')){
+    		return $this->$module_name->contact_tab($contact);
+    	}
+    	
+    	return false;
     }
     
     

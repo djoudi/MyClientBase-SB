@@ -609,6 +609,6 @@ $lang['prev'] = 'Previous';
 $lang['found'] = 'found';
 $lang['google'] = 'Google';
 $lang['captcha_text'] = 'Insert here the text shown in the picture on the left';
+$lang['first'] = 'first';
 $lang['last'] = 'last';
-$lang['Last'] = 'Last';
 ?>

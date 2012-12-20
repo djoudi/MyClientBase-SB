@@ -2,9 +2,7 @@
 
 <div id="profile_summary">
 	<h4>{t}Summary{/t}</h4>	
-	<p style="margin-top: 13px; border-top: 1px solid #ccc; padding-top: 5px;">
-	
-		{if $contact->enabled == 'FALSE'}<h4 class="dark_red" style="margin-bottom: 20px;">{t}This contact is disabled{/t}</h4>{/if}		
+	<p style="margin-top: 13px; border-top: 1px solid #ccc; padding-top: 5px;">		
 		
 		{if isset($contact->uid)}
 					

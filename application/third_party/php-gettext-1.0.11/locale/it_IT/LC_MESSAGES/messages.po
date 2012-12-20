@@ -1056,4 +1056,274 @@ msgid "Hide video"
 msgstr "Nascondi video"
 
 msgid "Go"
-msgstr "Vai" 
+msgstr "Vai"
+
+msgid "Display map"
+msgstr "Mostra mappa"
+
+msgid "Set password"
+msgstr "Imposta password"
+
+msgid "Disable"
+msgstr "Disabilita" 
+
+msgid "You are logged in as"
+msgstr "Sei autenticato come"
+
+msgid "Groups you belong to"
+msgstr "Gruppi di appartenenza"
+
+msgid "This is your organization"
+msgstr "Questa é la tua organizzazione"
+
+msgid "You have"
+msgstr "Hai"
+
+msgid "collegues"
+msgstr "colleghi"
+
+msgid "Use this tool to retrieve statistics usefull for your marketing strategy"
+msgstr "Usa questo strumento per ottenere statistiche utili alla tua strategia di marketing"
+
+msgid "You can search by city, state and country filling one or more fields in the left box"
+msgstr "Puoi cercare per citta, provincia e nazione completando uno o piú dei campi nel riquadro a sinistra"
+
+msgid "You can even search providing partial names, ex. country = ital to get all the contacts in Italy or in Italia"
+msgstr "Puoi anche cercare fornendo nomi parziali, es. nazione = ital per ottenere tutti i contatti in Italy o Italia"
+
+msgid "Task"
+msgstr "Incarico"
+
+msgid "Creation date"
+msgstr "Data creazione"
+
+msgid "Last update date"
+msgstr "Ultima modifica"
+
+msgid "Last updated by"
+msgstr "Modificato da"
+
+msgid "Start Date"
+msgstr "Inizio"
+
+msgid "Start date"
+msgstr "Inizio"
+
+msgid "Due Date"
+msgstr "Scadenza"
+
+msgid "Due date"
+msgstr "Scadenza"
+
+msgid "Complete Date"
+msgstr "Completato"
+
+msgid "Urgent"
+msgstr "Urgente"
+
+msgid "Details"
+msgstr "Dettagli"
+
+msgid "Complete message"
+msgstr "Nota di chiusura"
+
+msgid "Edit task"
+msgstr "Modifica incarico"
+
+msgid "Edit Task"
+msgstr "Modifica Incarico"
+
+msgid "Create task"
+msgstr "Crea incarico"
+
+msgid "Close task"
+msgstr "Chiudi incarico"
+
+msgid "Close Task"
+msgstr "Chiudi Incarico"
+
+msgid "Closed by"
+msgstr "Chiuso da"
+
+msgid "Closed on"
+msgstr "Chiuso il"
+
+msgid "Urgent tasks display an esclamation mark here below"
+msgstr "Gli incarichi urgenti mostrano un punto esclamativo qui sotto"
+
+msgid "Click on the rounded blue markers below to see a quick detailed view of the task"
+msgstr "Per una vista rapida e dettagliata dell'incarico clicca sull'icona rotonda blu sottostante"
+
+msgid "This field can contain multiple values"
+msgstr "Questo campo puó contenere valori multipli"
+
+msgid "it will use the comma as a separator between values"
+msgstr "utilizza la virgola per separare i valori"
+
+msgid "When you type, it will also show you values previously used for this field"
+msgstr "Mentre digiti, ti mostra anche i valori precedentemente inseriti in questo campo"
+
+msgid "If you type a new value and then save the form, the new value will be available for all the other contacts"
+msgstr "Se inserisci un nuovo valore e salvi il form, il nuovo valore sará disponibile per tutti gli altri contatti"
+
+msgid "Home Phone"
+msgstr "Telefono di casa"
+
+msgid "Mobile"
+msgstr "Cellulare"
+
+msgid "start"
+msgstr "inizio"
+
+msgid "Start"
+msgstr "Inizio"
+
+msgid "end"
+msgstr "fine"
+
+msgid "End"
+msgstr "Fine"
+
+msgid "closed"
+msgstr "chiuso"
+
+msgid "Involve"
+msgstr "Coinvolgi"
+
+msgid "Create appointment"
+msgstr "Crea appuntamento"
+
+msgid "Where"
+msgstr "Dove"
+
+msgid "Appointments"
+msgstr "Appuntamenti"
+
+msgid "Appointment"
+msgstr "Appuntamento"
+
+msgid "New Task"
+msgstr "Nuovo Incarico"
+
+msgid "Devices"
+msgstr "Dispositivi"
+
+msgid "Device"
+msgstr "Dispositivo"
+
+msgid "Create device"
+msgstr "Crea dispositivo"
+
+msgid "Products"
+msgstr "Prodotti"
+
+msgid "Registered Address"
+msgstr "Sede Legale"
+
+msgid "This is my organization"
+msgstr "Questa é la mia organizzazione"
+
+msgid "Shortcuts"
+msgstr "Scorciatoie"
+
+msgid "You can speed up your work using keyboard shortcuts" 
+msgstr "Puoi velocizzare il tuo lavoro usando le scorciatoie da tastiera"
+
+msgid "Shortcuts are a replacement for mouse click"
+msgstr "Le scorciatoie sostituiscono il click del mouse"
+
+msgid "Some of the tabs or buttons that you can see in this page have an underlined character which indicates the shortcut"
+msgstr "Alcune linguette o bottoni visibili in questa pagina hanno un carattere sottolineato che indica la scorciatoia"
+
+msgid "For the top left menu tabs, hold the SHIFT button and then press the underlined character corrisponding to the tab that you want to click"
+msgstr "Per le linguette del menu superiore, tieni premuto il tasto SHIFT e poi premi il carattere sottolineato corrispondente alla linguetta che vuoi cliccare"
+
+msgid "For the blue buttons, just hit the underlined character corrisponding to the button that you want to trigger"
+msgstr "Per i bottoni blue, premi semplicemente il carattere sotttolineato corrispondente al bottone che vuoi premere"
+
+msgid "Delivery Office"
+msgstr "Ufficio Consegne"
+
+msgid "Other Phone"
+msgstr "Altro Numero"
+
+msgid "OtherPhone"
+msgstr "AltroNumero"
+
+msgid "Autocomplete field"
+msgstr "Campo con autocompletamento"
+
+msgid "Business Category"
+msgstr "Categoria Lavorativa"
+
+msgid "PreferredDeliveryMethod"
+msgstr "Metodo Di Spedizione Preferito"
+
+msgid "SkypeID"
+msgstr "Identificativo Skype"
+
+msgid "All products"
+msgstr "Tutti i prodotti"
+
+msgid "product"
+msgstr "prodotto"
+
+msgid "Brand"
+msgstr "Marca"
+
+msgid "Model"
+msgstr "Modello"
+
+msgid "Price"
+msgstr "Prezzo"
+
+msgid "Create product"
+msgstr "Crea prodotto"
+
+msgid "Salable"
+msgstr "Vendibile"
+
+msgid "Code Number"
+msgstr "Matricola"
+
+msgid "All devices"
+msgstr "Tutti i dispositivi"
+
+msgid "Purchased"
+msgstr "Acquistato"
+
+msgid "Insurance"
+msgstr "Assicurazione"
+
+msgid "Warranty"
+msgstr "Garanzia"
+
+msgid "People involved"
+msgstr "Persone coinvolte"
+
+msgid "Time line"
+msgstr "Cronologia"
+
+msgid "ordinary"
+msgstr "ordinario"
+
+msgid "due today"
+msgstr "in scadenza oggi"
+
+msgid "completed"
+msgstr "completati"
+
+msgid "Last update"
+msgstr "Ultimo aggiornamento"
+
+msgid "This contact is disabled"
+msgstr "Questo contatto é disabilitato"
+
+msgid "This organization is disabled"
+msgstr "Questa organizzazione é disabilitata"
+
+msgid "Videos"
+msgstr "Video"
+
+msgid "Enable"
+msgstr "Abilita"

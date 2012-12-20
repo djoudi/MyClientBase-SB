@@ -74,7 +74,7 @@ class Mdl_Organization extends Mdl_Contact {
     	return parent::count($input);
     }    
     
-    protected function hasProperAddress()
+    public function hasProperAddress()
     {
     	//some very basic validation of an address. If the address is validated we can try to save the "Residence" location.
     	if(!isset($this->street)) return false;
@@ -97,7 +97,9 @@ class Mdl_Organization extends Mdl_Contact {
     	//here I could use a list but then there is the mess with the languages
     	if(mb_strlen($this->c) < 3) return false;
     	
-    	return true;
+    	$address = $this->street . ', ' . $this->postalCode . ' ' . $this->l . ' ' . $this->st . ' ' . $this->c;
+    	 
+    	return $address;
     }
     
     
@@ -154,7 +156,13 @@ class Mdl_Organization extends Mdl_Contact {
     	if(count($this->mandatoryAttributes) == 0) $this->getMandatoryAttributes();
     	 
     	foreach ($this->get_default_values() as $attribute => $value){
-    		if(empty($this->$attribute)) $this->$attribute = $value;
+    	    if(empty($this->$attribute)){
+    			$this->$attribute = $value;
+    		} else {
+    			if($this->$attribute == 'null') {
+    				unset($this->$attribute);
+    			}
+    		}
     	}
 
     }

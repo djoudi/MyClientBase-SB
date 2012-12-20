@@ -13,8 +13,8 @@ class Mcbsb  extends CI_Model {
 	public $field_descriptor;
 	public $db_obj;
 	public $module;
-		
-	public $_enabled_modules;
+	
+	public $_pagination_links = null;
 	public $_total_rows;
 	public $_version;
 	public $_languages = array();	//contains the languages and the languages identifier (locales) supported by MCBSB
@@ -304,6 +304,12 @@ class Mcbsb  extends CI_Model {
 		}		
 
 		$this->_modules['top_menu'][] = array(
+				'item_name' => 'Videos',
+				'item_link' => '#',
+				'item_selected' => false,
+		);		
+		
+		$this->_modules['top_menu'][] = array(
 				'item_name' => 'Logout',
 				'item_link' => '/logout',
 				'item_selected' => false,
@@ -322,6 +328,48 @@ class Mcbsb  extends CI_Model {
 	public function is_module_enabled($module_name) {
 		if(is_array($module_name) || is_object($module_name)) return false; //TODO should be nice to trigger an error
 		return $this->module->is_enabled($module_name);
+	}
+	
+	public function paginate(){
+
+		$sql = $this->db->last_query();
+		
+		$query = $this->db->query('SELECT FOUND_ROWS() AS total_rows');
+		
+		$segments = $this->uri->segment_array();
+		
+		$string = '';
+		$uri_segment = 3;
+		foreach ($segments as $key => $value){
+			if($value != 'from'){
+				$string .= $value;
+			} else {
+				$uri_segment = $key + 1;
+				break;
+			}
+		}
+		
+		$url = base_url($string);
+		
+		$config = array(
+				'first_link'		=>	'<span class="pagination_first">&lt;&lt;</span>' . ucwords($this->lang->line('first')),
+				'prev_link'			=>	'<span class="pagination_previous">&lt;</span>' . ucwords($this->lang->line('prev')),
+				'next_link'			=>	ucwords($this->lang->line('next')) . '<span class="pagination_next">&gt;</span>',
+				'last_link'			=>	ucwords($this->lang->line('last')) . '<span class="pagination_last">&gt;&gt;</span>',
+				'cur_tag_open'		=>	'<span class="pagination_active_link">',
+				'cur_tag_close'		=>	'</span>',
+				'num_links'			=>	3
+		);
+				
+		$config['base_url'] = $url.'/from/';
+		$config['uri_segment'] = $uri_segment;
+		$config['total_rows'] = $query->row()->total_rows;
+		$config['per_page'] = $this->settings->setting('results_per_page');
+		$config['page_query_string'] = false;
+		
+		$this->load->library('pagination');
+		$this->pagination->initialize($config);
+		$this->_pagination_links =  $this->pagination->create_links();	
 	}
 
 }

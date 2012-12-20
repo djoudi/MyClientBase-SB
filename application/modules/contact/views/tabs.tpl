@@ -1,7 +1,6 @@
 {* CONTACT PROFILE TABS *}
-<div style="float: right; line-height: 30px; border-left: 1px solid #ccc; background-color: #f3f3f3; font-size: 18px; padding: 2px; padding-right: 5px; text-align: left;">
-	{$contact_ref|truncate:30:"[..]":true}
-</div>		
+
+
 <ul>
 	<li><a href="#tab_client">{t}Info{/t}</a></li>
 
@@ -17,6 +16,14 @@
 		{$already_wrote=1}<li><a href="#tab_member_of">{t}Member of{/t} ({$contact_orgs|count})</a></li>
 	{/if}	
 	
+	{if isset($extra_tabs)}
+		{foreach $extra_tabs as $key => $extra_tab}
+			{if $extra_tab.counter > 0}
+			<li><a href="#tab_{$extra_tab.title}">{t}{$extra_tab.title}{/t} ({$extra_tab.counter})</a></li>
+			{/if}
+		{/foreach}
+	{/if}	
+	
 	{if isset($ss_contact_folder_num_items)}				
 		<li>
 			<a href="#tab_documents">{t}Documents{/t}
@@ -25,10 +32,6 @@
 			{/if}
 			</a>
 		</li>
-	{/if}
-
-	{if isset($tasks)}
-		<li><a href="#tab_tasks">{t}Tasks{/t} ({$tasks|count})</a></li>
 	{/if}
 	
 	{if isset($quotes_html) and {$quotes|count} > 0}
@@ -39,5 +42,3 @@
 		<li><a href="#tab_invoices">{citranslate lang=$language text='invoices'} ({$invoices|count})</a></li>
 	{/if}	
 </ul>
-
-<div style="clear: both;"></div>

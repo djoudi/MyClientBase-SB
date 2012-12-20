@@ -8,7 +8,7 @@
 {include file="$top_menu_file"}
 
 {* focuses on the tab matching the hash and goes on the top of the page *}
-
+{literal}
 <script type="text/javascript">
 	$(document).ready(function() {
 		
@@ -19,12 +19,14 @@
 		$tabs.tabs('select', url_hash);
 		
 		window.location.hash='#top';
-
+{/literal}
 		{if isset($tab_index)}
 			if(url_hash == '') $('#tabs').tabs({ selected: {$tab_index}});
 		{/if}
+{literal}
 	});
 </script>	
+{/literal}
 
 {assign 'contact' $contact}
 {assign 'properties' $contact->properties}
@@ -55,49 +57,67 @@
 {if isset($contact->aliases)} {$aliases = $contact->aliases} {/if}
 
 <div class="grid_18">
+	<div class="box" style="height: 40px; background-color: #f3f3f3; margin-bottom: -5px; padding-left: 5px; border-bottom: 0px;">
+		<h4>{$contact_ref} {if $contact->enabled == 'FALSE'}<span class="dark_red" style="margin-bottom: 20px; float: right; margin-right: 15px;">{t}This contact is disabled{/t}</span>{/if}</h4>
+	</div>
 	<div class="box profile" id="tabs">
 	
 		{* TABS *}
-		{include file="tabs.tpl"}
+		{include "{$fcpath}application/modules/contact/views/tabs.tpl"}
 		
-		{* TAB CLIENT *}
+		
+		
+		
+		{* DEFAULT TABS *}
 		
 		{if $contact->enabled == 'TRUE'}
 			<div id="tab_client" style="padding: 0px; margin: 0px;">
 		{else}
 			<div id="tab_client" style="padding: 0px; margin: 0px; background-color: #f3f3f3;">
 		{/if}		
-			{include 'tab_client.tpl'}
+			{include "{$fcpath}application/modules/contact/views/tab_client.tpl"}
 		</div>
-		
+			
 		{if $contact_locs}
 		<div id="tab_locations">
-			{include 'tab_locations.tpl'}	
+			{include "{$fcpath}application/modules/contact/views/tab_locations.tpl"}	
 		</div>
 		{/if}
 		
 		{if {preg_match pattern="dueviOrganization" subject=$contact->objectClass} and $members}
 		<div id="tab_members" style="padding: 0px; margin: 0px;">	
-			{include 'tab_members.tpl'}		
+			{include "{$fcpath}application/modules/contact/views/tab_members.tpl"}		
 		</div>
 		{/if}				
 	
-		
 		{if {preg_match pattern="dueviPerson" subject=$contact->objectClass} and {$contact_orgs|count} >0}
 		<div id="tab_member_of">
-			{include 'tab_member_of.tpl'}
+			{include "{$fcpath}application/modules/contact/views/tab_member_of.tpl"}
 		</div>				
 		{/if}
 		
+		
+		
+		{* EXTRA TABS *}
+		
+		{if isset($extra_tabs)}
+			{foreach $extra_tabs as $key => $extra_tab}
+				{if $extra_tab.counter > 0}
+					<div id="tab_{$extra_tab.title}">{$extra_tab.html}</div>
+				{/if}
+			{/foreach}
+		{/if}			
+		
+		
+		
+		
+		
+		{* OLD EXTRA TABS *}
+		
 		{if $ss_contact_folder_content}
 		<div id="tab_documents">
-		 	{include 'tab_documents.tpl'}
+		 	{include "{$fcpath}application/modules/contact/views/tab_documents.tpl"}
 		</div>
-		{/if}
-		
-		
-	 	{if isset($tasks) and {$tasks|count} > 0}
-		<div id="tab_tasks">{$tasks_html}</div>
 		{/if}
 	 			
 	 	{if isset($quotes_html) and {$quotes|count} > 0}
@@ -107,13 +127,14 @@
 	 	{if isset($invoices_html) and {$invoices|count} > 0}
 		<div id="tab_invoices">{$invoices_html}</div>
 		{/if}
+		
 	</div>
 </div>
 
 <div class="grid_6">
-	<div class="box" style="padding-left: 5px;">{include 'actions_panel.tpl'}</div>
+	<div class="box" style="padding-left: 5px;">{include "{$fcpath}application/modules/contact/views/actions_panel.tpl"}</div>
 </div>
 
-<div class="clear"></div>
+<div style="clear: both;"></div>
 
 {include file="$footer_file"}

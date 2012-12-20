@@ -11,8 +11,10 @@
 	dark red		#ba2323
 	
 	light orange	#ffba00
+	orange			#ff9c00
 	
 	light gray		#f3f3f3
+	medium gray		#acacac
 	gray			#555
 	dark gray		#444444
 	dark dark gray	#1e1e1e
@@ -58,10 +60,15 @@
 .light_orange {color: #ffba00;}
 .b_light_orange {background-color: #ffba00;}
 
+.orange {color: #ff9c00;}
+.b_orange {background-color: #ff9c00;}
 
 
 .light_gray {color: #f3f3f3;}
 .b_light_gray {background-color: #f3f3f3;}
+
+.medium_gray {color: #acacac;}
+.b_medium_gray {background-color: #acacac;}
 
 .gray {color: #555555;}
 .b_gray {background-color: #555555;}

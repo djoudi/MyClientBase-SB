@@ -41,7 +41,7 @@
 		$("[id^=a_autocomplete_]").each(function(){
 			var item_num = this.id.split('_');
 			item_num = item_num[2];
-			$('#'+this.id).bubbletip($('#tip_autocomplete_'+item_num), { deltaDirection: 'right', calculateOnShow: true });
+			$('#'+this.id).bubbletip($('#tip_autocomplete_'+item_num), { deltaDirection: 'right', calculateOnShow: true, bindShow: 'click', delayHide: 1500 });
 		});
 		
 		$('.phone').keyup(function() {
@@ -54,7 +54,7 @@
 			show_validation_icon(valid, $(this).attr("id"), 'Standard: +{country_code}{prefix}{phone_number} Ex: +3906123456789');
 		});
 
-		$('.url').bind("keyup input paste", function() {
+		$('.url').bind("keyup input", function() {
 			var url = $(this).val();
 			if(url == '') {
 				$('#validation_' + $(this).attr("id")).html('');
@@ -320,9 +320,9 @@
 									</a>
 									<div id="tip_autocomplete_{$num}" style="display: none;">
 										<p style="font-weight: bold;">{t}Autocomplete field{/t}</p>
-										<p style="margin-top: 5px;">{t}This field can contain multiple values: it will use the "comma" as a separator between value.{/t}</p>
-										<p style="margin-top: 5px;">{t}When you type, it will also show you values previously used for this field.{/t}</p>
-										<p style="margin-top: 5px;">{t}If you type a new value and then save the form, the new value will be available for all the other contacts{/t}</p>
+										<p style="margin-top: 5px;">{t}This field can contain multiple values{/t}: {t}it will use the comma as a separator between values{/t}.</p>
+										<p style="margin-top: 5px;">{t}When you type, it will also show you values previously used for this field{/t}.</p>
+										<p style="margin-top: 5px;">{t}If you type a new value and then save the form, the new value will be available for all the other contacts{/t}.</p>
 									</div>
 								{/if}
 								<span id="validation_{$property}" style="font-size: 11px;"></span>{* validation message container: do not remove *}

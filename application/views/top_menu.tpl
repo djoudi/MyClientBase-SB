@@ -32,7 +32,7 @@
 	$(document).ready(function() {
 		shortcuts_top_menu();	
 
-		$('#a_shortcuts').bubbletip($('#tip_shortcuts'), { deltaDirection: 'left', calculateOnShow: true });
+		$('#a_shortcuts').bubbletip($('#tip_shortcuts'), { deltaDirection: 'left', calculateOnShow: true, bindShow: 'click', delayHide: 1500 });
 	});
 </script>
 {/literal}
@@ -66,18 +66,37 @@
 		<ul class="top_menu" id="navigation">
    			{foreach $top_menu as $key => $item}
 	   			
-   				<a class="top_menu" href="{$item['item_link']}">
+	   			{$href = $item['item_link']}
+	   			
+
+	   			{if $item['item_name'] == 'Videos'}
+					{$additional_class = 'tj_videos'}
+	   				{if $language == 'english'} {$href="gydKx6aAXVs"} {/if}
+					{if $language == 'italian'} {$href="J-m8Hw4x14o"} {/if}			
+				{else}
+					{$additional_class = ''}
+				{/if} 
+	   			
+   				<a class="{$additional_class} top_menu" href="{$href}">
+   				
    					{assign var=item_id value="top_menu_"|cat:$item['item_name']|strtolower|replace:' ':'_'}
-   					{if $item['item_link']!='/logout'}
-   						{assign var="label" value="{t u=1}{$item['item_name']}{/t}"}
-   					{else}
+   					
+   					{if $item['item_link']=='/logout'}
+								
    						{* no shortcut for Logout *}
    						{assign var="label" value="{t}{$item['item_name']}{/t}"}
-   					{/if}
-   					{if $item['item_selected']}
-   						<li class="top_menu" id="{$item_id}">{$label}</li>
+   						
    					{else}
-   						<li class="top_menu b_light_blue" id="{$item_id}">{$label}</li>
+   						
+   						{assign var="label" value="{t u=1}{$item['item_name']}{/t}"}
+   						
+   					{/if}
+   					
+   					
+   					{if $item['item_selected']}
+   						<li class="top_menu" id="{$item_id}" >{$label}</li>
+   					{else}
+   						<li class="top_menu b_light_blue {$additional_class}" id="{$item_id}">{$label}</li>
    					{/if}
    				</a>
    			{/foreach}

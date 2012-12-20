@@ -5,83 +5,219 @@
  * Out of the box you get a complete ready to go CRUD. 
  *  
  * @author 		Damiano Venturin
- * @copyright 	2V S.r.l.
- * @link		http://www.mcbsb.com
- * @since		June 24, 2012
- * 	
+ * @since		June 24, 2012 	
  */
-class Task extends Db_Obj
+class Task extends Rb_Db_Obj
 {
-	//all the table fields go here as protected attributes
-	protected $task_id = NULL ;
-	protected $user_id =  NULL ;
-	protected $client_id_key = NULL ;
-	protected $client_id = NULL ;
-	protected $start_date = NULL ;
-	protected $due_date = NULL ;
-	protected $complete_date = NULL ;
-	protected $title = NULL ;
-	protected $description	= NULL ;
+	const table = 'tasks';
+	protected $module_folder = null;
 	
 	public function __construct() {
+		
 		parent::__construct();
-		
-		$this->obj_ID_field = 'task_id';  //here goes the name of the primary field identifying each record
-		$this->obj_name = get_class($this);
-		$this->db_table = 'mcb_tasks';   //here goes the table name
-		
-		$this->initialize();
-	}
 
-	public function __destruct(){
+		$this->db_table = self::table;
+		$this->obj_name = get_class($this);
+		$this->module_folder = 'tasks';
+		
+		//R::freeze( array($this->db_table));  //NOTE! comment this line when you develop!
+		
+		$this->initialize();	
+	}
 	
+	private function fix_dates(){
+		
+		//TODO 14 should go in the config
+		
+		if(!$this->start_date) $this->start_date = date('Y-m-d');
+		
+		//set due_date if left blank
+		if(!$this->due_date) {
+			$this->due_date = date('Y-m-d', strtotime("$this->start_date +14 days"));
+		}
+		
+		//set due_date if non-sense
+		$duedate_unix = strtotime($this->due_date);
+		$stardate_unix = strtotime($this->start_date);
+		if($duedate_unix < $stardate_unix) {
+			$this->due_date = date('Y-m-d', strtotime("$this->start_date +14 days"));
+		}		
+		
 	}
 	
 	public function create() {
-		if(!is_null($this->obj_ID_value)) return false;		
+		
+		if(!is_null($this->obj_ID_value)) return false;
+		
+		$CI = &get_instance();
+		
+		//add hidden system values
+		$this->creation_date = time();
+		$this->created_by = $CI->mcbsb->user->id;
+		$this->creator = $CI->mcbsb->user->first_name . ' ' . $CI->mcbsb->user->last_name;
+		
+		$this->fix_dates();
+				
 		return parent::create();
 	}
 
 	public function read() {
-		if(is_null($this->obj_ID_value)) return false;		
+		if(is_null($this->obj_ID_value)) return false;
+
+		$this->_config['never_display_fields'] = array();	
+
 		return parent::read();
 	}
 		
 	public function update() {
+		
 		if(is_null($this->obj_ID_value)) return false;
+		
+		$CI = &get_instance();
+		
+		//add hidden system values
+		$this->update_date = time();
+		$this->updated_by = $CI->mcbsb->user->id;
+		$this->editor = $CI->mcbsb->user->first_name . ' ' . $CI->mcbsb->user->last_name;
+				
+		$this->fix_dates();
+		
 		return parent::update();
 	}	
 	
-	public function delete() {
+	public function close(){
+		
 		if(is_null($this->obj_ID_value)) return false;
-		if(!$this->read()) return false;
-		return parent::delete();	
+		
+		$CI = &get_instance();
+		
+		$this->fix_dates();
+		
+		//add hidden system values
+		$this->complete_date = date('Y-m-d');
+		$this->completed_by = $CI->mcbsb->user->id;
+		$this->completionist = $CI->mcbsb->user->first_name . ' ' . $CI->mcbsb->user->last_name;
+		
+		return parent::update();
 	}
 	
-	public function readAll(array $params = null) {
-
-		$where = null;
-		$logic_operator = 'AND';
-				
-		if(!is_null($params)) extract($params);
-				
-		if($results = $this->search($where,$logic_operator)) {
-			$tasks = array();
-			foreach ($results as $key => $id) {
-				$this->task_id = $id;
-				$this->read();
-				$tasks[] = clone $this;
-			}
-				
-			return $tasks;
-		}
-		
+	public function is_open(){
+		return !$this->is_closed();
+	}
+	
+	public function is_closed(){
+		return is_null($this->complete_date) ? false : true;
+	}
+	
+	
+	public function delete() {
+		//we do not delete tasks
 		return false;
 	}
+
+	
+	public function contact_tab($contact){
+	
+		if(!is_object($contact)) return false;
+	
+		$CI = &get_instance();
+		switch ($contact->objName) {
+			case 'person':
+				$CI->session->set_userdata('contact_id',$contact->uid);
+				$CI->session->set_userdata('contact_id_key','uid');
+				$this->contact_id = $contact->uid;
+				$this->contact_id_key = 'uid';
+				$this->contact_name = $contact->cn;				
+			break;
+			
+			case 'organization':
+				$CI->session->set_userdata('contact_id',$contact->oid);
+				$CI->session->set_userdata('contact_id_key','oid');
+				$this->contact_id = $contact->oid;
+				$this->contact_id_key = 'oid';
+				$this->contact_name = $contact->o;				
+			break;			
+		}
 		
-	public function searchProvidingSql($sql) {
-		//generally on a specific database object you don't want to perform generic queries.
-		//if you need to perform generic queries, use db_obj 
-		return false;
-	}	
+		$data = array();
+		$return = array();		
+		$return = modules::run('/tasks/tasks/index');
+		$CI->session->unset_userdata('contact_id');
+		$CI->session->unset_userdata('contact_id_key');
+		
+		$return['buttons'] = array();
+		$return['buttons'][] = $this->magic_button('create');
+						
+		return $return;
+		
+	}
+	
+	public function magic_button($type = 'create'){
+		
+		$tmp = array();
+		
+		switch ($type) {
+			
+			case 'close':
+				$tmp['url'] = '/tasks/ajax/close_task';
+				$tmp['form_title'] = 'Close Task';
+				$tmp['procedure'] = 'close_task';
+				$button_label = 'Close task';
+				$button_id = 'close_task';
+				
+				$this->reset_obj_config();
+				//Do not show the following fields when closing a task
+				$this->_config['never_display_fields'][] = 'task';
+				$this->_config['never_display_fields'][] = 'details';
+				$this->_config['never_display_fields'][] = 'start_date';
+				$this->_config['never_display_fields'][] = 'due_date';
+				$this->_config['never_display_fields'][] = 'urgent';
+			break;
+			
+			case 'edit':
+				$tmp['form_title'] = 'Edit Task';
+				$button_label = 'Edit task';
+				$button_id = 'edit_task';			
+			break;
+			
+			case 'create':
+				$tmp['form_title'] = 'New Task';
+				$button_label = 'Create task';
+				$button_id = 'create_task';					
+			break;
+			
+			default:
+				return array();
+			break;
+		}
+		
+		//common stuff for some cases
+		if($type == 'create' || $type == 'edit'){
+
+			$this->reset_obj_config();
+			//Do not show the endnote textarea when creating or editing
+			$this->_config['never_display_fields'][] = 'endnote';
+			$tmp['url'] = '/tasks/ajax/save_task';
+			$tmp['procedure'] = 'automated_form';
+		}
+		
+		//common stuff for all cases
+		$tmp['obj'] = $this->toJson();
+		$tmp['form_name'] = 'jquery_form_task';
+		
+		$string = json_encode($tmp, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_TAG | JSON_HEX_QUOT | JSON_FORCE_OBJECT);
+		$string = '$(this).live("click", jqueryForm(' . $string . ',"/' . $this->module_folder . '/ajax/getForm"))';
+		
+		$button_url = '#';		
+		
+		$button = array(
+						'label' => $button_label,
+						'id' => $button_id,
+						'url' => $button_url,
+						'onclick' => $string,
+		);
+	
+
+		return $button;
+	}
 }

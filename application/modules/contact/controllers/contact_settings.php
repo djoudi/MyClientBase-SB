@@ -373,11 +373,5 @@ class Contact_Settings extends Admin_Controller {
 		}
 		return false;
 	}
-	
-	//this is used by mcbsb
-	//TODO should I remove this?
-/* 	public function save()
-	{
-		return true;
-	}	 */
+
 }

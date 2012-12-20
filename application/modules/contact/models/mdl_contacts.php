@@ -301,6 +301,8 @@ class Mdl_Contacts extends MY_Model {
 
     }
     
+    
+    //TODO refactoring: this method must be replaced with $this->mcbsb->paginate()
     //overrides _prep_pagination function
     private function _prep_pagination($params) {
     

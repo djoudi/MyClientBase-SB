@@ -58,6 +58,7 @@
 				bindShow: (_options.bindShow + ' ').replace(/ +/g, '.bubbletip' + _bindIndex),
 				bindHide: (_options.bindHide + ' ').replace(/ +/g, '.bubbletip' + _bindIndex)
 			};
+			
 			_timeoutAnimate = null;
 			_timeoutRefresh = null;
 			_isActive = false;
@@ -158,7 +159,7 @@
 			});
 
 			// handle mouseover and mouseout events
-			$([_wrapper.get(0), this.get(0)]).bind(_calc.bindShow, function() {
+			function show_handler() {
 				if (_timeoutAnimate) {
 					clearTimeout(_timeoutAnimate);
 				}
@@ -170,7 +171,9 @@
 					}, _options.delayShow);
 				}
 				return false;
-			}).bind(_calc.bindHide, function() {
+			}
+			
+			function hide_handler() {
 				if (_timeoutAnimate) {
 					clearTimeout(_timeoutAnimate);
 				}
@@ -182,7 +185,10 @@
 					}, _options.delayHide);
 				}
 				return false;
-			});
+			}
+			
+			_wrapper.bind('mouseover', show_handler).bind(_calc.bindHide, hide_handler);
+			_this.bind(_calc.bindShow, show_handler).bind(_calc.bindHide, hide_handler);
 
 			function _Show() {
 				var animation;

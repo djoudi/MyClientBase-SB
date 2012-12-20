@@ -15,10 +15,14 @@ class MY_Loader extends MX_Loader {
 		
 		if($template_engine == 'smarty'){
 			
-			
+			$this->load->driver('plenty_parser');
 			$html = $this->plenty_parser->parse($view, $vars, $return, $template_engine, $module_path);
 			
-			if($return) return $html;
+			if($return) {
+				return $html;
+				//$strip = array("\n","\t");
+				//return str_replace($strip,'',$html);
+			}
 			
 			return;
 		} 
@@ -38,6 +42,7 @@ class MY_Loader extends MX_Loader {
 		$vars['environment'] = ENVIRONMENT;  //development or production
 		
 		$vars['language'] = $this->mcbsb->_language;
+		$vars['locale'] = $this->mcbsb->_locale.'.utf-8';
 		
 		$vars['fcpath'] = FCPATH;
 		$vars['base_url'] = base_url();

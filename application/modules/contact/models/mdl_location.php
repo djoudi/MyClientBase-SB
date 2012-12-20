@@ -236,10 +236,6 @@ class Mdl_Location extends MY_Model {
 							$this->$mandatoryAttribute = $this->session->userdata('last_name').' '.$this->session->userdata('first_name');
 						break;
 	
-						case 'entryUpdateDate':
-							$this->$mandatoryAttribute = date('Y-m-d');
-						break;
-	
 						case 'enabled':
 							$this->$mandatoryAttribute = 'TRUE';  //FIXME
 						break;
@@ -305,7 +301,6 @@ class Mdl_Location extends MY_Model {
 		
     	//automatically add the author of the modification
     	$input['entryUpdatedBy'] = $this->mcbsb->user->first_name.' '.$this->mcbsb->user->last_name;
-    	$input['entryUpdateDate'] = date("Y-m-d");    	
     	
 		$this->rest->initialize(array('server' => $this->config->item('rest_server').'/exposeObj/'.$this->objName));		
 

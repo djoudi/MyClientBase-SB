@@ -8,7 +8,6 @@ class Ajax extends Admin_Controller {
 	
     public function __construct() {
 		
-    	$a = '';
         parent::__construct();
 
         global $callback;
@@ -322,6 +321,8 @@ class Ajax extends Admin_Controller {
     		$this->returnError('Organization has not been created');
     	}
     }    
+    
+    
     protected function getClassicForm(array $params){
     	
     	if(isset($params['object_name'])) $object_name = urlencode(trim($params['object_name']));

@@ -11,8 +11,6 @@
  * @see
  * 
  * @author 		Damiano Venturin
- * @copyright 	Taptank
- * @link		http://www.taptank.com
  * @since		Feb 25, 2012
  * 	
  */
@@ -25,11 +23,23 @@ class Record_Descriptor extends CI_Model
 	}
 	
 	public function __destruct(){
+
+	}	
 	
+	public function getFields($db_name, $table_name) {
+		if(count($this->fields) == 0) $this->read($db_name, $table_name);
+		$return = array();
+		foreach ($this->fields as $key => $field){
+			$tmp  = (array) $field;
+			$name  = $tmp['name'];
+			unset($tmp['name']);
+			$return[$name] = (array) $tmp;
+		}
+		return $return;
 	}	
 	
 	protected function read($db_name , $table_name) {
-			$query = $this->db->query(	'select *
+		$query = $this->db->query(	'select *
 									from information_schema.columns 
 									where table_schema="'.$db_name.'" and table_name="'.$table_name.'" 
 									order by column_name');
@@ -37,15 +47,57 @@ class Record_Descriptor extends CI_Model
 		foreach ($query->result() as $row)
 		{
 			$fd = new Field_Descriptor();
+
 			$fd->name = $row->COLUMN_NAME;
 			$fd->type = $row->DATA_TYPE;
-			$tmp = $row->COLUMN_TYPE;
-			$pieces = preg_split('/\(/', $tmp);
-			if(isset($pieces[1])) $fd->lenght = str_replace(')', '', $pieces[1]);
+
+			if(!is_null($row->CHARACTER_MAXIMUM_LENGTH)){
+				$fd->max_length = $fd->size = $row->CHARACTER_MAXIMUM_LENGTH;
+			}
+
+			if(preg_match('/_date$/', $fd->name) && $fd->type == 'int'){
+				$fd->type = 'date';
+			}
+						
+			if(preg_match('/_time$/', $fd->name) && $fd->type == 'int'){
+				$fd->type = 'time';
+			}
+			//form stuff
+			switch ($fd->type) {
+				case 'tinyint':
+					$fd->form_type = 'checkbox';
+				break;
+
+				case 'time':
+					$fd->css_class = 'datetimepicker';
+					$fd->form_type = 'text';
+					$fd->max_length = $fd->size = 16;
+				break;
+				
+				case 'date':
+					$fd->css_class = 'datepicker';
+					$fd->form_type = 'text';
+					$fd->max_length = $fd->size = 10;
+				break;
+				
+				case 'longtext':
+				case 'text':
+					$fd->form_type = 'textarea';
+				break;
+		
+				default: //varchar, int,
+					$fd->form_type = 'text';
+				break;
+			}
+					
+			$fd->mandatory = !$row->IS_NULLABLE;
+			
+
 			$this->fields[] = $fd;
 		}		
 	}
 	
+	//TODO left here for retrocompatibility. Replace it with return array_keys($this->getFields);
 	public function getFieldsList($db_name, $table_name) {
 		if(count($this->fields) == 0) $this->read($db_name, $table_name);
 		$list = array(); 

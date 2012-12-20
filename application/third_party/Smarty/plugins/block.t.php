@@ -84,13 +84,13 @@ function smarty_block_t($params, $text, &$smarty)
 	$settings = setupPhpGettext();
 	
 	extract($settings);
-/*	
-	if(!defined('PROJECT_DIR')) define('PROJECT_DIR', $project_dir);
-	if(!defined('LOCALE_DIR')) define('LOCALE_DIR', $locale_dir);
-	if(!defined('DEFAULT_LOCALE')) define('DEFAULT_LOCALE', $default_locale);
-*/
+	
+	if(is_null($text) || empty($text)) return $text;
+	
 	// gettext setup
 	T_setlocale(LC_MESSAGES, $locale);
+	//T_setlocale(LC_ALL, $locale.'.utf8');
+	
 	// Set the text domain as 'messages'
 	$domain = 'messages';
 	_bindtextdomain($domain, LOCALE_DIR);

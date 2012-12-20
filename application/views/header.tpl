@@ -17,26 +17,68 @@
 		<link rel="stylesheet" href="/layout/css/{$device}/mcbsb.css" />		
 
 		{* javascript *}
-				
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> 		
 		<script type="text/javascript" src="/js/jquery-1.8.2.js"></script>
 		<script type="text/javascript" src="/js/jquery-ui-1.9.1.js"></script>
+		<script type="text/javascript" src="/js/jquery-ui-timepicker-addon.js"></script>
 		<script type="text/javascript" src="/js/jquery.hotkeys.js"></script> {* provides shortcuts *}
 		<script type="text/javascript" src="/js/util.js"></script>
 		<script type="text/javascript" src="/js/jquery-bubbletip-1.0.6.js"></script>
 		<script type="text/javascript" src="/js/jquery.tubeplayer.js"></script>
 		<script type="text/javascript" src="/js/jquery.jcarousel.min.js"></script>
 		<script type="text/javascript" src="/js/password_strength_plugin.js"></script>
+		<script type="text/javascript" src="/js/mcbsb.js"></script>
+	
+		
+
+		{setlocale locale=$locale}
 		
 		{* global var language *}
 		<script type="text/javascript">
 			language = "{$language}";
 		</script>
-	
-		<script type="text/javascript" src="/js/mcbsb.js"></script>
+		
+		{* google maps library *}
+		
+		<script type="text/javascript" src="/js/gmap3.min.js"></script>			
 	
 		{literal}
 		<script type="text/javascript">
 			$(document).ready(function(){
+
+				$("[id^=mapbutton_]").live('click', function (){
+					
+					var id = $(this).attr("id");
+					var parts = id.split('_');
+					var map_id = parts[1];
+					if(!map_id) return false;
+					
+
+					var map_details = $(this).attr("href").replace('#','');
+					var parts = map_details.split('_');
+					var latitude = parts[0];
+					var longitude = parts[1];
+					if(!latitude || !longitude) return false;
+
+					$('#map_'+map_id).show();
+					
+			        $('#map_'+map_id).gmap3({
+			            marker:{
+				          values:[
+              					{latLng:[latitude, longitude], data:""}
+			              ],
+			              options:{draggable: false}
+			            },
+			            map:{
+			              options:{
+			                zoom: 14,
+			              }
+			            }
+			          });
+			        
+			        return false;
+				});
+				
 				$('.datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
 
 				//videos stuff	
@@ -48,6 +90,10 @@
 				$('.tj_videos').live('click', function (){
 					var video_id = $(this).attr("href");
 
+					if(!video_id) {
+						if(language == 'english') video_id='gydKx6aAXVs';
+						if(language == 'italian') video_id='J-m8Hw4x14o';
+					} 
 					
 					$("#current_video").tubeplayer({
 						autoPlay: true,

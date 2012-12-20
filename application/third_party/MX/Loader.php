@@ -245,7 +245,7 @@ class MX_Loader extends CI_Loader
 
 		if (is_array($model)) return $this->models($model);
 
-		$tmp = explode('/', $model); //this is to avoid the PHP thrown message "Only variables should be passed by reference"
+		$tmp = array_filter(explode('/', $model)); //this is to avoid the PHP thrown message "Only variables should be passed by reference"
 		($_alias = $object_name) OR $_alias = end($tmp);
 
 		if (in_array($_alias, $this->_ci_models, TRUE)) return CI::$APP->$_alias;
@@ -275,14 +275,6 @@ class MX_Loader extends CI_Loader
 			$model = ucfirst($_model);
 
 			CI::$APP->$_alias = new $model();
-			
-// 			try {
-//				CI::$APP->$_alias = new $model();				
-// 			} catch (Exception $e) {
-// 				$model = ucwords($_model);
-// 				CI::$APP->$_alias = new $model();
-// 			}			 
-			
 
 			$this->_ci_models[] = $_alias;
 		}

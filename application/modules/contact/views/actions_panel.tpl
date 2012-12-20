@@ -39,6 +39,12 @@
 		    	$('#input_search').val('');
 				return false; 
 			});
+
+	    	jQuery(document).bind('keydown', 'c',function (evt){
+	    		$('#create_task')[0].click();
+				return false; 
+			});
+			
 		}		
 
 		//this will be Add Location
@@ -232,11 +238,15 @@
 			<div id="add_person" title="Form" style="display: none;">		
 				<form id="add_person_form" style="margin-top: 15px; padding: 0px;">
 					<dl style="margin: 0px; padding: 0px; height: 30px;">
-						<dt style="margin: 0px; padding: 0px; padding-right: 5px; height: 30px;"><label style="font-size: 10px; margin: 0px; padding: 0px;">{t}First Name{/t}:</label></dt>
+						<dt style="margin: 0px; padding: 0px; padding-right: 5px; height: 30px; width: 60px;">
+							<label style="font-size: 10px; margin: 0px; padding: 0px;">{t}First Name{/t}:</label>
+						</dt>
 						<dd style="margin: 0px; padding: 0px;"><input title="{t}first name{/t}" size="35" type="text" name="firstname" id="first_name" style="width: 170px;" /></dd>
 					</dl>
 					<dl>
-						<dt style="margin: 0px; padding: 0px; padding-right: 5px; height: 30px;"><label style="font-size: 10px; margin: 0px; padding: 0px;">{t}Last Name{/t}:</label></dt>
+						<dt style="margin: 0px; padding: 0px; padding-right: 5px; height: 30px; width: 60px;">
+							<label style="font-size: 10px; margin: 0px; padding: 0px;">{t}Last Name{/t}:</label>
+						</dt>
 						<dd style="margin: 0px; padding: 0px;">
 							<input title="{t}last name{/t}"  size="35" type="text" name="lastname" id="last_name" style="width: 170px;"/>
 							<a class="button" id="add_person_submit" href="#">{t}Ok{/t}</a>
@@ -322,6 +332,57 @@
 			</li>
 			{/if}
 			
+			{if $profile_view && $object_type == 'person' && $contact_id != "" && $contact->enabled == 'TRUE'}
+				<li class="ap">
+					<a class="button" id="button_set_password" href="#">{t}Set password{/t}</a>
+					<div id="set_password" title="Form" style="display: none;">		
+						<form id="set_password_form" style="margin-top: 15px; padding: 0px;">
+						{if $object_type=='person'}
+							<input type="hidden" id="contact_uid" name="uid" value="{$contact_id}"/>
+							<input type="hidden" id="contact_email" name="email" value="{$contact->mail}"/>
+						{/if}
+						{if $object_type=='organization'}
+							<input type="hidden" id="contact_oid" name="oid" value={$contact_id}/>
+							<input type="hidden" id="contact_email" name="email" value="{$contact->omail}"/>
+						{/if}
+						
+							<dl style="margin: 0px; padding: 0px; height: 35px;">
+								<dt style="margin: 0px; padding: 0px; padding-right: 5px; height: 30px; width: 50px;">
+									<label style="font-size: 10px; margin: 0px; padding: 0px;">{t}Password{/t}:</label>
+								</dt>
+								<dd style="margin: 0px; padding: 0px;">
+									<input title="{t}password{/t}" size="20" type="password" name="userPassword" id="password" style="width: 120px;" />
+								</dd>
+							</dl>
+							<dl style="margin: 0px; padding: 0px; height: 35px;">
+								<dt style="margin: 0px; padding: 0px; padding-right: 5px; height: 30px; width: 50px;">
+									<label style="font-size: 10px; margin: 0px; padding: 0px;">{t}Confirm{/t}:</label>
+								</dt>
+								<dd style="margin: 0px; padding: 0px;">
+									<input title="{t}last name{/t}"  size="20" type="password" name="confirm_password" id="confirm_password" style="width: 120px;"/>
+									<span id="no_match_password" class="pwdtest badPass" style="display: none;"><span>{t}No match{/t}</span></span>
+									<span id="match_password" class="pwdtest strongPass" style="display: none;"><span>{t}Matches{/t}</span></span>								
+								</dd>
+							</dl>
+							<dl>
+								<a style="float: right; margin-top: 5px;" class="button" id="set_password_submit" href="#">{t}Ok{/t}</a>
+								<div style="clear: both;"></div>						
+							</dl>
+						</form>
+					</div>
+				</li>
+			{/if}				
+			
+			{if isset($extra_tabs)}
+				{foreach $extra_tabs as $key => $extra_tab}
+					{if $extra_tab.buttons}
+						{foreach $extra_tab.buttons as $key => $button}
+							{* {$button.onclick} *}
+							<li class="ap"><a class="button" href="{$button.url}" id="{$button.id}"  onClick='{$button.onclick}'>{t u=1}{$button.label}{/t}</a></li>
+						{/foreach}
+					{/if}
+				{/foreach}
+			{/if}				
 			
 			{if $invoice_module_is_enabled}
 				<li class="ap"><a class="button" href="/tasks/form/{$contact_id_key}/{$contact_id}?btn_add=true">{t}Create a task{/t}</a></li>
@@ -342,46 +403,6 @@
 			 -->
 		{/if}	
 		
-		{if $profile_view && $object_type == 'person' && $contact_id != "" && $contact->enabled == 'TRUE'}
-			<li class="ap">
-				<a class="button" id="button_set_password" href="#">{t}Set password{/t}</a>
-				<div id="set_password" title="Form" style="display: none;">		
-					<form id="set_password_form" style="margin-top: 15px; padding: 0px;">
-					{if $object_type=='person'}
-						<input type="hidden" id="contact_uid" name="uid" value="{$contact_id}"/>
-						<input type="hidden" id="contact_email" name="email" value="{$contact->mail}"/>
-					{/if}
-					{if $object_type=='organization'}
-						<input type="hidden" id="contact_oid" name="oid" value={$contact_id}/>
-						<input type="hidden" id="contact_email" name="email" value="{$contact->omail}"/>
-					{/if}
-					
-						<dl style="margin: 0px; padding: 0px; height: 35px;">
-							<dt style="margin: 0px; padding: 0px; padding-right: 5px; height: 30px; width: 50px;">
-								<label style="font-size: 10px; margin: 0px; padding: 0px;">{t}Password{/t}:</label>
-							</dt>
-							<dd style="margin: 0px; padding: 0px;">
-								<input title="{t}password{/t}" size="20" type="password" name="userPassword" id="password" style="width: 120px;" />
-							</dd>
-						</dl>
-						<dl style="margin: 0px; padding: 0px; height: 35px;">
-							<dt style="margin: 0px; padding: 0px; padding-right: 5px; height: 30px; width: 50px;">
-								<label style="font-size: 10px; margin: 0px; padding: 0px;">{t}Confirm{/t}:</label>
-							</dt>
-							<dd style="margin: 0px; padding: 0px;">
-								<input title="{t}last name{/t}"  size="20" type="password" name="confirm_password" id="confirm_password" style="width: 120px;"/>
-								<span id="no_match_password" class="pwdtest badPass" style="display: none;"><span>{t}No match{/t}</span></span>
-								<span id="match_password" class="pwdtest strongPass" style="display: none;"><span>{t}Matches{/t}</span></span>								
-							</dd>
-						</dl>
-						<dl>
-							<a style="float: right; margin-top: 5px;" class="button" id="set_password_submit" href="#">{t}Ok{/t}</a>
-							<div style="clear: both;"></div>						
-						</dl>
-					</form>
-				</div>
-			</li>
-		{/if}	
 	</ul>
 {/if}
 

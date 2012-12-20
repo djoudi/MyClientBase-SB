@@ -10,7 +10,7 @@
 			$(this).html('');
 		});
 
-		$('#a1_right').bubbletip($('#tip1_right'), { deltaDirection: 'right', calculateOnShow: true });
+		$('#a1_right').bubbletip($('#tip1_right'), { deltaDirection: 'right', calculateOnShow: true, bindShow: 'click', delayHide: 1500 });
 	});
 </script>
 {/literal}	

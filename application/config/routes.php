@@ -42,7 +42,8 @@ $route['default_controller'] = "contact/search";
 $route['404_override'] = '';
 
 $route['logout'] = 'login/logout/';
-//$route['contact/index/:any'] = 'contact/search/';
+$route['tasks/from'] = 'tasks/index';
+$route['tasks/from/:any'] = 'tasks/index';
 $route['contact/order_by/:any'] = 'contact/search/order_by/';
 
 /* End of file routes.php */

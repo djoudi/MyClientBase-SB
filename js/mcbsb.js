@@ -142,8 +142,6 @@ function submit_password(){
 		show_message('A password can be set only if the contact has an email set.','error');
 		return false;
 	}
-
-	console.log('email ' + email);
 	
 	var uid = $('#contact_uid').val();
 	var password = $('#password').val();
@@ -211,28 +209,45 @@ function retrieveForm(form) {
 	    for (var i = 0; i < elemArray.length; i++) {
 	
 	    	var element = elemArray[i];
-	    	
 	    	var field = element.name;
 	    	var value = element.value;
 	    	if(typeof element.type !== "undefined" && element.type){
+	    		
 	    		var type = element.type.toUpperCase();
+	    		
+	    		//console.log(element);
+	    		
+	    		if(type == 'CHECKBOX' || type == 'RADIO'){
+	    			
+	    			//add checkboxes only if they are checked
+	    			if(checked = $('#' + element.id + ':checked').val()){
+	    				
+	    				dataObj[i] = { field: field, value: value, type: type };
+	    			} 
+	    		} else {
+	    			dataObj[i] = { field: field, value: value, type: type };
+	    		}
 	    	}
 	    	
-	    	dataObj[i] = { field: field, value: value, type: type };
+	    	
 	    }
 	}
 	return dataObj;
 }
 
-function jqueryDelete(params) {
+function jqueryDelete(params, url) {
 	var agree=confirm("Are you sure ?");
 	if (agree)
 	{	
+		if(!url) url = '/contact/ajax/delete';
+		
+		//console.log(params);
+		
 		$.ajax({
 			async : true,
 			type: 'POST',
 			dataType : 'jsonp',
-			url : '/contact/ajax/delete',
+			url : url,
 			data : {
 				params: params,
 			}, 
@@ -241,11 +256,11 @@ function jqueryDelete(params) {
 		.done(function(json){
 			if(typeof json.error !== "undefined" && json.error){
 				//console.log('jqueryDelete has an error');
-				alert(urldecode(json.error));
+				//alert(urldecode(json.error));
 			}
 		})
 	    .success(function(json){
-	    	if(typeof json.message !== "undefined" && json.message){
+	    	if((typeof json.message !== "undefined" && json.message) || json.status){
 	    		//alert(urldecode(json.message));
 	    		window.location.hash = json.focus_tab;
 	    		window.location.reload(true);
@@ -272,12 +287,12 @@ function jqueryAssociate(params) {
 		.done(function(json){
 			if(typeof json.error !== "undefined" && json.error){
 				//console.log('jqueryDelete has an error');
-				alert(urldecode(json.error));
+				//alert(urldecode(json.error));
 			}
 		})
 	    .success(function(json){
 	    	if(typeof json.message !== "undefined" && json.message){
-	    		alert(urldecode(json.message));
+	    		//alert(urldecode(json.message));
 	        	window.location.hash = json.focus_tab;
 	        	window.location.reload(true);
 	    	}
@@ -319,6 +334,7 @@ function toggle_animate(tag_id, tag_focus) {
 }
 
 function search(params){
+	//console.log('search');
 	
 	if(typeof params.search_tag_id == "undefined" || params.search_tag_id == ''){
 		//the default tag id for the input box is 'input_search'
@@ -336,9 +352,11 @@ function search(params){
 	
 	if(typeof searched_value !== "undefined" && searched_value){
 
+		//console.log(params);
+		
 		params.searched_value = searched_value;
 		
-		jqueryForm(params, function(response){
+		jqueryForm(params, null, function(response){
 			//console.log('search function is closing');
 			$('#' + params.form_name).toggle();
 		});	
@@ -398,14 +416,18 @@ function get_my_tj_organization(current_oid){
 	});
 }
 
-function jqueryForm(params) {
+function jqueryForm(params,url) {
 //	console.log('jqueryForm');
 //	console.log(params);
+	
+	//default value TODO the ajax controller in contact module needs refactoring
+	if(!url) url = '/contact/ajax/getForm';
+	
 	$.ajax({
 		async: false,
 		type: 'POST',
 		dataType : 'jsonp',
-		url : '/contact/ajax/getForm',
+		url : url,
 		data : {
 			params: params,
 		},
@@ -441,10 +463,35 @@ function jqueryForm(params) {
 	});
 }
 
+function retrieve_validate_form(form_name){
+	
+	var form = document.forms[form_name];
+	var formObj = retrieveForm(form);
+
+	jQuery.ajax({
+    	url		: '/contact/ajax/validateForm',
+    	dataType: 'jsonp',
+    	type	: 'post',
+        data    : {
+            	form: formObj
+        },
+        error	: errorCallback,
+    })
+	.done(function(json){
+		if(typeof json.error !== "undefined" && json.error){
+			//console.log('postFormToAjax has an error at validation stage.');
+			alert(urldecode(json.error));
+		}
+	})
+	.success(function(json) {
+		//console.log('form validation has been successfull');
+		return json;
+	});
+}
 
 function openJqueryForm(json){
-	//console.log('openJqueryForm');
-	//console.log(json);
+//	console.log('openJqueryForm');
+//	console.log(json);
 	
 	var tag = $('<div id="mydialog"></div>');
 	var procedure = '';
@@ -453,9 +500,13 @@ function openJqueryForm(json){
 	if(typeof json == "object") {
 		
 		if(json.html){
-			
+				
 			var html_form = urldecode(json.html);
 			
+			var dialog_title = '';
+			
+			//TODO uncomment once I can translate js messages
+			//if(json.form_title) dialog_title = json.form_title;
 			tag.html(html_form).dialog({
 			
 				autoOpen: false,
@@ -464,7 +515,9 @@ function openJqueryForm(json){
 				width: 'auto',
 				modal: true,
 				position: ['center',30],
-				resizable: false,
+				resizable: true,
+				title: dialog_title,
+				//zIndex: 900,
 				buttons: {
 					"Ok": function() {
 						$(this).dialog("close");
@@ -478,11 +531,52 @@ function openJqueryForm(json){
 	//				},
 				},
 				open: function(){
-					//add something to do when the dialog opens
-					//console.log('open dialog');
+
+					//this remove the X button but causes the dialog to open twice when all the text in the page is selected (ctr+A on the browser)
+					//$('#mydialog').dialog({ dialogClass: 'no-close' });
+					
+					//enables datetimepicker for all the form fields with class datetimepicker
+					$(".datetimepicker").datetimepicker({ 
+						dateFormat: 'yy-mm-dd',
+						hour: 7,
+						hourMin: 7,
+						hourMax: 20,
+						stepMinute: 15,
+//						minDateTime: 0,
+//						maxDateTime: null
+					});
+					
+					//enables datepicker for all the form fields with class datepicker
+					$(".datepicker").datepicker({ 
+						dateFormat: 'yy-mm-dd',
+//						minDate: 0,
+//						maxDate: null
+					});
 				},
 				close: function(event, ui) {
-					postFormToAjax(json.url,'jsonp','POST',json.form_name,json.object_name,json.related_object_name,json.related_object_id,selected_radio,json.procedure,null);	
+					
+					switch(json.procedure){
+						
+						case 'automated_form':
+							var form = document.forms[json.form_name];
+							var formObj = retrieveForm(form);
+							$('#'+json.form_name).submit();
+						break;
+						
+						case 'create_otr':
+						case 'create_appointment':
+						case 'create_appointment_for_task':
+						case 'close_task':
+							console.log('post to ajax');
+							console.log(json);
+							postToAjax(json);
+						break;
+						
+						default:
+							console.log(json);
+							postFormToAjax(json.url,'jsonp','POST',json.form_name,json.object_name,json.related_object_name,json.related_object_id,selected_radio,json.procedure,null);
+						break;
+					}
 				} 
 			}
 			).dialog('open');
@@ -490,35 +584,77 @@ function openJqueryForm(json){
 	}
 }
 
-function retrieve_validate_form(form_name){
+//TODO refactoring: this function replaces postFormToAjax
+function postToAjax(json, dataType, type){
+	//console.log('postToAjax');
+	//console.log(json);
 	
-		var form = document.forms[form_name];
-		var formObj = retrieveForm(form);
+	var params = json;
+	if(!dataType) var dataType = 'jsonp';
+	if(!type) var type = 'POST';
+	var url = urldecode(json.url);
+	var formObj = '';
+	
+	if(json.form_name) {
+		
+		var form = document.forms[json.form_name];
+		formObj = retrieveForm(form);
+		
+		console.log('formObj');
+		console.log(formObj);
+		
+	} 
+	
+	$.ajax({
+    	url		: url,
+    	dataType: dataType,
+    	type	: type,
+        data    : { form: formObj },
+        error	: errorCallback,
+    })
+	.done(function(json){
+		if(typeof json.error !== "undefined" && json.error){
+			console.log('error ' + json.error);
+			return false;
+		}
+	})        
+    .success(function(json) {
 
-		jQuery.ajax({
-	    	url		: '/contact/ajax/validateForm',
-	    	dataType: 'jsonp',
-	    	type	: 'post',
-	        data    : {
-	            	form: formObj
-	        },
-	        error	: errorCallback,
-	    })
-		.done(function(json){
-			if(typeof json.error !== "undefined" && json.error){
-				//console.log('postFormToAjax has an error at validation stage.');
-				alert(urldecode(json.error));
-			}
-		})
-		.success(function(json) {
-			//console.log('form validation has been successfull');
-			return json;
-		});
+    	if(json.status){
+			switch(urldecode(json.procedure)){
+				case 'replace_html':
+					
+					$.each(json.replace, function(index, item) {
+						console.log(item)
+						$('#' + item.id).html(item.html);
+					});
+					return true;
+					
+				break;
+				
+				default:
+		    		//alert(urldecode(json.message));
+					var focus_tab = json.focus_tab;
+					if(!focus_tab){
+						if(params.procedure == 'create_otr') focus_tab = 'tab_Tasks';
+						if(params.procedure == 'create_appointment') focus_tab = 'tab_Tasks';
+						if(params.procedure == 'create_appointment_for_task') focus_tab = 'tab_Tasks';
+						if(params.procedure ==  'close_task') focus_tab = 'tab_Tasks';
+						if(params.procedure == 'create_appointment_for_task') focus_tab = 'tab_Tasks';
+					}
+					//console.log('focus tab ' + focus_tab);
+		        	window.location.hash = focus_tab;
+		        	window.location.reload(true);					
+				break;
+			}	    		
+    	} 
+    });	
+	
 }
 
 function postFormToAjax(url, dataType, type, form_name, object_name, related_object_name, related_object_id, selected_radio, procedure, input_params){
-	//console.log('postFormToAjax');
-	//console.log(input_params);
+//	console.log('postFormToAjax');
+//	console.log(input_params);
 	
 	url = urldecode(url);
 	
@@ -541,6 +677,8 @@ function postFormToAjax(url, dataType, type, form_name, object_name, related_obj
 		var formObj = '';
 	}
 	
+	
+	
 	jQuery.ajax({
     	url		: url,
     	dataType: dataType,
@@ -562,6 +700,7 @@ function postFormToAjax(url, dataType, type, form_name, object_name, related_obj
 	.done(function(json){
 		if(typeof json.error !== "undefined" && json.error){
 			alert(urldecode(json.error));
+			return false;
 		}
 	})        
     .success(function(json) {
@@ -577,6 +716,18 @@ function postFormToAjax(url, dataType, type, form_name, object_name, related_obj
 					if(json.oid){
 						window.location = '/contact/form/oid/' + json.oid;
 					}
+				break;
+				
+				case 'close_task':
+					console.log('after submit');
+					console.log(json);
+					if(json.status && json.html && json.html_id){
+						console.log('replacing');
+						$('#' + json.html_id).html(json.html);
+					} else {
+						console.log('wrong');
+						//window.location.reload(true);
+					}					
 				break;
 				
 				default:

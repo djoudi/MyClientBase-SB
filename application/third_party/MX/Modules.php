@@ -90,7 +90,7 @@ class Modules
 		if (isset(self::$registry[$alias])) return self::$registry[$alias];
 
 		/* get the module path */
-		$segments = explode('/', $module);
+		$segments = array_filter(explode('/', $module));
 
 		/* find the controller */
 		list($class) = CI::$APP->router->locate($segments);
@@ -179,7 +179,7 @@ class Modules
 	* Generates fatal error if file not found.
 	**/
 	public static function find($file, $module, $base) {
-		$segments = explode('/', $file);
+		$segments = array_filter(explode('/', $file));
 
 		$file = array_pop($segments);
 		$file_ext = strpos($file, '.') ? $file : $file.EXT;

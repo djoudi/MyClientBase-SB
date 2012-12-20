@@ -114,7 +114,13 @@ class Mdl_Person extends Mdl_Contact {
     	if(count($this->mandatoryAttributes) == 0) $this->getMandatoryAttributes();
     	
     	foreach ($this->get_default_values() as $attribute => $value){
-    		if(empty($this->$attribute)) $this->$attribute = $value;
+    		if(empty($this->$attribute)){
+    			$this->$attribute = $value;
+    		} else {
+    			if($this->$attribute == 'null') {
+    				unset($this->$attribute);
+    			}
+    		}
     	}
     	
     	if(count($this->properties) == 0) $this->getProperties();
@@ -144,7 +150,7 @@ class Mdl_Person extends Mdl_Contact {
     	$this->hidden_fields = $this->config->item('person_hidden_fields');
     }
     
-    protected function hasProperAddress()
+    public function hasProperAddress()
     {
     	//some very basic validation of an address. If the address is validated we can try to save the "Residence" location.
     	if(!isset($this->homePostalAddress)) return false;
@@ -167,7 +173,9 @@ class Mdl_Person extends Mdl_Contact {
     	//here I could use a list but then there is the mess with the languages
     	if(mb_strlen($this->mozillaHomeCountryName) < 3) return false;
     	
-    	return true;
+    	$address = $this->homePostalAddress. ', ' . $this->mozillaHomePostalCode . ' ' . $this->mozillaHomeLocalityName . ' ' . $this->mozillaHomeState . ' ' . $this->mozillaHomeCountryName;
+    	 
+    	return $address;
     }
       
 

@@ -1,6 +1,7 @@
 {assign header_file "{$fcpath}application/views/header.tpl"}
 {assign top_file "{$fcpath}application/views/top.tpl"}
 {assign top_menu_file "{$fcpath}application/views/top_menu.tpl"}
+{assign pager_file "{$fcpath}application/views/pager.tpl"}
 {assign footer_file "{$fcpath}application/views/footer.tpl"}
 
 {include file="$header_file"}
@@ -92,6 +93,6 @@
 	<div class="box" style="padding-left: 5px;">{include 'actions_panel.tpl'}</div>
 </div>	
 
-{include 'pager.tpl'}
+{include file="$pager_file"}
 
 {include file="$footer_file"}

@@ -342,6 +342,7 @@ class Mdl_Contact extends MY_Model {
  					if(!empty($this->oRDN)) $original_values['oRDN'] = $this->oRDN;
  					if(!empty($this->oAdminRDN)) $original_values['oAdminRDN'] = $this->oAdminRDN;
  					if(!empty($this->locRDN)) $original_values['locRDN'] = $this->locRDN;
+ 					if(!empty($this->userPassword)) $original_values['userPassword'] = $this->userPassword;
  				}
  			} 			
 
@@ -366,6 +367,7 @@ class Mdl_Contact extends MY_Model {
  					if(!empty($original_values['oRDN'])) $this->oRDN = $original_values['oRDN'];
  					if(!empty($original_values['oAdminRDN'])) $this->oAdminRDN = $original_values['oAdminRDN'];
  					if(!empty($original_values['locRDN'])) $this->locRDN = $original_values['locRDN'];
+ 					if(!empty($original_values['userPassword'])) $this->userPassword = $original_values['userPassword'];	
  				}
  			}
  		}
@@ -437,7 +439,6 @@ class Mdl_Contact extends MY_Model {
 
     	//automatically add the author of the modification
     	$input['entryUpdatedBy'] = $this->mcbsb->user->first_name.' '.$this->mcbsb->user->last_name;
-    	$input['entryUpdateDate'] = date("Y-m-d");
     	
 		$this->rest->initialize(array('server' => $this->config->item('rest_server').'/exposeObj/'.$this->objName));		
 
@@ -447,7 +448,7 @@ class Mdl_Contact extends MY_Model {
 			$this->mcbsb->system_messages->success = 'contact_updated';
 			return true; 
 		}
-		$this->mcbsb->system_messages->error = 'contact_not_updated';
+		$this->mcbsb->system_messages->error = 'Contact_not_updated - '.$this->crr->http_message;
 		return false;
 	}
 	

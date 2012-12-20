@@ -30,7 +30,7 @@ class Mdl_Tooljar extends MY_Model {
         if(count($host_sliced) < 3) {
         	$this->organization = 'acme'; //this is for nitro dev environment
         } else {
-        	$this->organization = $host_sliced[0];
+        	$this->organization = $host_sliced[1];
         } 
 	}
 

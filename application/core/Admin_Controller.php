@@ -7,7 +7,9 @@ class Admin_Controller extends MX_Controller {
 	public function __construct() {
 		
 		parent::__construct();
-			
+		
+		//TODO ACLs should go somewhere here. When a module controller is loaded it always calls the parent constructor which is this class
+		
 		//$a = get_class($this);
 		
         $this->load->helper('url');

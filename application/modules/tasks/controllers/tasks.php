@@ -6,58 +6,150 @@ class Tasks extends Admin_Controller {
 
 		parent::__construct();
 
-		if (!$this->mdl_mcb_modules->check_enable('tasks')) {
-			redirect('contact');
-		}
-
 		$this->load->helper('date');
 		
-		$this->load->model('mdl_tasks');
-
+		$this->load->model('tasks/task','task');
+	
 	}
 
+	/**
+	 * Shows task details
+	 * 
+	 * @access		public
+	 * @param		none
+	 * @return		hmtl
+	 * 
+	 * @author 		Damiano Venturin
+	 * @since		Nov 26, 2012
+	 */	 
+	public function details(){
+		
+		$segments = $this->uri->uri_to_assoc();
+		if(!isset($segments['id']) || !is_numeric($segments['id'])) redirect('/'); //TODO in this case would be nice to  roll back to last position
+		
+		$data = array();
+		
+		$this->task->id = $segments['id'];
+		$this->task->read();
+		
+		$data['task'] = $task = $this->task->toJson();
+		
+		
+		$this->load->model('tasks/appointment','appointment');
+		$sql = 'select SQL_CALC_FOUND_ROWS * from '.$this->appointment->db_table . ' where task_id=' . $this->task->id . ' order by id DESC';
+		$data['appointments'] = $appointments = $this->appointment->readAll($sql);
+		
+		$this->load->model('otrs/otr','otr');
+		$data['involved_in_appointment'] = array();
+		foreach ($appointments as $k => $appointment){
+			$sql = 'select SQL_CALC_FOUND_ROWS * from '.$this->otr->db_table . ' where object_id=' . $appointment['id'] . ' and object_name="appointment" order by id ASC';
+			$data['involved_in_appointment'][$k] = $this->otr->readAll($sql);
+		}
+				
+		
+		
+		$data['buttons'][] = $this->task->magic_button('edit');
+		$data['buttons'][] = $this->task->magic_button('close');
+		
+		$this->appointment->task_id = $this->task->id;
+		$this->appointment->what = $this->task->task;
+		$data['buttons'][] = $this->appointment->magic_button('create_appointment_for_task');
+		
+		$this->load->view('task_details.tpl', $data, false, 'smarty', 'tasks');
+	}
+	
 	/**
 	 * Retrieves all the tasks and shows them in a table
 	 * 
 	 * @access		public
 	 * @param		none		
-	 * @var			
 	 * @return		none
-	 * @example
-	 * @see
 	 * 
 	 * @author 		Damiano Venturin
-	 * @copyright 	2V S.r.l.
-	 * @license	GPL
-	 * @link		http://www.squadrainformatica.com/en/development#mcbsb  MCB-SB official page
-	 * @since		Jun 24, 2012
-	 * 
+	 * @since		Nov 25, 2012
 	 */
-	function index() {
+	function index(){
 		
-		$this->_post_handler();
+		$from = (integer) uri_find('from');
 		
-		$this->redir->set_last_index();
+		$contact_id = $this->session->userdata('contact_id');
+		$contact_id_key = $this->session->userdata('contact_id_key');
+		
+		$data = array();
+		if($contact_id && $contact_id_key) {
+			$sql = 'select SQL_CALC_FOUND_ROWS * from '.$this->task->db_table . ' where contact_id=' . $contact_id . ' and contact_id_key="' . $contact_id_key. '" order by id DESC';
+			$tasks = $this->task->readAll($sql,true,$from);
+		} else {
+			$tasks = $this->task->readAll(null,true,$from);
+		}
+		
+		
+		if(is_array($tasks) && count($tasks) > 0){
+						
+			$this->load->model('otrs/otr','otr');
+			$this->load->model('tasks/appointment','appointment');
+			foreach ($tasks as $key => $task) {
 
-		$params = array(
-			'limit'		=>	20,
-			'paginate'	=>	TRUE,
-			'page'		=>	uri_assoc('page', 3)
-		);
+				//people involved
+				$this->otr->object_name = 'task';
+				$sql = 'select SQL_CALC_FOUND_ROWS * from '.$this->otr->db_table . ' where object_id=' . $task['id'] . ' and object_name="task" order by colleague_name ASC';
+				$tasks[$key]['involved'] = $this->otr->readAll($sql);
+				
+				$this->otr->object_id = $task['id'];
+				$tasks[$key]['involve_buttons'][] = $this->otr->magic_button('create_otr');
+				
+				//appointments				
+				$sql = 'select SQL_CALC_FOUND_ROWS * from '.$this->appointment->db_table . ' where task_id=' . $task['id'] . ' order by id DESC';
+				$tasks[$key]['appointments'] = $appointments = $this->appointment->readAll($sql);
+				
+ 				foreach ($appointments as $k => $appointment){
+ 					$sql = 'select SQL_CALC_FOUND_ROWS * from '.$this->otr->db_table . ' where object_id=' . $appointment['id'] . ' and object_name="appointment" order by id ASC';
+ 					$tasks[$key]['involved_in_appointment'][$k] = $this->otr->readAll($sql);
 
-		$data = array(
-			'tasks'					=>	$this->mdl_tasks->getAll(), 
-			'show_task_selector'	=>	TRUE
-		);
-
-		$data['site_url'] = site_url($this->uri->uri_string());
-		$data['table'] = $this->plenty_parser->parse('table.tpl', $data, true, 'smarty', 'tasks');
-		$data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'tasks');				
-		$this->load->view('index', $data);
-
+ 					$this->appointment->id = $appointment['id'];
+ 					$tasks[$key]['delete_appointment_buttons'][$k] = $this->appointment->magic_button('delete_appointment');
+ 					
+ 					$this->otr = new Otr();
+ 					$this->otr->object_id = $appointment['id'];
+ 					$this->otr->object_name = 'appointment';
+ 					$tasks[$key]['appointment_involve_buttons'][$k] = $this->otr->magic_button('create_otr'); 					
+ 				}
+				
+ 				unset($this->appointment->id);
+				$this->appointment->task_id = $task['id'];
+				$this->appointment->what = '#'.$task['id'] . ' ' . $task['contact_name'];
+				$this->appointment->description = $task['task'];
+				$tasks[$key]['create_appointment_buttons'][] = $this->appointment->magic_button('create_appointment_for_task');
+	
+			}
+		}
+		
+		$data['tasks'] = $tasks;
+		$data['pager'] = $this->mcbsb->_pagination_links;
+		
+/* 		$data['tomorrow_summary'] = array();
+		$sql = 'select SQL_CALC_FOUND_ROWS * from '.$this->appointment->db_table . ' where task_id=' . $task['id'] . ' order by id DESC';
+		$tomorrow_appointments[$key]['appointments'] = $appointments = $this->appointment->readAll($sql);
+		
+		foreach ($this->mcbsb->user->team as $key => $colleague){
+			
+				
+			
+			$data['tomorrow_summary'][][$colleague['uid']] = array(); 
+			$a = '';
+		} */
+		
+		if($contact_id && $contact_id_key) {
+			return array('html' => $this->load->view('tasks_table.tpl', $data, true, 'smarty', 'tasks'),
+							'counter' => count($tasks));
+		} else {
+			$this->load->view('tasks_all.tpl', $data, false, 'smarty', 'tasks');
+		}
 	}
+	
 
-	//TODO rename in EDIT
+
+/*
 	function form() {
 
 		$this->redir->set_last_index();
@@ -75,8 +167,11 @@ class Tasks extends Admin_Controller {
 					
 					//it's a new task
 					if($this->mcbsb->task->create()) {
+						
 						$this->mcbsb->system_messages->success = 'Task has been successfully created';
+						
 					} else {
+						
 						$this->mcbsb->system_messages->error = 'Task has not been created';
 					}
 				
@@ -293,6 +388,7 @@ class Tasks extends Admin_Controller {
 		}
 	}
 
+	*/
 }
 
 ?>

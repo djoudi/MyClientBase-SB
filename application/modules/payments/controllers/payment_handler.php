@@ -14,8 +14,6 @@ class Payment_Handler extends MX_Controller {
 
 			$this->load->database();
 
-			//$this->load->model('mcb_data/mdl_mcb_data');  //TODO delme
-
 			$this->mcbsb->settings->set_session_data();
 
 			$this->load->driver('merchant');
