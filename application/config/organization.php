@@ -22,6 +22,11 @@ $config['organization_attributes_aliases'] = array(
 				'facsimileTelephoneNumber' => 'fax',
 				'oURL' => 'website',
 				'omail' => 'e-mail',
+				'facebookURI' => 'facebook',
+				'twitterURI' => 'twitter',
+				'linkedinURI' => 'linkdin',
+				'googleplusURI' => 'googleplus',
+				'youtubeURI' => 'youtube',
 );
 $config['organization_hidden_fields'] = array('oid');
 $config['organization_default_values'] = array(
