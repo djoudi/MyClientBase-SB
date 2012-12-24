@@ -80,7 +80,7 @@ class Mdl_Tooljar extends MY_Model {
 		$this->rest->initialize(array('server' => $this->tooljar_server));
 		$method = 'get_tj_admin_email';
 		$input = array();
-		if($this->config->item('ce_key')) {
+		if($this->config->item('tooljar_ce_key')) {
 			$input['ce_key'] = $this->config->item('ce_key');
 		} else {
 			return false;
