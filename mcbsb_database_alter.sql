@@ -1,3 +1,5 @@
+## This sql file can be used to alter an mcbsb v.0.13 database into a mcbsb v.0.14 one
+
 ##
 DROP TABLE IF EXISTS `groups`;
 
