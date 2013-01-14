@@ -21,10 +21,10 @@ class Users extends Admin_Controller {
         );
 
         $data = array();
-        $data['details'] = $this->plenty_parser->parse('index.tpl', $tmp, true, 'smarty', 'users');
+        $data['details'] = $this->pp->parse('index.tpl', $tmp, true, 'smarty', 'users');
         
         $data['site_url'] = site_url($this->uri->uri_string());
-        $data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'users');
+        $data['actions_panel'] = $this->pp->parse('actions_panel.tpl', $data, true, 'smarty', 'users');
         
         
         $this->load->view('index', $data);

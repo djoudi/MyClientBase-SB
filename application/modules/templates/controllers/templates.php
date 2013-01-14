@@ -42,11 +42,11 @@ class Templates extends Admin_Controller {
 		switch ($this->type){
 			case 'payment_receipts':
 			case 'invoices':
-				$data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'invoices');
+				$data['actions_panel'] = $this->pp->parse('actions_panel.tpl', $data, true, 'smarty', 'invoices');
 			break;
 							
 			default:
-				$data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'templates');
+				$data['actions_panel'] = $this->pp->parse('actions_panel.tpl', $data, true, 'smarty', 'templates');
 			break;
 		}
 		
@@ -75,11 +75,11 @@ class Templates extends Admin_Controller {
 			switch ($this->type){
 				case 'payment_receipts':
 				case 'invoices':
-					$data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'invoices');
+					$data['actions_panel'] = $this->pp->parse('actions_panel.tpl', $data, true, 'smarty', 'invoices');
 				break;
 							
 				default:
-					$data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'templates');
+					$data['actions_panel'] = $this->pp->parse('actions_panel.tpl', $data, true, 'smarty', 'templates');
 				break;
 			}			
 

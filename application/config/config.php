@@ -26,7 +26,7 @@ $config['base_url']	= '';
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'index.php';
+$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -78,6 +78,8 @@ $config['language']	= 'english';
 |
 | This determines which character set is used by default in various methods
 | that require a character set to be provided.
+|
+| See http://php.net/htmlspecialchars for a list of supported charsets.
 |
 */
 $config['charset'] = 'UTF-8';
@@ -265,9 +267,9 @@ $config['sess_time_to_update']	= 300;
 | 'cookie_secure' =  Cookies will only be set if a secure HTTPS connection exists.
 |
 */
-$config['cookie_prefix']	= "";
-$config['cookie_domain']	= "";
-$config['cookie_path']		= "/";
+$config['cookie_prefix']	= '';
+$config['cookie_domain']	= '';
+$config['cookie_path']		= '/';
 $config['cookie_secure']	= FALSE;
 
 /*

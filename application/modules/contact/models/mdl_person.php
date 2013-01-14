@@ -145,9 +145,9 @@ class Mdl_Person extends Mdl_Contact {
     public function prepareShow()
     {
     	$this->load->config('person');
-    	$this->show_fields = $this->config->item('person_show_fields');
-    	$this->aliases = $this->config->item('person_attributes_aliases');
-    	$this->hidden_fields = $this->config->item('person_hidden_fields');
+    	$this->show_fields = $a = $this->config->item('person_show_fields');
+    	$this->aliases = $b = $this->config->item('person_attributes_aliases');
+    	$this->hidden_fields = $c = $this->config->item('person_hidden_fields');
     }
     
     public function hasProperAddress()

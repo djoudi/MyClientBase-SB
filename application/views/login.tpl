@@ -53,6 +53,7 @@
 			</dl>
 			
 			<a href="#" class="button" style="float: right; margin-right: 10px;" id="button_login">{t}Login{/t}</a>
+			
 			<div style="clear: both;"></div>
 		</form>
 		</div>

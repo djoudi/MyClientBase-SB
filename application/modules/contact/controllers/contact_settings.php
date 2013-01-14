@@ -343,7 +343,7 @@ class Contact_Settings extends Admin_Controller {
 											$obj->objName.'_attributes_aliases', 
 											$obj->objName.'_hidden_fields',
 											$obj->objName.'_default_values',
-											$obj->objName.'_never_display_fields'),true))
+											$obj->objName.'_never_display_fields'),true, APPPATH.'modules/contact/config'))
 		{
 			$obj->prepareShow();  //refreshes the object with the new values
 			$this->mcbsb->system_messages->success = 'Contact settings have been updated' ;

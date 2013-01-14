@@ -2,10 +2,10 @@
 
 class REST_Controller extends CI_Controller {
 
-	protected $rest_format = NULL; // Set this in a controller to use a default format
-	protected $methods = array(); // contains a list of method properties such as limit, log and level
-	protected $request = NULL; // Stores accept, language, body, headers, etc
-	protected $rest = NULL; // Stores DB, keys, key level, etc
+	private $rest_format = NULL; // Set this in a controller to use a default format
+	private $methods = array(); // contains a list of method properties such as limit, log and level
+	private $request = NULL; // Stores accept, language, body, headers, etc
+	private $rest = NULL; // Stores DB, keys, key level, etc
 	private $_get_args = array();
 	private $_post_args = array();
 	private $_put_args = array();
@@ -33,6 +33,9 @@ class REST_Controller extends CI_Controller {
 			// Lets grab the config and get ready to party
 			$this->load->config('rest');
 
+			//DAM  //this is to avoid the php error "Creating default object from empty value"
+			$this->request = new stdClass();
+			
 			// How is this request being made? POST, DELETE, GET, PUT?
 			$this->request->method = $this->_detect_method();
 

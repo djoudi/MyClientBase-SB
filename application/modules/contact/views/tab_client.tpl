@@ -1,5 +1,3 @@
-
-
 <div id="profile_summary">
 	<h4>{t}Summary{/t}</h4>	
 	<p style="margin-top: 13px; border-top: 1px solid #ccc; padding-top: 5px;">		

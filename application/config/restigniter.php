@@ -4,16 +4,6 @@
  * Created on Aug 11, 2011 by Damiano Venturin @ squadrainformatica.com
  */
 
-/*
- *  ex. array containing an object and a spark:
- *  $config['exposeObj'] = array(
- *  								'chartex' => 'chartex/0.0.1',  //that's the spark
- *  								'object' => 'object'  		   //that's the simple obj
- *  							);  
- */
-
-$config['exposeObj'] = array(
-								//'rest' => 'restclient/2.0.0',
-							);
+$config['exposeObj'] = array();
 
 /* End of restigniter.php */

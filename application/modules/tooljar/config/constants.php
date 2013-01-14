@@ -41,7 +41,7 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
  */
 $host = $_SERVER['HTTP_HOST'];
 define('CONTACT_ENGINE_API', 'http://ce.'.$host.'/index.php/api/');
-define('CONTACT_ENGINE_KEY', 'XRan4AyxG0UPpVDi31IsQFH5Y7omzcwSaIAo7ZMhePwzCWH3O152tX0fq9ugrSBd');
+define('CONTACT_ENGINE_KEY', 'your-contact-engine-key');
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

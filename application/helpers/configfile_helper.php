@@ -7,6 +7,7 @@
  * @param		string		$filename			The name of the config file
  * @param		array		$config_items		An array containing the config file items to be written
  * @param		boolean		$create				If true creates the config file if it doesn't exist
+ * @param		string		$dir				Directory in which the config file should be stored if it's not APPATH.config/
  * @var			
  * @return		boolean
  * @example
@@ -18,7 +19,7 @@
  * @since		2012-01-21
  * 
  */
-function write_config($filename, array $config_items, $create=false) {
+function write_config($filename, array $config_items, $create=false, $dir = null) {
 	
 	$CI =& get_instance();
 	$CI->load->helper('file');
@@ -27,7 +28,12 @@ function write_config($filename, array $config_items, $create=false) {
 	//For now this function takes care ONLY of the default config path
 	
 	//Looking in the CI default path
-	$filepath = APPPATH.'config/'.$filename.'.php';
+	if(is_null($dir)) {
+		$filepath = APPPATH.'config/'.$filename.'.php';
+	} else {
+		$filepath = $dir .'/'.$filename.'.php';
+	}
+	
 	if(!file_exists($filepath) and !$create) return false;
 	
 	/*

@@ -130,6 +130,9 @@ class Contact extends Admin_Controller {
     
     	//loading Smarty template
     	$this->load->view('contact_search.tpl', $data, false, 'smarty','contact');
+    	
+    	//$this->pp->parse('contact_search.tpl', $data, false, 'smarty','contact');
+
     }
 
     public function all_people() {
@@ -477,7 +480,7 @@ class Contact extends Admin_Controller {
     		 
 //     		if($tasks = $this->mcbsb->task->readAll($params)) {
 //     			$data['tasks'] = $tasks;
-//     			$data['tasks_html'] = $this->plenty_parser->parse('tasks_table.tpl', array('tasks' => $tasks), true, 'smarty', 'contact');
+//     			$data['tasks_html'] = $this->pp->parse('tasks_table.tpl', array('tasks' => $tasks), true, 'smarty', 'contact');
 //     		}
 //     	}
     

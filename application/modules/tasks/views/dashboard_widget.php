@@ -16,7 +16,7 @@
 					//'show_task_selector'	=>	TRUE
 				);
 				
-				$this->plenty_parser->parse('table.tpl', $data, false, 'smarty', 'tasks');
+				$this->pp->parse('table.tpl', $data, false, 'smarty', 'tasks');
 			?>
 
 		</div>

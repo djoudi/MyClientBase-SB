@@ -39,7 +39,6 @@
 
 $autoload['packages'] = array(APPPATH.'third_party');
 
-
 /*
 | -------------------------------------------------------------------
 |  Auto-load Libraries
@@ -64,9 +63,8 @@ $autoload['libraries'] = array('database','session','rb');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url','restigniter', 'phpgettext', 'citranslate', 'mcbsb', 'form', 'text');
-
-
+//$autoload['helper'] = array('url','restigniter', 'phpgettext', 'citranslate', 'mcbsb', 'form', 'text');
+$autoload['helper'] = array('url','restigniter', 'citranslate', 'mcbsb', 'form', 'text');
 /*
 | -------------------------------------------------------------------
 |  Auto-load Config files

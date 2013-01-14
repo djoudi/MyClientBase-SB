@@ -20,25 +20,30 @@
 {* <pre>{$devices|print_r}</pre> *}
 <table>
 	<tr>
-		<th>{t}Category{/t}</th>
 		<th>{t}Brand{/t}</th>
 		<th>{t}Model{/t}</th>
+		<th>{t}Category{/t}</th>
+		
 		<th>{t}SN{/t}</th>
 		<th>{t}RN{/t}</th>
 		<th>{t}Purchased{/t}</th>
 		<th>{t}Warranty{/t}</th>
 		<th>{t}Insurance{/t}</th>
+		
 	</tr>
 	{foreach $devices as $key => $device}
 		<tr>
-			<td>{$device.category}</td>
+			{* <td><a href="/devices/details/id/{$device.id}">{$device.brand}</a></td> *}
 			<td>{$device.brand}</td>
 			<td>{$device.model}</td>
+			<td>{$device.category}</td>
+			
 			<td>{$device.serial}</td>
 			<td>{$device.registration_number}</td>
 			<td>{$device.purchase_date}</td>
 			<td>{$device.under_warranty}</td>
 			<td>{$device.insurance|truncate:20:"[..]":true}</td>
+			
 		</tr>
 	{/foreach}
 </table>

@@ -5,7 +5,7 @@ class Devices extends Admin_Controller {
 	function __construct() {
 
 		parent::__construct();
-
+		
 		$this->load->helper('date');
 		
 		$this->load->model('devices/device','device');
@@ -22,7 +22,7 @@ class Devices extends Admin_Controller {
 	 * @author 		Damiano Venturin
 	 * @since		Nov 26, 2012
 	 */	 
-/* 	public function details(){
+/*  	public function details(){
 		
 		$segments = $this->uri->uri_to_assoc();
 		if(!isset($segments['id']) || !is_numeric($segments['id'])) redirect('/'); //TODO in this case would be nice to  roll back to last position
@@ -38,7 +38,7 @@ class Devices extends Admin_Controller {
 		//$data['buttons'][] = $this->device->magic_button('close');
 		
 		$this->load->view('device_details.tpl', $data, false, 'smarty', 'devices');
-	} */
+	}  */
 	
 	/**
 	 * Retrieves all the devices and shows them in a table

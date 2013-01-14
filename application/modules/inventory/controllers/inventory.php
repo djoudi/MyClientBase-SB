@@ -56,7 +56,7 @@ class Inventory extends Admin_Controller {
         
         $data['tot_num_items'] =	$this->mcbsb->_total_rows;
         $data['site_url'] = site_url($this->uri->uri_string());   
-        $data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'inventory');
+        $data['actions_panel'] = $this->pp->parse('actions_panel.tpl', $data, true, 'smarty', 'inventory');
 
         $this->load->view('index', $data);
 
@@ -86,7 +86,7 @@ class Inventory extends Admin_Controller {
                 'tax_rates'       =>    $this->mdl_tax_rates->get()
             );
 			
-            $data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', null, true, 'smarty', 'inventory');
+            $data['actions_panel'] = $this->pp->parse('actions_panel.tpl', null, true, 'smarty', 'inventory');
             
             $this->load->view('form', $data);
 

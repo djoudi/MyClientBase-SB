@@ -13,7 +13,7 @@ $config['module'] = array(
 									'Person' => 'contact/contact_settings/display_person',
 									'Organization' => 'contact/contact_settings/display_organization',
 									'Location' => 'contact/contact_settings/display_location'),
-			'settings_save'	=>	'contact/contact_settings/save'
+	'settings_save'	=>	'contact/contact_settings/save'
 	)
 		
 );

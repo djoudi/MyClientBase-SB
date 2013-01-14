@@ -263,6 +263,7 @@
 					_isHiding = false;
 				});
 			};
+			
 			function _Calculate() {
 				// calculate values
 				if (_options.positionAt.match(/^element$/i)) {
@@ -330,6 +331,28 @@
 			};
 			return this;
 		},
+		
+		hide_all: function(){
+			
+			var tipsActive;
+			var i;
+			
+			tipsActive = $.makeArray($(this).data('bubbletip_tips'));
+			
+			for (i = 0; i < tipsActive.length; i++) {
+
+				elem = $('#' + tipsActive[i][0]).get(0).parentNode;
+				
+				while (elem.tagName.toLowerCase() != 'table') {
+					elem = elem.parentNode;
+				}
+				
+				$(elem).hide();
+			}
+			
+			return this;
+		},
+		
 		removeBubbletip: function(tips) {
 			var tipsActive;
 			var tipsToRemove = new Array();

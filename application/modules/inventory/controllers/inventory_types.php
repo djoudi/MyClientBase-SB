@@ -25,7 +25,7 @@ class Inventory_Types extends Admin_Controller {
 		);
 
 		$data['site_url'] = site_url($this->uri->uri_string());
-		$data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'inventory');
+		$data['actions_panel'] = $this->pp->parse('actions_panel.tpl', $data, true, 'smarty', 'inventory');
 		
 		$this->load->view('inventory_types_index', $data);
 
@@ -41,7 +41,7 @@ class Inventory_Types extends Admin_Controller {
 
 			}
 
-			$data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', null, true, 'smarty', 'inventory');
+			$data['actions_panel'] = $this->pp->parse('actions_panel.tpl', null, true, 'smarty', 'inventory');
 			
 			$this->load->view('inventory_types_form',$data);
 

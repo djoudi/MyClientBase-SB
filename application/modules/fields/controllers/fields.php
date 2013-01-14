@@ -20,7 +20,7 @@ class Fields extends Admin_Controller {
 		);
 		
 		$data['site_url'] = site_url($this->uri->uri_string());
-		$data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'fields');
+		$data['actions_panel'] = $this->pp->parse('actions_panel.tpl', $data, true, 'smarty', 'fields');
 		$this->load->view('index', $data);
 
 	}
@@ -43,7 +43,7 @@ class Fields extends Admin_Controller {
 			);
 			
 			$data['site_url'] = site_url($this->uri->uri_string());
-			$data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'fields');
+			$data['actions_panel'] = $this->pp->parse('actions_panel.tpl', $data, true, 'smarty', 'fields');
 			$this->load->view('form', $data);
 
 		}

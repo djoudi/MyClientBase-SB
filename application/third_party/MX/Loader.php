@@ -137,11 +137,14 @@ class MX_Loader extends CI_Loader
 
 		$class = strtolower(end(explode('/', $library)));
 
-		if (isset($this->_ci_classes[$class]) AND $_alias = $this->_ci_classes[$class])
-			return CI::$APP->$_alias;
+		if (isset($this->_ci_classes[$class]) AND $_alias = $this->_ci_classes[$class]) {
 
-		($_alias = strtolower($object_name)) OR $_alias = $class;
+			return CI::$APP->$_alias;
 		
+		}
+		
+		($_alias = strtolower($object_name)) OR $_alias = $class;
+
 		list($path, $_library) = Modules::find($library, $this->_module, 'libraries/');
 		
 		/* load library config file as params */
@@ -206,6 +209,7 @@ class MX_Loader extends CI_Loader
         //DAM 
         //saving the module value
         $old_module = $this->_module;
+        
         //temporary using spark as a module
 		$this->_module = $spark;
 

@@ -13,6 +13,7 @@ class Mcbsb  extends CI_Model {
 	public $field_descriptor;
 	public $db_obj;
 	public $module;
+	public $_pp;
 	
 	public $_pagination_links = null;
 	public $_total_rows;
@@ -34,14 +35,16 @@ class Mcbsb  extends CI_Model {
 		
 		$this->_version = $this->config->item('mcbsb_version'); 
 		
+		$this->load->spark('phpgettext/1.0.11');
+		$this->load->helper('phpgettext');		
+		
 		//Contact Engine related libraries
 		//Rest client class
 		$this->load->spark('curl/1.2.1');
 		$this->load->spark('ion_auth/2.3.3');
 		$this->load->library('ion_auth');
 		$this->load->library('session');
-		
-		$this->load->driver('plenty_parser');
+	
 		
 		$this->_initialize();
 		
@@ -200,7 +203,10 @@ class Mcbsb  extends CI_Model {
 		$this->_languages = array('English' => 'en_US'); //default
 		
 		//parses the phpgettext folder looking for languages
-		$language_identifiers = array_keys(directory_map(APPPATH . '/third_party/php-gettext-1.0.11/locale'));
+		$this->load->config('phpgettext');
+		$a = $this->config->item('gettextLocaleDir');
+		//$language_identifiers = array_keys(directory_map(APPPATH . '/third_party/php-gettext-1.0.11/locale'));
+		$language_identifiers = array_keys(directory_map($a));
 		
 		if(is_array($language_identifiers)){
 			foreach ($language_identifiers as $key => $identifier) {

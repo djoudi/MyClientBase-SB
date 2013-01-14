@@ -222,75 +222,75 @@
 
 
 	
-	<h4>{t}Actions panel{/t}</h4>
-	
-	<ul class="ap">
+<div style="background-color: #e8e8e8; margin: 0px; margin-left: -5px; padding-top: 3px; padding-bottom: 5px; padding-left: 10px; border-bottom: 1px solid #ccc;"><h4>{t}Actions panel{/t}</h4></div>
 
-		<li class="ap">
-			<a class="button" id="button_add_person" href="#">
-				{if $language == 'english'}
-					{t u=7}Add a person{/t}
-				{/if}
-				{if $language == 'italian'}
-					{t u=10}Add a person{/t}
-				{/if}				
-			</a>
-			<div id="add_person" title="Form" style="display: none;">		
-				<form id="add_person_form" style="margin-top: 15px; padding: 0px;">
-					<dl style="margin: 0px; padding: 0px; height: 30px;">
-						<dt style="margin: 0px; padding: 0px; padding-right: 5px; height: 30px; width: 60px;">
-							<label style="font-size: 10px; margin: 0px; padding: 0px;">{t}First Name{/t}:</label>
-						</dt>
-						<dd style="margin: 0px; padding: 0px;"><input title="{t}first name{/t}" size="35" type="text" name="firstname" id="first_name" style="width: 170px;" /></dd>
-					</dl>
-					<dl>
-						<dt style="margin: 0px; padding: 0px; padding-right: 5px; height: 30px; width: 60px;">
-							<label style="font-size: 10px; margin: 0px; padding: 0px;">{t}Last Name{/t}:</label>
-						</dt>
-						<dd style="margin: 0px; padding: 0px;">
-							<input title="{t}last name{/t}"  size="35" type="text" name="lastname" id="last_name" style="width: 170px;"/>
-							<a class="button" id="add_person_submit" href="#">{t}Ok{/t}</a>
-						</dd>
-					</dl>
-				</form>
-			</div>
-		</li>
-		
-		<li class="ap">
-			<a class="button" id="button_add_organization" href="#" >
-				{if $language == 'english'}
-					{t u=8}Add an organization{/t}
-				{/if}
-				{if $language == 'italian'}
-					{t u=10}Add an organization{/t}
-				{/if}						
-			</a>
-			<div id="add_organization" title="Form" style="display: none;">
-				<form id="add_organization_form" style="margin-top: 15px; padding: 0px;">
-					<dl style="margin: 0px; padding: 0px; height: 30px;">
-						<dt style="margin: 0px; padding: 0px; padding-right: 5px; height: 30px;"><label style="font-size: 10px; margin: 0px; padding: 0px;">{t}Organization{/t}:</label></dt>
-						<dd style="margin: 0px; padding: 0px;">
-							<input title="{t}organization name{/t}" size="55" type="text" name="organizationname" id="organization_name" style="width: 150px;"/>
-							<a class="button" id="add_organization_submit" href="#">{t}Ok{/t}</a>
-						</dd>
-					</dl>
-				</form>
-			</div>				
-		</li>
-		
-		<li class="ap">
-			<a class="button" href="/contact/all_people" >{t}Show all people{/t}</a>
-		</li>
-		
-		<li class="ap">
-			<a class="button" href="/contact/all_organizations" >{t}Show all organizations{/t}</a>
-		</li>
-		
-		<li class="ap">
-			<a class="button" href="/contact/by_location" >{t}Show by location{/t}</a>
-		</li>						
-		
-	</ul>
+<ul class="ap">
+
+	<li class="ap">
+		<a class="button" id="button_add_person" href="#">
+			{if $language == 'english'}
+				{t u=7}Add a person{/t}
+			{/if}
+			{if $language == 'italian'}
+				{t u=10}Add a person{/t}
+			{/if}				
+		</a>
+		<div id="add_person" title="Form" style="display: none;">		
+			<form id="add_person_form" style="margin-top: 15px; padding: 0px;">
+				<dl style="margin: 0px; padding: 0px; height: 30px;">
+					<dt style="margin: 0px; padding: 0px; padding-right: 5px; height: 30px; width: 60px;">
+						<label style="font-size: 10px; margin: 0px; padding: 0px;">{t}First Name{/t}:</label>
+					</dt>
+					<dd style="margin: 0px; padding: 0px;"><input title="{t}first name{/t}" size="35" type="text" name="firstname" id="first_name" style="width: 170px;" /></dd>
+				</dl>
+				<dl>
+					<dt style="margin: 0px; padding: 0px; padding-right: 5px; height: 30px; width: 60px;">
+						<label style="font-size: 10px; margin: 0px; padding: 0px;">{t}Last Name{/t}:</label>
+					</dt>
+					<dd style="margin: 0px; padding: 0px;">
+						<input title="{t}last name{/t}"  size="35" type="text" name="lastname" id="last_name" style="width: 170px;"/>
+						<a class="button" id="add_person_submit" href="#">{t}Ok{/t}</a>
+					</dd>
+				</dl>
+			</form>
+		</div>
+	</li>
+	
+	<li class="ap">
+		<a class="button" id="button_add_organization" href="#" >
+			{if $language == 'english'}
+				{t u=8}Add an organization{/t}
+			{/if}
+			{if $language == 'italian'}
+				{t u=10}Add an organization{/t}
+			{/if}						
+		</a>
+		<div id="add_organization" title="Form" style="display: none;">
+			<form id="add_organization_form" style="margin-top: 15px; padding: 0px;">
+				<dl style="margin: 0px; padding: 0px; height: 30px;">
+					<dt style="margin: 0px; padding: 0px; padding-right: 5px; height: 30px;"><label style="font-size: 10px; margin: 0px; padding: 0px;">{t}Organization{/t}:</label></dt>
+					<dd style="margin: 0px; padding: 0px;">
+						<input title="{t}organization name{/t}" size="55" type="text" name="organizationname" id="organization_name" style="width: 150px;"/>
+						<a class="button" id="add_organization_submit" href="#">{t}Ok{/t}</a>
+					</dd>
+				</dl>
+			</form>
+		</div>				
+	</li>
+	
+	<li class="ap">
+		<a class="button" href="/contact/all_people" >{t}Show all people{/t}</a>
+	</li>
+	
+	<li class="ap">
+		<a class="button" href="/contact/all_organizations" >{t}Show all organizations{/t}</a>
+	</li>
+	
+	<li class="ap">
+		<a class="button" href="/contact/by_location" >{t}Show by location{/t}</a>
+	</li>						
+	
+</ul>
 
 
 {if isset($contact_id)  && $contact->enabled == 'TRUE'}

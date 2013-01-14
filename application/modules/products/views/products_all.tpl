@@ -16,6 +16,10 @@
 	{else}
 		<p style="padding-top: 10px;">{t}No products found{/t}. {t}You can add one by clicking the "add product" button on the right{/t}.</p>	
 	{/if}
+	
+	{* IMPORTANT Anchor test
+	{anchor('contact', "{t}Products{/t}")}
+	*}
 	</div>
 </div>
 

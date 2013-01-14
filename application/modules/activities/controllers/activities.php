@@ -111,7 +111,7 @@ class Activities extends Admin_Controller {
 		}
 	
 		$data['site_url'] = site_url($this->uri->uri_string());
-		$data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'tasks');
+		$data['actions_panel'] = $this->pp->parse('actions_panel.tpl', $data, true, 'smarty', 'tasks');
 		$this->load->view('form', $data);
 	}
 	

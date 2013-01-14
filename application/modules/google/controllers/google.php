@@ -30,7 +30,7 @@ class Google extends Admin_Controller {
      		$data[$item_name] = $this->config->item($item_name);
      	}
      	$this->load->view('settings.tpl', $data, false, 'smarty','google');
-    	//$this->plenty_parser->parse('settings.tpl', $data, false, 'smarty', 'google');
+    	//$this->pp->parse('settings.tpl', $data, false, 'smarty', 'google');
     }
     
    

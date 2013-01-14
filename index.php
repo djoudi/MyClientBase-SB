@@ -21,6 +21,7 @@
 
 //define('ENVIRONMENT', 'production');
 define('ENVIRONMENT', 'development');
+
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING
@@ -201,7 +202,7 @@ if (defined('ENVIRONMENT'))
  * And away we go...
  *
  */
-require_once BASEPATH.'core/CodeIgniter'.EXT;
+require_once BASEPATH.'core/CodeIgniter.php';
 
 /* End of file index.php */
 /* Location: ./index.php */

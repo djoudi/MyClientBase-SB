@@ -11,8 +11,6 @@
  * @see
  * 
  * @author 		Damiano Venturin
- * @copyright 	Taptank
- * @link		http://www.taptank.com
  * @since		Feb 25, 2012
  * 	
  */

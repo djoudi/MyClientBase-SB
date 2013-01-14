@@ -165,6 +165,15 @@ input:focus, textarea:focus {
 	border-radius: 4px; 
 }
 
+.box_header {
+	background-color: #e8e8e8; 
+	margin: 0px; 
+	padding-top: 3px; 
+	padding-bottom: 5px; 
+	padding-left: 5px; 
+	border-bottom: 1px solid #ccc;	
+}
+
 .contact_search {
 	font-size: 19px;
 	padding: 0px;

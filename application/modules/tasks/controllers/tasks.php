@@ -218,7 +218,7 @@ class Tasks extends Admin_Controller {
 				$params = array('where' => array('task_id' => $this->mcbsb->task->task_id));
 				if($activities = $this->activities->getAll($params)) {
 					$data['activities'] = $activities;
-					$data['table'] = $this->plenty_parser->parse('table.tpl', $data, true, 'smarty', 'activities');
+					$data['table'] = $this->pp->parse('table.tpl', $data, true, 'smarty', 'activities');
 				}
 			}			
 		} else {
@@ -239,7 +239,7 @@ class Tasks extends Admin_Controller {
 		}
 		
 		$data['site_url'] = site_url($this->uri->uri_string());
-		$data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'tasks');
+		$data['actions_panel'] = $this->pp->parse('actions_panel.tpl', $data, true, 'smarty', 'tasks');
 		$this->load->view('form', $data);
 	}
 

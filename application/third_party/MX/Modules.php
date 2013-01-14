@@ -4,7 +4,6 @@ global $CFG;
 
 if(!defined('SPARKPATH')) define('SPARKPATH', FCPATH.'sparks/');
 
-
 /* get module locations from config settings or use the default module location and offset */
 is_array(Modules::$locations = $CFG->item('modules_locations')) OR Modules::$locations = array(
 	APPPATH.'modules/' => '../modules/',
@@ -190,41 +189,44 @@ class Modules
 		if ( ! empty($segments)) {
 			$modules[array_shift($segments)] = ltrim(implode('/', $segments).'/','/');
 		}
-
+		
 		$locations = Modules::$locations;
-		foreach (Modules::$locations as $location => $offset) {
+		
+		foreach ($locations as $location => $offset) {
+			
 			foreach($modules as $module => $subpath) {
+				
 				$fullpath = $location.$module.'/'.$base.$subpath;
 
 				if (is_file($fullpath.$file_ext)) return array($fullpath, $file);
-
-				if ($base == 'libraries/' AND is_file($fullpath.ucfirst($file_ext)))
-					return array($fullpath, ucfirst($file));
-
-				//DAM
-				//sparks
-				$possible_bases = array(
-										'config/',
-										'controllers/',
-										'helpers/',
-										'libraries/',
-										'models/',
-										'views/'
-				);
 				
-				//$base == 'models/' || $base == 'libraries/' || $base == 'config/' || $base == 'helpers/' || $base == 'views/'
-				if (in_array($base, $possible_bases))
-				{	
-					//looking into sparks dir
-					$fullpath = $location.$base;
-					
-					//Camel case
-					if(is_file($fullpath.ucfirst($file_ext))) return array($fullpath, ucfirst($file));
-					
-					//lower case
-					if(is_file($fullpath.strtolower($file_ext))) return array($fullpath, strtolower($file));
-				} 	
 			}
+				
+			//sparks
+			$possible_bases = array(
+									'config/',
+									'controllers/',
+									'helpers/',
+									'libraries/',
+									'models/',
+									'views/'
+			);
+			
+			if (in_array($base, $possible_bases))
+			{	
+				//looking into sparks dir
+				$fullpath = $location.$base;
+				
+				//Camel case
+				if(is_file($fullpath.ucwords($file_ext))) return array($fullpath, ucfirst($file));
+				
+				//Only the 1st caracter upper case
+				if(is_file($fullpath.ucfirst($file_ext))) return array($fullpath, ucfirst($file));
+				
+				//Everything lower case
+				if(is_file($fullpath.strtolower($file_ext))) return array($fullpath, strtolower($file));
+			} 	
+
 			
 			if (preg_match('/^language\//', $base))
 			{
@@ -232,6 +234,9 @@ class Modules
 				$fullpath = $location.$base;
 			
 				//Camel case
+				if(is_file($fullpath.ucwords($file_ext))) return array($fullpath, ucfirst($file));
+				
+				//Only the 1st caracter upper case
 				if(is_file($fullpath.ucfirst($file_ext))) return array($fullpath, ucfirst($file));
 			
 				//lower case

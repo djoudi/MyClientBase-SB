@@ -263,8 +263,8 @@ $config['rest_ajax_only'] = FALSE;
  |--------------------------------------------------------------------------
  |
  */
-$config['rest_server']	= 'http://ce_github/index.php/api/'; //don't forget the trailing slash
-$config['ce_key'] = '';
+$config['rest_server']	= 'http://ce.tooljarnitro.biz/index.php/api/'; //don't forget the trailing slash
+$config['ce_key'] = 'XRan4AyxG0UPpVDi31IsQFH5Y7omzcwSaIAo7ZMhePwzCWH3O152tX0fq9ugrSBd';
 
 /* End of file rest.php */
 /* Location: ./system/application/config/rest.php */

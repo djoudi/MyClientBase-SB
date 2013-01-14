@@ -22,7 +22,7 @@ class Device extends Rb_Db_Obj
 		
 		//R::freeze( array($this->db_table));  //NOTE! comment this line when you develop!
 		
-		$this->initialize();	
+		$this->initialize();
 	}
 	
 	public function create() {
@@ -40,8 +40,11 @@ class Device extends Rb_Db_Obj
 	}
 
 	public function read() {
+		
 		if(is_null($this->obj_ID_value)) return false;
-		$this->_config['never_display_fields'] = array();				
+		
+		$this->_config['never_display_fields'] = array();
+						
 		return parent::read();
 	}
 		

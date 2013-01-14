@@ -3,24 +3,29 @@
 	
 	{assign var=k value={counter}}
 	
-	<div id="loc_{$loc->locId}" style="margin-bottom: 30px;">
-		<h3 style="margin-left: -15px;">{t}{$loc->locDescription}{/t}</h3>
-		<div style="padding: 5px;">
+	<div id="loc_{$loc->locId}" class="box" style="margin-bottom: 30px; padding-top: 0px;">
+		<div class="box_header"><h3>{t}{$loc->locDescription}{/t}</h3></div>
+		<div style="padding: 5px; margin-top: 10px; margin-bottom: 10px;">
 
+			{* EDIT BUTTON *}
 			{if $loc->locDescription|lower != 'home' && $loc->locDescription|lower != 'registered address'}
 				<a class="button" href="#" onClick="jqueryForm({ 'form_type':'form','object_name':'location','object_id':'{$loc->locId}','related_object_name':'{$object_type}','related_object_id':'{$contact_id}','hash':'set_here_the_hash' })">{t}Edit{/t}</a>
 			{else}
 				{* send back to the info tab *}
 				<a class="button" href="/contact/form/{$contact_id_key}/{$contact_id}">{t}Edit{/t}</a>
 			{/if}
-			{if $loc->locDescription|lower != 'home' && $loc->locDescription|lower != 'registered address'}				
-				<a class="button" href="#" onClick="jqueryDelete({ 'procedure':'deleteLocation','object_name':'location','object_id':'{$loc->locId}','hash':'set_here_the_hash' })">{t}Delete{/t}</a>
-			{/if}
 			
+			{* MAP BUTTONS *}			
 			{if $loc->locLatitude}
 				<a class="button" href="#{$loc->locLatitude}_{$loc->locLongitude}_{$description}" id="mapbutton_{$k}">{t}Display map{/t}</a>
 				<a class="button" href="http://maps.google.com/maps?q={$loc->locLatitude},+{$loc->locLongitude}+({$description})&amp;hl=en&amp;ie=UTF8&amp;t=h&amp;vpsrc=6&amp;ll={$loc->locLatitude},{$loc->locLongitude}&amp;spn=0.020352,0.025835&amp;z=14&amp;iwloc=A&amp;source=embed" target="_blank">{t}Larger Map{/t}</a>
 			{/if}
+			
+			{* DELETE BUTTON *}
+			{if $loc->locDescription|lower != 'home' && $loc->locDescription|lower != 'registered address'}				
+				<a class="button" href="#" onClick="jqueryDelete({ 'procedure':'deleteLocation','object_name':'location','object_id':'{$loc->locId}','hash':'set_here_the_hash' })">{t}Delete{/t}</a>
+			{/if}
+			
 		</div>
 										
 		<table style="width: 540px; float: left;">

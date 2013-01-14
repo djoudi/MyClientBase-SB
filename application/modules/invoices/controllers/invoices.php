@@ -72,7 +72,7 @@ class Invoices extends Admin_Controller {
 		$data['tot_num_invoices'] =	$this->mcbsb->_total_rows;
 		$data['sort_links']	= TRUE;
 		$data['site_url'] = site_url($this->uri->uri_string());
-		$data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'invoices');		
+		$data['actions_panel'] = $this->pp->parse('actions_panel.tpl', $data, true, 'smarty', 'invoices');		
 
 		$this->load->view('index', $data);
 	}
@@ -150,7 +150,7 @@ class Invoices extends Admin_Controller {
 			);
 
 			$data['site_url'] = site_url($this->uri->uri_string());
-			$data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'invoices');
+			$data['actions_panel'] = $this->pp->parse('actions_panel.tpl', $data, true, 'smarty', 'invoices');
 			
 			$this->load->view('choose_client', $data);
 
@@ -247,7 +247,7 @@ class Invoices extends Admin_Controller {
 		);
 
 		$data['site_url'] = site_url($this->uri->uri_string());
-		$data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'invoices');
+		$data['actions_panel'] = $this->pp->parse('actions_panel.tpl', $data, true, 'smarty', 'invoices');
 				
 		$this->load->view('invoice_edit', $data);
 
@@ -332,7 +332,7 @@ class Invoices extends Admin_Controller {
 			);
 
 			$data['site_url'] = site_url($this->uri->uri_string());
-			$data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'invoices');
+			$data['actions_panel'] = $this->pp->parse('actions_panel.tpl', $data, true, 'smarty', 'invoices');
 				
 			$this->load->view('quote_to_invoice', $data);
 

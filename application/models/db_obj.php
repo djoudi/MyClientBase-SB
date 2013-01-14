@@ -11,8 +11,6 @@
  * @see
  * 
  * @author 		Damiano Venturin
- * @copyright 	Taptank
- * @link		http://www.taptank.com
  * @since		Feb 25, 2012
  * 	
  */
@@ -249,6 +247,10 @@ class Db_Obj extends CI_Model
 		}
 	}
 	
+	public function run_sql($sql) {
+		return $query = $this->db->query($sql);			
+	}
+	
 	private function object_to_db(){
 		foreach ($this->db_table_fields as $field) {
 			//TODO add validation, filters etc
@@ -257,7 +259,7 @@ class Db_Obj extends CI_Model
 	}
 	
 	protected function toObject($query) {
-		if(!is_object($query) || get_class($query)!='CI_DB_mysql_result') return false;
+		if(!is_object($query) || (get_class($query)!='CI_DB_mysql_result' && get_class($query)!='CI_DB_mysqli_result')) return false;
 
 		//TODO DAM query validation, like only one record ... bla bla
 		$record = $query->row();

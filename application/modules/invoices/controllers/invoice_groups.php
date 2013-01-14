@@ -26,7 +26,7 @@ class Invoice_Groups extends Admin_Controller {
 		);
 
 		$data['site_url'] = site_url($this->uri->uri_string());
-		$data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'invoices');
+		$data['actions_panel'] = $this->pp->parse('actions_panel.tpl', $data, true, 'smarty', 'invoices');
 		$this->load->view('invoice_group_index', $data);
 
 	}
@@ -42,7 +42,7 @@ class Invoice_Groups extends Admin_Controller {
 			}
 			
 			$data['site_url'] = site_url($this->uri->uri_string());
-			$data['actions_panel'] = $this->plenty_parser->parse('actions_panel.tpl', $data, true, 'smarty', 'invoices');
+			$data['actions_panel'] = $this->pp->parse('actions_panel.tpl', $data, true, 'smarty', 'invoices');
 				
 			$this->load->view('invoice_group_form',$data);
 
