@@ -4,7 +4,7 @@ $config['module'] = array(
 	'module_name'	=>	'Tooljar',
 	'module_path'	=>	'tooljar',
 	'module_order'	=>	3,
-	'module_enabled' => 1,
+	'module_enabled' => 0,
 	'module_description'	=>	'API client for Tooljar',
 	'module_author'			=>	'Damiano Venturin',
 	'module_homepage'		=>	'http://www.tooljar.biz',
@@ -19,4 +19,3 @@ $config['module'] = array(
 
 /* End of file config.php */
 /* Location: ./application/modules/tooljar/config/config.php */
-?>

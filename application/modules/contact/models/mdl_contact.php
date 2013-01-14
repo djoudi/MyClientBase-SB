@@ -125,6 +125,7 @@ class Mdl_Contact extends MY_Model {
 		
 		if($this->config->item('ce_key')) $input['ce_key'] = $this->config->item('ce_key');
 		
+		$a = $this->config->item('rest_server');
 		$this->rest->initialize(array('server' => $this->config->item('rest_server').'/exposeObj/'.$this->objName));
 		 
 		//performing the query to contact engine
