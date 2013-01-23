@@ -30,3 +30,5 @@ uploads/*
 /installation_steps_dam.txt
 /captcha/*.jpg
 current_env
+
+mcbsb_database_alter_from_*.sql 
