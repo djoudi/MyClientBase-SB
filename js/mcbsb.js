@@ -586,8 +586,8 @@ function openJqueryForm(json){
 
 //TODO refactoring: this function replaces postFormToAjax
 function postToAjax(json, dataType, type){
-	//console.log('postToAjax');
-	//console.log(json);
+	console.log('postToAjax');
+	console.log(json);
 	
 	var params = json;
 	if(!dataType) var dataType = 'jsonp';
@@ -609,7 +609,10 @@ function postToAjax(json, dataType, type){
     	url		: url,
     	dataType: dataType,
     	type	: type,
-        data    : { form: formObj },
+        data    : { 
+        			form: formObj,
+        			json: json,
+        		  },
         error	: errorCallback,
     })
 	.done(function(json){

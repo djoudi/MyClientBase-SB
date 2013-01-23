@@ -9,8 +9,7 @@ class Login extends CI_Controller {
         $this->load->helper(array('form', 'url'));
          
         $this->load->library('form_validation');
-                
-        $this->load->helper('mcb_app');   
+                  
     }
 
     public function check_captcha(){

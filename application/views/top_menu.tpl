@@ -38,9 +38,12 @@
 {/literal}
 
 <div class="grid_24" style="margin-top: 25px;">
+
 	<div style="float: right; margin-top: 0px; margin-bottom: 2px; margin-right: 2px; font-size: 9px;">
+		
 		<span>Mcb-Sb v. {$mcbsb_version}</span>
 		<a id="a_shortcuts" href="#"><img style="margin-left: 10px;" src="/layout/images/shortcuts.png" /></a>
+		
 		<div id="tip_shortcuts" style="display:none;">
 			<p style="font-weight: bold;">{t}Shortcuts{/t}</p>
 			
@@ -62,6 +65,7 @@
 			</p>
 		</div>
 	</div> 	
+	
 	<div class="top_menu">
 		<ul class="top_menu" id="navigation">
    			{foreach $top_menu as $key => $item}

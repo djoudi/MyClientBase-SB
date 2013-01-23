@@ -12,7 +12,7 @@ class Cron_Controller extends MX_Controller {
 
         $this->mcbsb->settings->set_session_data();
 
-        $this->load->helper(array('uri', 'mcb_currency', 'mcb_invoice', 'mcb_date', 'mcb_icon', 'mcb_custom', 'mcb_app'));
+        $this->load->helper(array('uri', 'mcb_currency', 'mcb_invoice', 'mcb_date', 'mcb_icon', 'mcb_custom'));
 
         $this->load->language('mcb', strtolower($this->mcbsb->settings->setting('default_language')));
 

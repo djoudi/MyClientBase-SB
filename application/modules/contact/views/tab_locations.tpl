@@ -4,7 +4,7 @@
 	{assign var=k value={counter}}
 	
 	<div id="loc_{$loc->locId}" class="box" style="margin-bottom: 30px; padding-top: 0px;">
-		<div class="box_header"><h3>{t}{$loc->locDescription}{/t}</h3></div>
+		<div class="box_header"><h4>{t}{$loc->locDescription}{/t}</h4></div>
 		<div style="padding: 5px; margin-top: 10px; margin-bottom: 10px;">
 
 			{* EDIT BUTTON *}

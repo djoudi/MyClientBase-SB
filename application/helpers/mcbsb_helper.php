@@ -1,8 +1,11 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+function application_title() {
 
-function isAssociativeArray(array $arr) {
-	return (bool)count(array_filter(array_keys($arr), 'is_string'));
+    $CI =& get_instance();
+
+    return ($CI->mcbsb->settings->setting('application_title')) ? $CI->mcbsb->settings->setting('application_title') : $CI->lang->line('myclientbase');
+
 }
 
 /**
@@ -56,22 +59,6 @@ function retrieve_uid_oid(){
 	return isset($params) ? $params : null;	
 }
 
-function only_chars_nums_underscore($string)
-{
-    if(is_array($string)) return false;
-    $string = preg_replace('/ /', '_', trim($string));
-	$string = preg_replace('/[^A-Za-z0-9-_]/', '', $string);
-	return $string;
-}
-
-function only_chars_nums_underscore_plus($string)
-{
-	if(is_array($string)) return false;
-	$string = preg_replace('/ /', '_', trim($string));
-	$string = preg_replace('/[^A-Za-z0-9-_+]/', '', $string);
-	return $string;
-}
-
 function saveUploadedFile()
 {
 	if($_FILES)
@@ -103,65 +90,6 @@ function saveUploadedFile()
 		$output = array('error' => $error, 'data' => $data);
 		return $output;
 	}	
-}
-
-/**
- * in_array case insensitive: it will return a match if the needle is found in the haystack 
- * 
- * @access		public
- * @param		$needle String
- * @param		$haystack Array
- * @var			
- * @return		boolean
- * @example
- * @see
- * 
- * @author 		Damiano Venturin
- * @copyright 	2V S.r.l.
- * @license		GPL
- * @link		http://www.squadrainformatica.com/en/development#mcbsb  MCB-SB official page
- * @since		Jun 22, 2012
- * 		
- */
- 
-function in_arrayi($needle, array $haystack) {
-	$needle = strtolower($needle);
-	
-	$haystack_flipped = array_flip($haystack);
-	$haystack_flipped_lower = array_change_key_case($haystack_flipped);
-	$haystack = array_flip($haystack_flipped_lower);
-	
-	return in_array($needle, $haystack);
-}
-
-
-/**
- * Returns a random string
- * 
- * @access		public
- * @param		none
- * @return		string
- * @example
- * @see
- * 
- * @author 		Damiano Venturin
- * @copyright 	2V S.r.l.
- * @license		GPL
- * @link		http://www.squadrainformatica.com/en/development#mcbsb  MCB-SB official page
- * @since		Sep 24, 2012
- * 
- */
-function rand_string( $length ) {
-	
-	$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-	$str = '';
-	
-	$size = strlen( $chars );
-	for( $i = 0; $i < $length; $i++ ) {
-		$str .= $chars[ rand( 0, $size - 1 ) ];
-	}
-
-	return $str;
 }
 
 /* End of file mcbsb_helper.php */

@@ -1220,8 +1220,8 @@ msgstr "Prodotti"
 msgid "Registered Address"
 msgstr "Sede Legale"
 
-msgid "This is my organization"
-msgstr "Questa é la mia organizzazione"
+msgid "Set as my organization"
+msgstr "Imposta come tua organizzazione"
 
 msgid "Shortcuts"
 msgstr "Scorciatoie"

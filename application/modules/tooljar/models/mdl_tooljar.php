@@ -25,15 +25,22 @@ class Mdl_Tooljar extends MY_Model {
 
         $this->load->model('contact/rest_return_object');
         $this->crr = new Rest_Return_Object();
-        $host_sliced = explode('.', $_SERVER['HTTP_HOST']);
-        
-        if(count($host_sliced) < 3) {
-        	$this->organization = 'acme'; //this is for nitro dev environment
-        } else {
-        	$this->organization = $host_sliced[1];
-        } 
+		$this->get_tooljar_name();
 	}
 
+	public function get_tooljar_name(){
+		
+		$host_sliced = explode('.', $_SERVER['HTTP_HOST']);
+		
+		if(count($host_sliced) < 3) {
+			$this->organization = 'acme'; //this is for nitro dev environment
+		} else {
+			$this->organization = $host_sliced[1];
+		}
+		
+		return $this->organization;
+	}
+	
 	public function set_as_my_tj_organization($oid){
 		
 		if(empty($oid) || is_array($oid)) return false;
@@ -77,6 +84,7 @@ class Mdl_Tooljar extends MY_Model {
 	}	
 	
 	public function get_tj_admin_email(){
+		
 		$this->rest->initialize(array('server' => $this->tooljar_server));
 		$method = 'get_tj_admin_email';
 		$input = array();

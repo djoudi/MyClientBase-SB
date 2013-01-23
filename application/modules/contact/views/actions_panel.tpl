@@ -222,7 +222,7 @@
 
 
 	
-<div style="background-color: #e8e8e8; margin: 0px; margin-left: -5px; padding-top: 3px; padding-bottom: 5px; padding-left: 10px; border-bottom: 1px solid #ccc;"><h4>{t}Actions panel{/t}</h4></div>
+<div class="box_header" style="margin-left: -5px; padding-left: 10px;"><h4>{t}Actions panel{/t}</h4></div>
 
 <ul class="ap">
 
@@ -410,7 +410,7 @@
 	<ul class="ap">
 		<hr style="margin-top: 10px; margin-bottom: 10px;"/>
 		{if $tooljar_module_is_enabled && $object_type == 'organization' && $contact->enabled == 'TRUE'}
-			<li class="ap"><a class="button" href="#" onClick="set_as_my_tj_organization({ 'oid':'{$contact_id}','hash':'set_here_the_hash' })">{t}This is my organization{/t}</a></li>
+			<li class="ap"><a class="button" href="#" onClick="set_as_my_tj_organization({ 'oid':'{$contact_id}','hash':'set_here_the_hash' })">{t}Set as your organization{/t}</a></li>
 		{/if}
 		
 		{if $profile_view}

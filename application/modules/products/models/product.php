@@ -136,6 +136,7 @@ class Product extends Rb_Db_Obj
 		if($type == 'create' || $type == 'edit'){
 
 			$this->reset_obj_config();
+			
 			//Do not show the endnote textarea when creating or editing
 			$this->_config['never_display_fields'][] = 'endnote';
 			$tmp['url'] = '/' . $this->module_folder . '/ajax/save_product';

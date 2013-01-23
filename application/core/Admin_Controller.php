@@ -21,7 +21,7 @@ class Admin_Controller extends MX_Controller {
 			$this->load->database();
 
 			$this->load->helper(array('uri', 'mcb_currency', 'mcb_invoice',
-				'mcb_date', 'mcb_icon', 'mcb_custom', 'mcb_app',
+				'mcb_date', 'mcb_icon', 'mcb_custom',
 				'mcb_invoice_amount', 'mcb_invoice_item',
 				'mcb_invoice_payment', 'mcb_numbers'));
 

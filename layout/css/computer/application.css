@@ -78,11 +78,11 @@ h2 {
 
 h3 {
 	font-size:20px;
-	color: #2280c9;	 	
+	/* color: #2280c9; */	 	
 }
 
 h4 {
-	font-size:19px;
+	font-size:18px;
 }
 
 h5 {
@@ -168,8 +168,8 @@ input:focus, textarea:focus {
 .box_header {
 	background-color: #e8e8e8; 
 	margin: 0px; 
-	padding-top: 3px; 
-	padding-bottom: 5px; 
+	padding-top: 1px; 
+	padding-bottom: 0px; 
 	padding-left: 5px; 
 	border-bottom: 1px solid #ccc;	
 }
@@ -305,8 +305,5 @@ li.ap {
 .zero:hover{
 	background-color: #fff;
 }
-
-
-
 
 

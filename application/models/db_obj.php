@@ -194,7 +194,7 @@ class Db_Obj extends CI_Model
 
 		if(count($where) == 0) return false;
 		
-		if(!isAssociativeArray($where)) return false;
+		if(!is_associative_array($where)) return false;
 
 		foreach ($where as $field => $value)
 		{
@@ -218,7 +218,7 @@ class Db_Obj extends CI_Model
 	
 	private function addOrderCondition(array $orderby) {
 		
-		if(!isAssociativeArray($orderby)) return false;
+		if(!is_associative_array($orderby)) return false;
 		
 		foreach ($orderby as $field => $value)
 		{

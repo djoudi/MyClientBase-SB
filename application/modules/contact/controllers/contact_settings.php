@@ -236,7 +236,7 @@ class Contact_Settings extends Admin_Controller {
 						$aliases = array();
 						$form = $this->input->post('form');
 						foreach ($form as $key => $item) {
-							if(!empty($item['value']) and $item['type'] == 'TEXT') $aliases[$item['field']] = strtolower(only_chars_nums_underscore(($item['value'])));
+							if(!empty($item['value']) and $item['type'] == 'TEXT') $aliases[$item['field']] = strtolower(only_alphanum_dash_underscore(($item['value'])));
 						}
 						$obj->aliases = $aliases;
 						$this->update_config($obj,$obj->objName);
@@ -251,7 +251,7 @@ class Contact_Settings extends Admin_Controller {
 						$default_values = array();
 						$form = $this->input->post('form');
 						foreach ($form as $key => $item) {
-							if(!empty($item['value']) and $item['type'] == 'TEXT') $default_values[$item['field']] = only_chars_nums_underscore_plus(($item['value']));
+							if(!empty($item['value']) and $item['type'] == 'TEXT') $default_values[$item['field']] = only_alphanum_dash_underscore_plus(($item['value']));
 						}
 						$obj->default_values = $default_values;
 						$this->update_config($obj,$obj->objName);

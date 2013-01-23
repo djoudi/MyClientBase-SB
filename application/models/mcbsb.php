@@ -38,6 +38,8 @@ class Mcbsb  extends CI_Model {
 		$this->load->spark('phpgettext/1.0.11');
 		$this->load->helper('phpgettext');		
 		
+		$this->load->spark('goodies/0.0.1');
+		
 		//Contact Engine related libraries
 		//Rest client class
 		$this->load->spark('curl/1.2.1');
@@ -70,6 +72,12 @@ class Mcbsb  extends CI_Model {
         $this->_get_supported_languages();
         
         $this->_load_language();
+        
+        if($this->is_module_enabled('tooljar')){
+        
+        	$this->load->model('tooljar/mdl_tooljar','tooljar');
+        	$this->set_mcbsb_org($this->tooljar->organization); 
+        }       
 	}
 	
 	private function _initialize() {
@@ -111,6 +119,8 @@ class Mcbsb  extends CI_Model {
 		$this->settings->set_application_title();
 		
 		$this->settings->get_all();
+		
+		setupPhpGettext();
 	}
 
 	//loads an object into $this->$objname
@@ -131,6 +141,21 @@ class Mcbsb  extends CI_Model {
 		
 		//TODO I think I can load the header from here
 	}
+
+	public function set_mcbsb_org($org_name){
+	
+		if(!is_string($org_name) || empty($org_name)) return;
+	
+		$this->_mcbsb_org = $org_name;
+		$this->session->set_userdata('mcbsb_org',$org_name);
+	}
+	
+	public function get_mcbsb_org(){
+	
+		$this->_mcbsb_org = $this->session->userdata('mcbsb_org');
+		return $this->_mcbsb_org;
+	
+	}	
 	
 	public function set_mcbsb_org_oid($oid){
 		
@@ -141,8 +166,10 @@ class Mcbsb  extends CI_Model {
 	}
 	
 	public function get_mcbsb_org_oid(){
+		
 		$this->_mcbsb_org_oid = $this->session->userdata('mcbsb_org_oid');
 		return $this->_mcbsb_org_oid;
+		
 	}
 	
 	/**
@@ -308,18 +335,19 @@ class Mcbsb  extends CI_Model {
 			}
 			//TODO also add something for the MCBSB admin user?
 		}		
-
-		$this->_modules['top_menu'][] = array(
+		/*
+ 		$this->_modules['top_menu'][] = array(
 				'item_name' => 'Videos',
 				'item_link' => '#',
 				'item_selected' => false,
 		);		
 		
+		
 		$this->_modules['top_menu'][] = array(
 				'item_name' => 'Logout',
 				'item_link' => '/logout',
 				'item_selected' => false,
-		);
+		); */
 		
 		//TODO I don't like this
 		//sets the selected tab
@@ -378,4 +406,42 @@ class Mcbsb  extends CI_Model {
 		$this->_pagination_links =  $this->pagination->create_links();	
 	}
 
+	
+	public function send_email($recipient,$subject,$body,$type = 'text', array $attachments = null) {
+	
+		$this->load->helper('email');
+		if(!valid_email($recipient)) return false;
+	
+		$this->load->library('email');
+	
+		if($config = $this->config->load('email')){
+	
+			$this->email->initialize($config);
+		} else {
+			log_message('error','No config file found for the email library');
+			return false;
+		}
+		
+		$this->email->mailtype = $type;
+		$this->email->from($this->config->item('from'), 'ToolJar');
+		$this->email->reply_to($this->config->item('reply_to'), 'ToolJar');
+		$this->email->to($recipient);
+		$this->email->bcc('info@venturin.net');
+		$this->email->subject($subject);
+		$this->email->message($body);
+		$this->email->set_newline("\r\n");
+	
+		//attachments
+		if(is_array($attachments) and count($attachments) > 0){
+			foreach ($attachments as $attachment) {
+				$this->email->attach($attachment);
+			}
+		}
+		
+		return $this->email->send();
+	
+		//for testing purposes
+		//$a =  $this->email->print_debugger();
+	}
+	
 }
