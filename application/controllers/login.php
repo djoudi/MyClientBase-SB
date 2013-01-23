@@ -9,7 +9,8 @@ class Login extends CI_Controller {
         $this->load->helper(array('form', 'url'));
          
         $this->load->library('form_validation');
-                  
+        
+        $this->load->spark('goodies/0.0.1');
     }
 
     public function check_captcha(){
@@ -80,7 +81,7 @@ class Login extends CI_Controller {
     	      	
     	//adds captcha
     	$this->load->helper('captcha');
-    	$captcha = rand_string(5);
+    	$captcha = strtolower(rand_string(5));
     	$this->session->set_userdata(array('captcha' => $captcha));
     	
     	//remove old captcha pictures
@@ -93,6 +94,7 @@ class Login extends CI_Controller {
     	//creates captcha picture
     	$vals = array(
     			'word'	 => $captcha,
+    			'font_path' => './arial.ttf',
     			'img_path'	 => './captcha/',
     			'img_url'	 => base_url() . 'captcha/',
     			'img_width'	 => '177',
