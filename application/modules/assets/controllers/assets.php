@@ -53,10 +53,11 @@ class Assets extends Admin_Controller {
 			if($modules_to_load = $this->config->item('asset_modules_to_load')){
 					
 				foreach ($modules_to_load as $module_to_load){
-
+					
 					$sql = 'select SQL_CALC_FOUND_ROWS * from '.$this->asset->db_table . ' where category="' . $module_to_load . '" and contact_id="' . $contact_id . '" and contact_id_key="' . $contact_id_key. '" order by id DESC';
 					$assets[$module_to_load] = $this->asset->readAll($sql,true,$from);
 					$assets_number = $assets_number + count($assets[$module_to_load]);
+					
 				}
 			}	
 						
@@ -140,7 +141,7 @@ class Assets extends Admin_Controller {
 						);					
 					}
 				} else {
-					//revoke button
+					//TODO revoke button
 				}	
 			}
 		}
