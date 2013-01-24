@@ -559,3 +559,38 @@ CREATE TABLE IF NOT EXISTS `users_groups` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+CREATE TABLE IF NOT EXISTS `assets` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `brand` varchar(70) COLLATE utf8_unicode_ci NOT NULL,
+  `model` varchar(70) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `details` text COLLATE utf8_unicode_ci,
+  `category` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `purchase_date` date DEFAULT NULL,
+  `price` float(11,2) DEFAULT NULL,
+  `value` float(11,2) DEFAULT NULL,
+  `serial` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `code_number` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `registration_number` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `network_device` tinyint(1) DEFAULT NULL,
+  `network_name` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ip` varchar(39) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `mac_address` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `insurance` text COLLATE utf8_unicode_ci,
+  `openvpn_certificate` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `operating_system` varchar(70) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `storage_space` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `ram` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `contact_id_key` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `contact_id` double DEFAULT NULL,
+  `contact_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `creation_date` int(11) unsigned DEFAULT NULL,
+  `created_by` double DEFAULT NULL,
+  `creator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `update_date` int(11) unsigned DEFAULT NULL,
+  `updated_by` double DEFAULT NULL,
+  `editor` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+
