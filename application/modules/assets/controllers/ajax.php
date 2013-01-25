@@ -63,24 +63,21 @@ class Ajax extends Ajax_Controller {
 
 	private function vpn_return(){
 		
+		$this->procedure = 'show_alert_and_refresh_page';
+		
 		if($this->status){
 			$this->mcbsb->system_messages->success = $this->message;
 		} else {
 			$this->mcbsb->system_messages->error = $this->message;
 		}
 		
-		$to_js = array();
-		$to_js['status'] = $this->status;
-		
 		if($this->status){
-			$to_js['messag'] = t('Tooljar openvpn certificate successfully created. Check the Tooljar Administrator email');
+			$this->message = t('Tooljar openvpn certificate successfully created. Check the Tooljar Administrator email');
 		} else {
-			$to_js['messag'] = t('Tooljar openvpn certificate not created');
+			$this->message = t('Tooljar openvpn certificate not created');
 		}
-		
-		$output = json_encode($to_js);
-		echo $this->callback .'('.$output.');';
-		
+
+		$this->__destruct();		
 	}
 	
 	public function create_tj_vpn_certificate(){
@@ -88,6 +85,31 @@ class Ajax extends Ajax_Controller {
 		if($this->mcbsb->is_module_enabled('tooljar')){
 		
 			$this->load->model('tooljar/mdl_tooljar','tooljar');
+			
+			$this->load->model('contact/mdl_contact','contact');
+			$this->load->model('contact/mdl_organization','org');
+			
+			$this->org->oid = $this->mcbsb->get_mcbsb_org_oid();
+			if(!$this->org->get(null,false)) {
+				$this->status = false;
+				$this->message = t('Your company can not be retrieved. Operation aborted.');
+				$this->vpn_return();
+			}
+			
+			if(empty($this->org->c) || empty($this->org->st) || empty($this->org->l)){
+				$this->status = false;
+				$this->message = t('Your company address is not complete. Please provide a full address. Operation aborted.');
+				$this->vpn_return();				
+			}
+			
+			$certificate_params = array();
+			$certificate_params['countryName'] = 'US';//$this->org->c;
+			$certificate_params['stateOrProvinceName'] = $this->org->st;
+			$certificate_params['localityName'] = $this->org->l;
+			$certificate_params['organizationName'] = $this->mcbsb->get_mcbsb_org();
+			$certificate_params['organizationalUnitName'] = $this->mcbsb->get_mcbsb_org();
+			$certificate_params['commonName'] = $this->mcbsb->user->first_name . ' ' . $this->mcbsb->user->last_name;
+			$certificate_params['emailAddress'] = $this->mcbsb->user->email;			
 		
 		} else {
 			
@@ -124,37 +146,48 @@ class Ajax extends Ajax_Controller {
 			$this->status = false;
 			$this->message = t('No digital device has been found with id') . ' ' . $obj->id;
 			$this->vpn_return();			
-		}
+		}	
 		
 		$this->load->model('assets/openvpn','openvpn');
-		
-		if(!$this->openvpn->create_certificate($obj->network_name)){
+		if(!$this->openvpn->create_certificate($obj->network_name,null,$certificate_params)){
 			$this->status = false;
 			$this->message = t('Tooljar openvpn certificate not created');
 			$this->vpn_return();
 		}
 
-		$this->status = true;
 		
 		$this->digital_device->openvpn_certificate = $this->openvpn->conf['zip_dir'] . $obj->network_name . '.zip';
-		
-		$this->digital_device->update();
 												
-		if($tj_admin_email = $this->tooljar->get_tj_admin_email()){
+ 		if($tj_admin_email = $this->tooljar->get_tj_admin_email()){
 
 			$subject = t('Tooljar Openvpn certificate for device') . ' ' . $obj->network_name;
 			//TODO load a view here
 			$body = t('In attachment the Tooljar openvpn certificate for device') . ' ' . $obj->network_name;
 			$attachments = array($this->digital_device->openvpn_certificate);
 		
-			
-			if(!$this->mcbsb->send_email($tj_admin_email,$subject,$body,'text', $attachments)) {
-				$this->mcbsb->system_messages->error = t('The openvpn certificate can not be sent to email') . ' ' . $tj_admin_email;
+			if($this->mcbsb->send_email($tj_admin_email,$subject,$body,'text', $attachments)) {
+				
+				//saves the path of the zipped certificate
+				$this->digital_device->update();
+				
+				$this->status = true;
+				$this->message = t('Tooljar openvpn certificate successfully created.');	
+							
+			} else {
+				
+				//TODO revoke the certificate
+				
+				$this->status = false;
+				$this->message = t('The openvpn certificate can not be sent to email') . ' ' . $tj_admin_email;
+				
 			} 
 								
 		} else {
-			$this->mcbsb->system_messages->error = t('Tooljar administrator email can not be retrieved');
-		}
+			
+			$this->status = false;
+			$this->message = t('Tooljar administrator email can not be retrieved');
+			
+		} 
 
 		$this->vpn_return();
 	}

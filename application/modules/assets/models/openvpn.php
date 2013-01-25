@@ -3,9 +3,9 @@
 class Openvpn extends CI_Model {
 	
 	public $conf = null;
-	private $caData = null;
-	private $caKey = null;
-	private $caCrt = null;
+	protected $caData = null;
+	protected $caKey = null;
+	protected $caCrt = null;
 	
 	public function __construct() {
 		
@@ -53,7 +53,7 @@ class Openvpn extends CI_Model {
 
 	
 	//deviceName can be considered as commonName
-	public function create_certificate($deviceName = null, $password = null){
+	public function create_certificate($deviceName = null, $password = null, array $certificate_params = null){
 		
 		//checks
 		if(is_null($deviceName)) $deviceName = 'test';
@@ -61,25 +61,46 @@ class Openvpn extends CI_Model {
 		if(!is_string($deviceName)) return false;
 		
 		if(!empty($password) && !is_string($password)) return false;
+		if(!is_null($password) && !is_string($password)) return false;
 		
-		if(is_null($password)) $password = $this->conf['privkeypass'];
+		if(!is_null($certificate_params) && is_array($certificate_params)) {
+			foreach ($this->conf['certificate'] as $key => $value){
+				if(isset($certificate_params[$key]) && !empty($certificate_params[$key])){
+					$this->conf['certificate'][$key] = $certificate_params[$key];
+				}
+			}
+		}
 		
+		$this->conf['certificate']['commonName'] = 'Damiano Venturin';
 		
 		//creates the private key for the device. Result stored in $devicePrivateKey
 		$privkey = openssl_pkey_new();
-		openssl_pkey_export($privkey, $devicePrivateKey, $password);
+		if(is_resource($privkey)){
+			openssl_pkey_export($privkey, $devicePrivateKey,$password);
+		} else {
+			return false;
+		}
 		
 		
 		
 		//makes the certificate request for the device. Result stored in $csrStr
 		$csr = openssl_csr_new($this->conf['certificate'], $devicePrivateKey);
-		openssl_csr_export($csr, $csrStr);
+		if(is_resource($csr)) {
+			openssl_csr_export($csr, $csrStr);
+		} else {
+			return false;
+		}
 		
 		
 		
 		//signs the certificate request with the CA key. Result stored in $devicePublicKey
 		$sscert = openssl_csr_sign($csrStr, $this->caCrt, $this->caKey, $this->conf['numberofdays']);
-		openssl_x509_export($sscert, $devicePublicKey);
+		if(is_resource($sscert)) {
+			openssl_x509_export($sscert, $devicePublicKey);
+		} else {
+			return false;
+		}
+		
 		
 		
 		return $this->write_device_certificate($deviceName, $devicePrivateKey, $devicePublicKey, $this->conf['verbose']);

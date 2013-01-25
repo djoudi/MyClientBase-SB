@@ -622,8 +622,8 @@ function postToAjax(json, dataType, type){
 		}
 	})        
     .success(function(json) {
-
     	if(json.status){
+    		
 			switch(urldecode(json.procedure)){
 				case 'replace_html':
 					
@@ -634,25 +634,48 @@ function postToAjax(json, dataType, type){
 					return true;
 					
 				break;
+
+				case 'show_alert':
+					alert(urldecode(json.message));
+				break;
+				
+				case 'show_alert_and_refresh_page':
+					alert(urldecode(json.message));
+					var focus_tab = json.focus_tab;
+					var procedure = json.procedure;   //note json.
+					reload_page(focus_tab, procedure);									
+				break;
 				
 				default:
-		    		//alert(urldecode(json.message));
+		    		alert(urldecode(json.message));
 					var focus_tab = json.focus_tab;
-					if(!focus_tab){
-						if(params.procedure == 'create_otr') focus_tab = 'tab_Tasks';
-						if(params.procedure == 'create_appointment') focus_tab = 'tab_Tasks';
-						if(params.procedure == 'create_appointment_for_task') focus_tab = 'tab_Tasks';
-						if(params.procedure ==  'close_task') focus_tab = 'tab_Tasks';
-						if(params.procedure == 'create_appointment_for_task') focus_tab = 'tab_Tasks';
-					}
-					//console.log('focus tab ' + focus_tab);
-		        	window.location.hash = focus_tab;
-		        	window.location.reload(true);					
+					var procedure = params.procedure;
+					reload_page(focus_tab, procedure);
 				break;
 			}	    		
-    	} 
+    	} else {
+    		switch(urldecode(json.procedure)){
+				case 'show_alert':
+					alert(json.message);
+				break;    		
+    		}
+    	}
     });	
 	
+}
+
+function reload_page(focus_tab, procedure){
+	
+	if(!focus_tab){
+		if(procedure == 'create_otr') focus_tab = 'tab_Tasks';
+		if(procedure == 'create_appointment') focus_tab = 'tab_Tasks';
+		if(procedure == 'create_appointment_for_task') focus_tab = 'tab_Tasks';
+		if(procedure ==  'close_task') focus_tab = 'tab_Tasks';
+		if(procedure == 'create_appointment_for_task') focus_tab = 'tab_Tasks';
+	}
+	//console.log('focus tab ' + focus_tab);
+	window.location.hash = focus_tab;
+	window.location.reload(true);		
 }
 
 function postFormToAjax(url, dataType, type, form_name, object_name, related_object_name, related_object_id, selected_radio, procedure, input_params){
