@@ -140,7 +140,8 @@ class Ajax extends Ajax_Controller {
 			$certificate_params['stateOrProvinceName'] = $this->org->st;
 			$certificate_params['localityName'] = $this->org->l;
 			$certificate_params['organizationName'] = $this->mcbsb->get_mcbsb_org();
-			$certificate_params['organizationalUnitName'] = $this->mcbsb->get_mcbsb_org();
+			//uniqid grants that every certificate is unique. In this way when a certificate is revoked and a new one is created there are no problems
+			$certificate_params['organizationalUnitName'] = uniqid(); //$this->mcbsb->get_mcbsb_org();
 			$certificate_params['commonName'] = $this->mcbsb->user->first_name . ' ' . $this->mcbsb->user->last_name;
 			$certificate_params['emailAddress'] = $this->mcbsb->user->email;			
 		
