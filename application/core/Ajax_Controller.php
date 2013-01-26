@@ -22,7 +22,37 @@ class Ajax_Controller extends Admin_Controller {
 	}
 	
 	function __destruct(){
-		$this->output();
+		
+		if(!empty($this->message)) {
+			if($this->status){
+				$this->mcbsb->system_messages->success = $this->message;
+				log_message('info',$this->message);
+			} else {
+				$this->mcbsb->system_messages->error = $this->message;
+				log_message('error',$this->message);
+			}
+		}
+		
+		//TODO what about using reflection here?
+		$to_js = array();
+		$to_js['form_title'] = urlencode(trim($this->form_title));
+		$to_js['form_name'] = urlencode(trim($this->form_name));
+		$to_js['html'] = urlencode($this->html);
+		$to_js['html_id'] = urlencode($this->html_id);
+		$to_js['message'] = urlencode(trim($this->message));
+		$to_js['procedure'] = urlencode(trim($this->procedure));
+		$to_js['status'] = $this->status;
+		$to_js['url'] = urlencode(trim($this->url));
+		$to_js['replace'] = $this->replace;
+		
+		$output = json_encode($to_js);
+		if(!is_null($this->callback) && $this->callback){
+			echo $this->callback .'('.$output.');';
+		} else {
+			echo $output;
+		}
+		exit();
+		
 	}
 	
 	protected function get_post_values(){
@@ -52,30 +82,6 @@ class Ajax_Controller extends Admin_Controller {
 		return $form;
 		
 	}
-	
-	private function output()
-	{
-		$to_js = array();
-		
-		//TODO what about using reflection here?
-		$to_js['form_title'] = urlencode(trim($this->form_title));
-		$to_js['form_name'] = urlencode(trim($this->form_name));
-		$to_js['html'] = urlencode($this->html);
-		$to_js['html_id'] = urlencode($this->html_id);
-		$to_js['message'] = urlencode(trim($this->message));
-		$to_js['procedure'] = urlencode(trim($this->procedure));
-		$to_js['status'] = urlencode($this->status);
-		$to_js['url'] = urlencode(trim($this->url));
-		$to_js['replace'] = $this->replace;
-		
-		$output = json_encode($to_js);
-		if(!is_null($this->callback) && $this->callback){
-			echo $this->callback .'('.$output.');';
-		} else {
-			echo $output;
-		}
-		exit();
-	}	
 	
 	public function getForm(array $params = null){
 		

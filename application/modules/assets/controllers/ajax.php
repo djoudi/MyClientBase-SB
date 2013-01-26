@@ -60,27 +60,60 @@ class Ajax extends Ajax_Controller {
 		
 		redirect('/');
 	}
-
-	private function vpn_return(){
+	
+	
+	public function revoke_tj_vpn_certificate(){
 		
 		$this->procedure = 'show_alert_and_refresh_page';
 		
-		if($this->status){
-			$this->mcbsb->system_messages->success = $this->message;
-		} else {
-			$this->mcbsb->system_messages->error = $this->message;
+		if(!$post = $this->input->post()) {
+			$this->status = false;
+			$this->message = t('Post is empty');
+			exit();
 		}
 		
-		if($this->status){
-			$this->message = t('Tooljar openvpn certificate successfully created. Check the Tooljar Administrator email');
-		} else {
-			$this->message = t('Tooljar openvpn certificate not created');
+		if(!isset($post['json']) || empty($post['json'])){
+			$this->status = false;
+			$this->message = t('Json is empty');
+			exit();
 		}
 
-		$this->__destruct();		
+		$obj = json_decode($post['json']['obj']);
+		
+		if(!is_object($obj)) {
+			$this->status = false;
+			$this->message = t('Json is not an object');
+			exit();
+		}
+		
+		$this->load->model('assets/digital_device','digital_device');
+		
+		$this->digital_device->id = $obj->id;
+		
+		if(!$this->digital_device->read()) {
+			$this->status = false;
+			$this->message = t('No digital device has been found with id') . ' ' . $obj->id;
+			exit();
+		}
+		
+		$this->load->model('assets/openvpn','openvpn');
+		if(!$this->openvpn->revoke_certificate($obj->network_name)){
+			$this->status = false;
+			$this->message = t('Tooljar openvpn certificate can not be revoked');
+			exit();
+		}
+		
+		$this->digital_device->openvpn_certificate = $this->openvpn->conf['zip_dir'] . $obj->network_name . '.zip';
+		$this->digital_device->update();
+		exit();
+		$this->status = true;
+		$this->message = t('Tooljar openvpn certificate has been revoked');
+		
 	}
 	
 	public function create_tj_vpn_certificate(){
+		
+		$this->procedure = 'show_alert_and_refresh_page';
 		
 		if($this->mcbsb->is_module_enabled('tooljar')){
 		
@@ -93,13 +126,13 @@ class Ajax extends Ajax_Controller {
 			if(!$this->org->get(null,false)) {
 				$this->status = false;
 				$this->message = t('Your company can not be retrieved. Operation aborted.');
-				$this->vpn_return();
+				exit();
 			}
 			
 			if(empty($this->org->c) || empty($this->org->st) || empty($this->org->l)){
 				$this->status = false;
 				$this->message = t('Your company address is not complete. Please provide a full address. Operation aborted.');
-				$this->vpn_return();				
+				exit();				
 			}
 			
 			$certificate_params = array();
@@ -115,19 +148,19 @@ class Ajax extends Ajax_Controller {
 			
  			$this->status = false;
  			$this->message = t('Tooljar module is not enabled');
-			$this->vpn_return();
+			exit();
 		}
 		
 		if(!$post = $this->input->post()) {
 			$this->status = false;
 			$this->message = t('Post is empty');
-			$this->vpn_return();
+			exit();
 		}
 
 		if(!isset($post['json']) || empty($post['json'])){
 			$this->status = false;
 			$this->message = t('Json is empty');
-			$this->vpn_return();
+			exit();
 		}
 		
 		$obj = json_decode($post['json']['obj']);
@@ -135,7 +168,7 @@ class Ajax extends Ajax_Controller {
 		if(!is_object($obj)) {
 			$this->status = false;
 			$this->message = t('Json is not an object');
-			$this->vpn_return();
+			exit();
 		}
 		
 		$this->load->model('assets/digital_device','digital_device');
@@ -145,14 +178,14 @@ class Ajax extends Ajax_Controller {
 		if(!$this->digital_device->read()) {
 			$this->status = false;
 			$this->message = t('No digital device has been found with id') . ' ' . $obj->id;
-			$this->vpn_return();			
+			exit();			
 		}	
 		
 		$this->load->model('assets/openvpn','openvpn');
 		if(!$this->openvpn->create_certificate($obj->network_name,null,$certificate_params)){
 			$this->status = false;
-			$this->message = t('Tooljar openvpn certificate not created');
-			$this->vpn_return();
+			$this->message = t('Tooljar openvpn certificate not created. Check your openvpn.php config file.');
+			exit();
 		}
 
 		
@@ -171,7 +204,7 @@ class Ajax extends Ajax_Controller {
 				$this->digital_device->update();
 				
 				$this->status = true;
-				$this->message = t('Tooljar openvpn certificate successfully created.');	
+				$this->message = t('Tooljar openvpn certificate successfully created. Check the Tooljar Administrator email.');	
 							
 			} else {
 				
@@ -189,6 +222,6 @@ class Ajax extends Ajax_Controller {
 			
 		} 
 
-		$this->vpn_return();
+		exit();
 	}
 }

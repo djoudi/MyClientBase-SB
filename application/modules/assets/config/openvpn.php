@@ -36,4 +36,7 @@ $config['openvpn']['certificate']['stateOrProvinceName'] = 'IL';
 $config['openvpn']['certificate']['localityName'] = 'Chicago';
 $config['openvpn']['certificate']['organizationName'] = 'Example';
 $config['openvpn']['certificate']['organizationalUnitName'] = 'RD';
+$config['openvpn']['certificate']['commonName'] = 'John The Public';
 $config['openvpn']['certificate']['emailAddress'] = 'user@example.com';
+
+$config['openvpn']['revoke_script'] = '/bin/whatever.sh';

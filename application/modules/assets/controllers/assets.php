@@ -141,7 +141,21 @@ class Assets extends Admin_Controller {
 						);					
 					}
 				} else {
-					//TODO revoke button
+					
+					$tmp = array();
+					$tmp['url'] = '/assets/ajax/revoke_tj_vpn_certificate';
+					$tmp['obj'] = $this->$obj->toJson();
+						
+					$string = json_encode($tmp, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_TAG | JSON_HEX_QUOT | JSON_FORCE_OBJECT);
+					$string = '$(this).live("click", postToAjax(' . $string .'))';
+					
+					$data['buttons'][] = array(
+							'label' => 'Revoke tooljar vpn certificate',
+							'id' => 'revoke_tj_vpn_certificate',
+							'url' => '#',
+							'onclick' => $string,
+					);
+						
 				}	
 			}
 		}

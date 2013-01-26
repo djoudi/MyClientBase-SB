@@ -51,14 +51,28 @@ class Openvpn extends CI_Model {
 		fclose($fp);
 	}
 
+	public function revoke_certificate($deviceName) {
 	
-	//deviceName can be considered as commonName
-	public function create_certificate($deviceName = null, $password = null, array $certificate_params = null){
+		if(!is_string($deviceName) || empty($deviceName)) return false;
+		
+		$script = $this->conf['revoke_script'];
+		
+		if(!is_file($script)) {
+			log_message('error', 'The script: ' . $this->conf['revoke_script']) . ' does not exist';
+			return false;
+		}
+		
+		$command = $script . ' ' .$deviceName . ' mute'; 
+		//$a = shell_exec($command);
+		system($command,$return);
+		return $return === 0 ? true : false;
+		
+	}
+	
+	public function create_certificate($deviceName, $password = null, array $certificate_params = null){
 		
 		//checks
-		if(is_null($deviceName)) $deviceName = 'test';
-		
-		if(!is_string($deviceName)) return false;
+		if(!is_string($deviceName) || empty($deviceName)) return false;
 		
 		if(!empty($password) && !is_string($password)) return false;
 		if(!is_null($password) && !is_string($password)) return false;
@@ -70,8 +84,6 @@ class Openvpn extends CI_Model {
 				}
 			}
 		}
-		
-		$this->conf['certificate']['commonName'] = 'Damiano Venturin';
 		
 		//creates the private key for the device. Result stored in $devicePrivateKey
 		$privkey = openssl_pkey_new();

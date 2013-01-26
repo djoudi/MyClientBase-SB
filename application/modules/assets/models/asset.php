@@ -150,7 +150,7 @@ class Asset extends Rb_Db_Obj
 				$button_id = 'edit_asset';
 				$this->reset_obj_config();
 			break;			
-			
+							
 			default:
 				
 				return array();

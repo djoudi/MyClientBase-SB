@@ -586,8 +586,8 @@ function openJqueryForm(json){
 
 //TODO refactoring: this function replaces postFormToAjax
 function postToAjax(json, dataType, type){
-	console.log('postToAjax');
-	console.log(json);
+	//console.log('postToAjax');
+	//console.log(json);
 	
 	var params = json;
 	if(!dataType) var dataType = 'jsonp';
@@ -622,6 +622,7 @@ function postToAjax(json, dataType, type){
 		}
 	})        
     .success(function(json) {
+
     	if(json.status){
     		
 			switch(urldecode(json.procedure)){
@@ -654,10 +655,22 @@ function postToAjax(json, dataType, type){
 				break;
 			}	    		
     	} else {
+    	
     		switch(urldecode(json.procedure)){
 				case 'show_alert':
 					alert(json.message);
-				break;    		
+				break;
+				
+				case 'show_alert_and_refresh_page':
+					alert(urldecode(json.message));
+					var focus_tab = json.focus_tab;
+					var procedure = json.procedure;   //note json.
+					reload_page(focus_tab, procedure);									
+				break;
+				
+				default:
+					//
+				break;
     		}
     	}
     });	
@@ -665,7 +678,9 @@ function postToAjax(json, dataType, type){
 }
 
 function reload_page(focus_tab, procedure){
-	
+	console.log('reload page');
+	console.log('focustab: ' + focus_tab);
+	console.log('procedure: ' + procedure);
 	if(!focus_tab){
 		if(procedure == 'create_otr') focus_tab = 'tab_Tasks';
 		if(procedure == 'create_appointment') focus_tab = 'tab_Tasks';
@@ -675,6 +690,7 @@ function reload_page(focus_tab, procedure){
 	}
 	//console.log('focus tab ' + focus_tab);
 	window.location.hash = focus_tab;
+	//console.log('reloading');
 	window.location.reload(true);		
 }
 
