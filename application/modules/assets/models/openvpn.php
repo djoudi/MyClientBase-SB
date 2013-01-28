@@ -204,14 +204,17 @@ class Openvpn extends CI_Model {
 		
 		//writes the client config file
 		$content = $this->conf['client_config_header'];
-		$content .= 'ca /etc/openvpn/keys/server_ca.crt'."\n";
-		$content .= 'cert /etc/openvpn/keys/' . $deviceName . '.crt'."\n";
-		$content .= 'key /etc/openvpn/keys/' . $deviceName . '.key'."\n";
+		$content .= 'ca server_ca.crt'."\n";
+		$content .= 'cert ' . $deviceName . '.crt'."\n";
+		$content .= 'key ' . $deviceName . '.key'."\n";
 		if(isset($this->conf['server_taKeyPath']) && !empty($this->conf['server_taKeyPath'])) {
-			$content .= 'tls-auth /etc/openvpn/keys/server_ta.key 1';
+			$content .= 'tls-auth server_ta.key 1';
 		}
 		
-		if(!$this->write_file($this->conf['tmpDir'] .'/'. $this->conf['client_config_filename'], $content)) return false;
+		$config_file_lin = $this->conf['client_config_filename'].'_lin.conf';
+		$config_file_win = $this->conf['client_config_filename'].'_win.ovpn';
+		if(!$this->write_file($this->conf['tmpDir'] .'/'. $config_file_lin, $content)) return false;
+		if(!$this->write_file($this->conf['tmpDir'] .'/'. $config_file_win, $content)) return false;
 		
 		if($create_zip) {
 			
@@ -251,12 +254,15 @@ class Openvpn extends CI_Model {
 		if(!$this->load->library('zip')) $error = true;
 			
 		//adds files to zip archive
+		$config_file_lin = $this->conf['client_config_filename'].'_lin.conf';
+		$config_file_win = $this->conf['client_config_filename'].'_win.ovpn';
 		$files = array(
 				$this->conf['tmpDir'] . '/' . $deviceName.'.key',
 				$this->conf['tmpDir'] . '/' . $deviceName.'.crt',
 				$this->conf['tmpDir'] . '/server_ca.crt',
 				$this->conf['tmpDir'] . '/server_ta.key',
-				$this->conf['tmpDir'] . '/' . $this->conf['client_config_filename']
+				$this->conf['tmpDir'] . '/' . $config_file_lin,
+				$this->conf['tmpDir'] . '/' . $config_file_win,
 		);
 			
 		foreach ($files as $file) {

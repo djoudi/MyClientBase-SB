@@ -12,7 +12,7 @@ $config['openvpn']['save_zip_locally'] = true;
 $config['openvpn']['zip_dir'] = '/var/www/vpn/zip/';
 $config['openvpn']['download_zip'] = false;
 $config['openvpn']['client_keys_directory'] = '/var/www/vpn/keys/';
-$config['openvpn']['client_config_filename'] = 'tooljar_vpn_client.conf';
+$config['openvpn']['client_config_filename'] = 'tooljar_vpn_client';  //do not add the extension
 $config['openvpn']['client_config_header'] = '
 ## tooljar vpn client
 
