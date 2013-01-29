@@ -133,17 +133,7 @@ class Ajax extends Ajax_Controller {
 				$this->status = false;
 				$this->message = t('Your company address is not complete. Please provide a full address. Operation aborted.');
 				exit();				
-			}
-			
-			$certificate_params = array();
-			$certificate_params['countryName'] = 'US';//$this->org->c;
-			$certificate_params['stateOrProvinceName'] = $this->org->st;
-			$certificate_params['localityName'] = $this->org->l;
-			$certificate_params['organizationName'] = $this->mcbsb->get_mcbsb_org();
-			//uniqid grants that every certificate is unique. In this way when a certificate is revoked and a new one is created there are no problems
-			$certificate_params['organizationalUnitName'] = uniqid(); //$this->mcbsb->get_mcbsb_org();
-			$certificate_params['commonName'] = $this->mcbsb->user->first_name . ' ' . $this->mcbsb->user->last_name;
-			$certificate_params['emailAddress'] = $this->mcbsb->user->email;			
+			}		
 		
 		} else {
 			
@@ -183,7 +173,17 @@ class Ajax extends Ajax_Controller {
 		}	
 		
 		$this->load->model('assets/openvpn','openvpn');
-		if(!$this->openvpn->create_certificate($obj->network_name,null,$certificate_params)){
+
+		$certificate_params = array();
+		$certificate_params['countryName'] = 'US';//$this->org->c; TODO I need a list of countries
+		$certificate_params['stateOrProvinceName'] = $this->org->st;
+		$certificate_params['localityName'] = $this->org->l;
+		$certificate_params['organizationName'] = $this->mcbsb->get_mcbsb_org();
+		$certificate_params['organizationalUnitName'] = $this->mcbsb->get_mcbsb_org();
+		$certificate_params['commonName'] = $this->digital_device->network_name; //$this->mcbsb->user->first_name . ' ' . $this->mcbsb->user->last_name;
+		$certificate_params['emailAddress'] = $this->mcbsb->user->email;		
+		
+		if(!$this->openvpn->create_certificate($obj->network_name, null, $certificate_params)){
 			$this->status = false;
 			$this->message = t('Tooljar openvpn certificate not created. Check your openvpn.php config file.');
 			exit();

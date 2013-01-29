@@ -31,12 +31,14 @@ verb			4
 
 ';
 
-$config['openvpn']['certificate']['countryName'] = 'US';
-$config['openvpn']['certificate']['stateOrProvinceName'] = 'IL';
-$config['openvpn']['certificate']['localityName'] = 'Chicago';
-$config['openvpn']['certificate']['organizationName'] = 'Example';
-$config['openvpn']['certificate']['organizationalUnitName'] = 'RD';
-$config['openvpn']['certificate']['commonName'] = 'John The Public';
-$config['openvpn']['certificate']['emailAddress'] = 'user@example.com';
+//There is no need to set this configuration manually because real parameters are sent to the create_certificate method.
+//It's important to leave this array here though, because its keys are used to validate the the configuration array sent to the method.
+$config['openvpn']['certificate']['countryName'] = '';
+$config['openvpn']['certificate']['stateOrProvinceName'] = '';
+$config['openvpn']['certificate']['localityName'] = '';
+$config['openvpn']['certificate']['organizationName'] = '';
+$config['openvpn']['certificate']['organizationalUnitName'] = '';
+$config['openvpn']['certificate']['commonName'] = '';
+$config['openvpn']['certificate']['emailAddress'] = '';
 
 $config['openvpn']['revoke_script'] = '/bin/whatever.sh';

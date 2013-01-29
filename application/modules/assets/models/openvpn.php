@@ -63,27 +63,33 @@ class Openvpn extends CI_Model {
 		}
 		
 		$command = $script . ' ' .$deviceName . ' mute'; 
-		//$a = shell_exec($command);
 		system($command,$return);
 		return $return === 0 ? true : false;
 		
 	}
 	
-	public function create_certificate($deviceName, $password = null, array $certificate_params = null){
+	public function create_certificate($deviceName, $password = null, array $certificate_params){
 		
 		//checks
 		if(!is_string($deviceName) || empty($deviceName)) return false;
 		
 		if(!empty($password) && !is_string($password)) return false;
 		if(!is_null($password) && !is_string($password)) return false;
+		if(!is_array($certificate_params)) return false;
 		
-		if(!is_null($certificate_params) && is_array($certificate_params)) {
-			foreach ($this->conf['certificate'] as $key => $value){
-				if(isset($certificate_params[$key]) && !empty($certificate_params[$key])){
-					$this->conf['certificate'][$key] = $certificate_params[$key];
-				}
+		
+		foreach ($this->conf['certificate'] as $key => $value){
+			
+			//checks that the $certificate_params array has the same keys set in the configuration file
+			//and sets the given value in the $this->conf attribute
+			if(isset($certificate_params[$key]) && !empty($certificate_params[$key])){
+				$this->conf['certificate'][$key] = $certificate_params[$key];
+			} else {
+				return false;
 			}
+			
 		}
+	
 		
 		//creates the private key for the device. Result stored in $devicePrivateKey
 		$privkey = openssl_pkey_new();
