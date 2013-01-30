@@ -180,7 +180,8 @@ class Ajax extends Ajax_Controller {
 		$certificate_params['localityName'] = $this->org->l;
 		$certificate_params['organizationName'] = $this->mcbsb->get_mcbsb_org();
 		$certificate_params['organizationalUnitName'] = $this->mcbsb->get_mcbsb_org();
-		$certificate_params['commonName'] = $this->digital_device->network_name; //$this->mcbsb->user->first_name . ' ' . $this->mcbsb->user->last_name;
+		$certificate_params['commonName'] = $this->digital_device->network_name;
+		$certificate_params['name'] = $this->mcbsb->user->first_name . ' ' . $this->mcbsb->user->last_name;
 		$certificate_params['emailAddress'] = $this->mcbsb->user->email;		
 		
 		if(!$this->openvpn->create_certificate($obj->network_name, null, $certificate_params)){

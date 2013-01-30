@@ -1,18 +1,20 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 $config['openvpn']['tmpDir'] = '/tmp/openvpn-'.time();
-$config['openvpn']['server_caKeyPath'] = '/var/www/vpn/keys/ca.key';	//no trailing slash
-$config['openvpn']['server_caCrtPath'] = '/var/www/vpn/keys/ca.crt';
-$config['openvpn']['server_taKeyPath'] = '/var/www/vpn/keys/ta.key';
-$config['openvpn']['server_keys_directory'] = '/var/www/vpn/keys'; //no trailing slash
+$config['openvpn']['server_caKey_path'] = '/var/www/openvpn/keys/ca.key';
+$config['openvpn']['server_caCrt_path'] = '/var/www/openvpn/keys/ca.crt';
+$config['openvpn']['server_taKey_path'] = '/var/www/openvpn/keys/ta.key';
+$config['openvpn']['server_keys_directory'] = '/var/www/openvpn/keys';
+$config['openvpn']['serial_file_path'] = '/var/www/openvpn/keys/serial';
+$config['openvpn']['database_file_path'] = '/var/www/openvpn/keys/index.txt';
 $config['openvpn']['privkeypass'] = null;
 $config['openvpn']['numberofdays'] = 3650;
 $config['openvpn']['verbose'] = false;
 $config['openvpn']['save_zip_locally'] = true;
-$config['openvpn']['zip_dir'] = '/var/www/vpn/zip/';
+$config['openvpn']['zip_dir'] = '/var/www/openvpn/zip/';
 $config['openvpn']['download_zip'] = false;
-$config['openvpn']['client_keys_directory'] = '/var/www/vpn/keys/';
-$config['openvpn']['client_config_filename'] = 'tooljar_vpn_client';  //do not add the extension
+$config['openvpn']['client_keys_directory'] = '/var/www/openvpn/keys/';
+$config['openvpn']['client_config_filename'] = 'ovpn_client';  //do not add the extension (like .conf or .ovpn)
 $config['openvpn']['client_config_header'] = '
 ## tooljar vpn client
 
@@ -42,3 +44,4 @@ $config['openvpn']['certificate']['commonName'] = '';
 $config['openvpn']['certificate']['emailAddress'] = '';
 
 $config['openvpn']['revoke_script'] = '/bin/whatever.sh';
+
