@@ -24,20 +24,38 @@ class Digital_Device extends Asset
 					$this->network_name = $org_name . '_' . $this->network_name;
 				}
 			}
+		}
 		
-		}		
+		//TODO check the network_name length. It has to match openssl.conf rule for CommonName
+
+		//check if there already devices saved with the same network name
+		$sql = 'select id from ' . $this->db_table . ' where network_name="' . $this->network_name . '"';
+		$records = $this->readAll($sql,false);
+		
+		if(count($records) > 0) {
+			
+			//in case of update
+			if(count($records) == 1 && $records[0]['id'] == $this->id){
+				return true;
+			}
+			
+			$CI->mcbsb->system_messages->error = t('Another device has already the same network name');
+			return false;
+		}
+		
+		return true;
 	}
 	
 	public function create() {
 
-		$this->set_network_name();
+		if(!$this->set_network_name()) return false;
 		
 		return parent::create();
 	}
 	
 	public function update() {
 		
-		$this->set_network_name();
+		if(!$this->set_network_name()) return false;
 
 		return parent::update();
 	}
