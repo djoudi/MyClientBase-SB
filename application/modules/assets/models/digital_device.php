@@ -28,7 +28,7 @@ class Digital_Device extends Asset
 		
 		//TODO check the network_name length. It has to match openssl.conf rule for CommonName
 
-		//check if there already devices saved with the same network name
+		//check if there are already devices having the same network name
 		$sql = 'select id from ' . $this->db_table . ' where network_name="' . $this->network_name . '"';
 		$records = $this->readAll($sql,false);
 		

@@ -103,12 +103,12 @@ class Ajax extends Ajax_Controller {
 			exit();
 		}
 		
-		$this->digital_device->openvpn_certificate = $this->openvpn->conf['zip_dir'] . $obj->network_name . '.zip';
+		$this->digital_device->openvpn_certificate = '';
 		$this->digital_device->update();
-		exit();
+		
 		$this->status = true;
 		$this->message = t('Tooljar openvpn certificate has been revoked');
-		
+		exit();
 	}
 	
 	public function create_tj_vpn_certificate(){
