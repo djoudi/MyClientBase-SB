@@ -1,19 +1,39 @@
 {literal}
 <script type="text/javascript">
 	function shortcuts_top_menu(){
+
 		
 		if(language == 'english' || language == 'italian'){
+
+			//{* CONTACT SHORTCUT *}
 	    	jQuery(document).bind('keydown', 'Shift+c',function (evt){
 		    	$('#top_menu_contact').trigger("click");
 				return false; 
 			});
 
-	    	jQuery(document).bind('keydown', 'Shift+e',function (evt){
-		    	$('#top_menu_logout').trigger("click");
+			//{* PRODUCT SHORTCUT *}
+			jQuery(document).bind('keydown', 'Shift+p',function (evt){
+		    	$('#top_menu_products').trigger("click");
+				return false; 
+			});			
+		}
+
+		//{* TASKS SHORTCUT *}
+		if(language == 'english'){
+	    	jQuery(document).bind('keydown', 'Shift+a',function (evt){
+		    	$('#top_menu_tasks').trigger("click");
 				return false; 
 			});
 		}
 		
+		if(language == 'italian'){
+	    	jQuery(document).bind('keydown', 'Shift+n',function (evt){
+		    	$('#top_menu_tasks').trigger("click");
+				return false; 
+			});
+		}		
+
+		//{* SYSTEM SETTINGS SHORTCUT *}
 		if(language == 'english'){
 	    	jQuery(document).bind('keydown', 'Shift+s',function (evt){
 		    	$('#top_menu_system_settings').trigger("click");
@@ -85,15 +105,13 @@
    				
    					{assign var=item_id value="top_menu_"|cat:$item['item_name']|strtolower|replace:' ':'_'}
    					
-   					{if $item['item_link']=='/logout'}
+   					{* BY DEFAULT 1st CHARACTER UNDERLINED *}
+					{assign var="label" value="{t u=1}{$item['item_name']}{/t}"}
+   					
+   					{if $item['item_link']=='/tasks'}
 								
-   						{* no shortcut for Logout *}
-   						{assign var="label" value="{t}{$item['item_name']}{/t}"}
-   						
-   					{else}
-   						
-   						{assign var="label" value="{t u=1}{$item['item_name']}{/t}"}
-   						
+						{assign var="label" value="{t u=2}{$item['item_name']}{/t}"}
+   
    					{/if}
    					
    					

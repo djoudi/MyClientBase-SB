@@ -86,8 +86,8 @@ class Rb_Db_Obj extends CI_Model
 	
 		$CI = &get_instance();
 	
-		$a = $this->obj_name;
-		$b = $this->module_folder;
+// 		$a = $this->obj_name;
+// 		$b = $this->module_folder;
 		
 		//loads the config file from the folder "config" contained in this module
 		$CI->config->load(strtolower($this->obj_name), false, true, $this->module_folder);

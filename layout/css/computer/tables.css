@@ -53,3 +53,215 @@ td.field {
 td.value {
 	
 }
+
+
+
+
+
+
+table.tasks{
+	
+    border-collapse: separate;
+    border-spacing: 0px;
+    border: 1px solid #ccc;	
+    border-radius: 5px;
+    -moz-border-radius: 5px;    /* ff */
+	-webkit-border-radius: 5px; /* chrome */
+
+	background-color: #f3f3f3;
+	margin: 0px;
+	margin-top: 10px;
+	padding: 0px;
+	padding-bottom: 5px;
+}
+
+
+table.tasks tr{
+	background-color: #ccc;
+	line-height: 100%;
+}
+
+table.tasks tr:hover{
+	background-color: transparent;
+}
+
+table.tasks th{
+	background-color: #e8e8e8;
+	border-bottom: 1px solid #ccc;
+	height: 40px;
+	vertical-align: middle;
+}
+
+
+
+table.tasks td{
+	background-color: white;
+	text-align: left;
+	vertical-align: top;
+	padding: 5px;
+	padding-top: 10px;
+	border-top: 5px solid #f3f3f3;
+}
+
+table.tasks td:hover {
+	background-color: white;
+}
+
+table.tasks th.question_mark, td.question_mark{
+	width: 20px;
+	text-align: center;
+}
+
+table.tasks td.question_mark{
+	padding-top: 5px;
+}
+
+table.tasks th.description, td.description{
+	width: 200px;
+}
+
+table.tasks th.involved, td.involved{
+	width: 180px;
+	border-left: 1px dashed #ccc;
+}
+
+table.tasks th.time_line {
+	border-left: 1px dashed #ccc;
+}
+
+
+
+table.tasks td.time_line{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	border-left: 1px dashed #ccc;
+	/* background-image:url('/layout/images/grid.jpg'); */
+}
+
+table.tasks td.task_buttons {
+	border-top: 0px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	background-color: white;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+table.tasks tr.task_buttons:hover {
+	background-color: transparent;
+}
+
+
+
+
+form.jquery_form{
+	width: 500px;
+}
+
+ul.time_line {
+	margin: 0px;
+	padding: 0px; 
+	list-style: none; 
+	line-height: 18px; 
+	min-height: 60px;
+	max-height: 400px;
+	overflow-x: hidden; 
+	overflow-y: scroll;
+	background-color: transparent;
+}
+
+ul.time_line li{
+	font-size: 11px;
+	margin: 0px;
+	padding: 0px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	background-color: transparent;
+	background-image:url('/layout/images/timeline_bcg.png');
+	background-repeat:repeat-y;
+}
+
+
+ul.task_assets_list{
+	margin: 0px;
+	padding: 0px; 
+	list-style: none; 
+	line-height: 18px; 	
+}
+
+ul.task_assets_list li{
+	font-size: 11px;	
+	margin: 0px;
+	padding: 0px;
+	padding-left: 20px;
+	padding-right: 3px;
+	background-color: transparent;
+	background-image: url('/layout/images/asset.png');
+	background-repeat: no-repeat;		
+}
+
+ul.tasks_inline_buttons {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+ul.tasks_inline_buttons li {
+	display: inline;
+	margin: 0px;
+	padding: 0px;
+}
+
+
+
+
+
+
+
+
+table.appointment{
+	    	
+    border-collapse: separate;
+    border-spacing: 0px;
+    border: 1px solid #ccc;	
+	        	
+	margin: 0px;
+	margin-top: -15px;
+	margin-left: 20px;
+	padding: 0px;
+	min-height: 100px;
+	max-height: 600px;
+	background-color: white;
+	width: 350px;
+	max-width: 350px;
+}
+
+table.appointment tr{
+	background-color: white;
+	line-height: 100%;
+}
+
+table.appointment tr:hover{
+	background-color: white;
+}
+
+table.appointment td{
+	text-align: left;
+	vertical-align: top;
+	padding: 5px;
+	font-size: 11px;
+	line-height: 18px;
+	border: 1px;
+}
+
+table.appointment td:hover {
+	background-color: white;
+}
+
+table.appointment td.left{
+	width: 18px;
+}
+
+table.appointment td.center{
+	width: 180px;
+	max-width: 180px;
+}

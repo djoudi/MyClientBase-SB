@@ -16,37 +16,13 @@
 {/literal}	
 
 <div class="container_24">
+
 	{* top anchor *}
-	<div class="grid_6" style="padding-top: 5px;">
+	<div class="grid_6" style="padding-top: 0px;">
 		
 		<img src="/layout/images/mcbsb_logo.png" />
 		
-		<div class="box" style="margin-top: 15px; height: 30px; padding-top: 14px; padding-left: 5px; padding-right: 5px;">
-			<div style="text-align: center;">
-				{if $language=="english"}
-					{anchor("http://tooljar.biz","{t}Tooljar{/t}",'class="button"')}
-					{anchor("http://tooljar.biz/community","{t}Community{/t}",'class="button"')}
-				{/if}		
-				
-				{if $language=="italian"}
-					{anchor("http://tooljar.biz?language=it_IT","{t}Tooljar{/t}",'class="button"')}
-					{anchor("http://tooljar.biz/community?language=it_IT","{t}Community{/t}",'class="button"')}
-				{/if}
-				
-		   		{if $language == 'english'} {$href="gydKx6aAXVs"} {/if}
-				{if $language == 'italian'} {$href="J-m8Hw4x14o"} {/if}				
-				
-				{* do not use anchor here otherwise videos stop working *}
-				<a class="tj_videos button" href="{$href}">{t}Help{/t}</a>
-				
-				{anchor("logout","{t}Logout{/t}",'class="button"')}
-			</div>
-		</div>
-		
-	</div>
-	
-	<div class="grid_6">
-		<div class="box {if in_array('tj_admin',$user->member_of_groups)}b_light_green{/if}" style="padding: 3px; min-height: 54px; max-height: 54px; overflow: auto; font-size: 11px;">
+		<div class="box {if in_array('tj_admin',$user->member_of_groups)}b_light_green{/if}" style="margin-top: 3px; padding: 3px; min-height: 54px; max-height: 54px; overflow: auto; font-size: 11px;">
 			<p>
 				{t}User{/t}:&nbsp;
 				{if in_array('tj_admin',$user->member_of_groups)}
@@ -70,9 +46,67 @@
 			</p>
 			{/if}			
 		</div>
+						
+	</div>
+	
+	<div class="grid_12">
+	
+		<div class="box">
 		
-		<div class="box" style="margin-top: 3px; height: 30px; padding-top: 14px;">
-			<div style="text-align: center;">
+			<div id="notification_area">
+				<div id="spinner" style="float: right; min-height: 100px; min-width: 100px;"></div>
+				{* <pre>{$system_messages|print_r}</pre> *}
+				<div>
+					<ul id="notification_area_messages">
+					{foreach $system_messages as $key => $system_message}
+						{* <li>{$system_message['time']|strftime '%T'}</li> *}
+						{if $system_message['type'] == 'error'}
+							{assign type 'dark_red'}
+						{/if}
+						{if $system_message['type'] == 'warning'}
+							{assign type 'blue'}
+						{/if}
+						{if $system_message['type'] == 'success'}
+							{assign type 'dark_green'}
+						{/if}
+						{* {$system_message['username']|ucwords} *}										 
+						<li class="system_message {$type}" style="font-size: 12px;">{$system_message['time']|date_format:"%T"} - {t}{$system_message['text']}{/t}</li> 
+					{/foreach}
+					</ul>
+				</div>	
+			</div>
+			
+			{* <p style="font-size: 11px; text-align: right;">{t}See all notifications{/t}</p> *} {* //TODO introduce APE and add link here *}
+		</div>
+		
+	</div>
+	
+	<div class="grid_6">
+
+		<div class="box" style="margin-top: 0px; height: 30px; padding-top: 14px; padding-left: 5px; padding-right: 5px;">
+			<div>
+				{if $language=="english"}
+					{anchor("http://tooljar.biz","{t}Tooljar{/t}",'class="button"')}
+					{anchor("http://tooljar.biz/community","{t}Community{/t}",'class="button"')}
+				{/if}		
+				
+				{if $language=="italian"}
+					{anchor("http://tooljar.biz?language=it_IT","{t}Tooljar{/t}",'class="button"')}
+					{anchor("http://tooljar.biz/community?language=it_IT","{t}Community{/t}",'class="button"')}
+				{/if}
+				
+		   		{if $language == 'english'} {$href="gydKx6aAXVs"} {/if}
+				{if $language == 'italian'} {$href="J-m8Hw4x14o"} {/if}				
+				
+				{* do not use anchor here otherwise videos stop working *}
+				<a class="tj_videos button" href="{$href}">{t}Help{/t}</a>
+				
+				{anchor("logout","{t}Logout{/t}",'class="button"')}
+			</div>
+		</div>
+	
+		<div class="box" style="margin-top: 19px; height: 30px; padding-top: 14px; padding-left: 5px; padding-right: 5px;">
+			<div>
 				{if !$mcbsb_org_oid}
 				<span class="dark_red">
 					{t}Please set your organization{/t}.						
@@ -95,35 +129,7 @@
 		</div>
 	</div>
 	
-	<div class="grid_12">
-		<div class="box">
-		
-			<div id="notification_area">
-				<div id="spinner" style="float: right; min-height: 100px; min-width: 100px;"></div>
-				{* <pre>{$system_messages|print_r}</pre> *}
-				<div>
-					<ul id="notification_area_messages">
-					{foreach $system_messages as $key => $system_message}
-						{* <li>{$system_message['time']|strftime '%T'}</li> *}
-						{if $system_message['type'] == 'error'}
-							{assign type 'dark_red'}
-						{/if}
-						{if $system_message['type'] == 'warning'}
-							{assign type 'blue'}
-						{/if}
-						{if $system_message['type'] == 'success'}
-							{assign type 'dark_green'}
-						{/if}
-						{* {$system_message['username']|ucwords} *}										 
-						<li class="system_message {$type}">{$system_message['time']|date_format:"%T"} - {t}{$system_message['text']}{/t}</li> 
-					{/foreach}
-					</ul>
-				</div>	
-			</div>
-			
-			{* <p style="font-size: 11px; text-align: right;">{t}See all notifications{/t}</p> *} {* //TODO introduce APE and add link here *}
-		</div>
-	</div>
+
 	<a id="top" name="top"></a>
 	
 	{assign videos_file "{$fcpath}application/views/videos.tpl"}

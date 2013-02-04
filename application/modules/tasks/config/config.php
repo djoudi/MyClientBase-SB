@@ -5,7 +5,7 @@
 $config['module'] = array(
 	'module_path'			=>	'tasks',
 	'module_name'			=>	'Tasks',
-	'module_enabled'		=>	false,
+	'module_enabled'		=>	true,
 	'module_top_menu' 		=>	true,	
 	'module_description'	=>	'A simple task manager which allows task based invoice creation.',
 	'module_author'			=>	'Damiano Venturin',

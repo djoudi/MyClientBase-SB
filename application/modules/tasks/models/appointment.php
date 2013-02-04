@@ -62,29 +62,36 @@ class Appointment extends Rb_Db_Obj
 		return parent::create();
 	}
 
-	public function read() {
+	public function read($limited_return=false) {
+		
 		if(is_null($this->obj_ID_value)) return false;
-		$this->_config['never_display_fields'] = array();				
-		return parent::read();
+		
+		if(!$limited_return) $this->_config['never_display_fields'] = array();		
+				
+		if(! parent::read()) return false;
+		
+		//converts timestamp in a human readable format so that the js form fields will be displayed correctly
+		$this->start_time = date('Y-m-d H:i', $this->start_time);
+		$this->end_time = date('Y-m-d H:i', $this->end_time);
+		
+		return true;
 	}
 		
 	public function update() {
 		
-		return false; //no update for now 
+		if(is_null($this->obj_ID_value)) return false;
 		
-// 		if(is_null($this->obj_ID_value)) return false;
+		$CI = &get_instance();
 		
-// 		$CI = &get_instance();
-		
-// 		//add hidden system values
-// 		$this->update_date = time();
-// 		$this->updated_by = $CI->mcbsb->user->id;
-// 		$this->editor = $CI->mcbsb->user->first_name . ' ' . $CI->mcbsb->user->last_name;
+		//add hidden system values
+		$this->update_date = time();
+		$this->updated_by = $CI->mcbsb->user->id;
+		$this->editor = $CI->mcbsb->user->first_name . ' ' . $CI->mcbsb->user->last_name;
 				
-// 		//$this->fix_dates();
-// 		unset($this->team);
+		//$this->fix_dates();
+		unset($this->team);
 		
-// 		return parent::update();
+		return parent::update();
 	}	
 	
 	
@@ -104,7 +111,7 @@ class Appointment extends Rb_Db_Obj
 			case 'delete_appointment':
 				$tmp['procedure'] = 'delete_appointment';
 				$button_label = 'Delete';
-				$button_id = '';
+				$button_id = 'delete_appointment';
 				$tmp['url'] = '/' . $this->module_folder. '/ajax/delete_appointment';  //TODO this should not be necessary
 			break;
 			
@@ -119,7 +126,7 @@ class Appointment extends Rb_Db_Obj
 			case 'create_appointment':
 				$tmp['form_title'] = 'New appointment';
 				$button_label = 'Create appointment';
-				$button_id = '';
+				$button_id = 'create_appointment';
 				$tmp['procedure'] = 'create_appointment';
 				$tmp['url'] = '/' . $this->module_folder. '/ajax/save_appointment';
 			break;
@@ -127,13 +134,21 @@ class Appointment extends Rb_Db_Obj
 			//this is a special case for an appointment attached to a task. The "what" field will be hidden
 			case 'create_appointment_for_task':
 				$tmp['form_title'] = 'New appointment';
-				$button_label = 'Create appointment';
+				$button_label = 'Add appointment';
 				$button_id = '';
 				$tmp['procedure'] = 'create_appointment_for_task';
 				$tmp['url'] = '/' . $this->module_folder. '/ajax/save_appointment_for_task';
-				
 			break;			
-			
+
+			//this is a special case for an appointment attached to a task. The "what" field will be hidden
+			case 'edit_appointment_for_task':
+				$tmp['form_title'] = 'Edit appointment';
+				$button_label = 'Edit';
+				$button_id = '';
+				$tmp['procedure'] = 'edit_appointment_for_task';
+				$tmp['url'] = '/' . $this->module_folder. '/ajax/save_appointment_for_task';
+			break;
+						
 			default:
 				return array();
 			break;

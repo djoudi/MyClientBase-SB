@@ -1,6 +1,5 @@
 {* TASK TABS *}
-{jdecode object=$task}
 
 <ul>
-	<li><a href="#tab_task">#{$object->id}</a></li>								
+	<li><a href="#tab_task">#{$task->id}</a></li>								
 </ul>

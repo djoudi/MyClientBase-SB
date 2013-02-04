@@ -42,8 +42,9 @@ class Ajax_Controller extends Admin_Controller {
 		$to_js['message'] = urlencode(trim($this->message));
 		$to_js['procedure'] = urlencode(trim($this->procedure));
 		$to_js['status'] = $this->status;
-		$to_js['url'] = urlencode(trim($this->url));
-		$to_js['replace'] = $this->replace;
+		if(isset($this->url)) $to_js['url'] = urlencode(trim($this->url));
+		if(isset($this->replace)) $to_js['replace'] = $this->replace;
+		if(isset($this->focus_tab)) $to_js['focus_tab'] = $this->focus_tab;
 		
 		$output = json_encode($to_js);
 		if(!is_null($this->callback) && $this->callback){
@@ -107,13 +108,14 @@ class Ajax_Controller extends Admin_Controller {
 					$object->_fields->$attribute = json_decode($specifics);
 				}
 			}
+		
 			$data['object'] = $object;
 		}
 		
 		if(isset($procedure)) $this->procedure = $procedure;
-		if(isset($form_title)) $this->form_title = $data['form_title'] = $form_title;
 		if(isset($form_name)) $this->form_name = $data['form_name'] = $form_name;
-		if(isset($form_title)) $data['form_title'] = $form_title;
+		if(isset($form_method)) $this->form_method = $data['form_method'] = $form_method;
+		if(isset($form_title)) $this->form_title = $data['form_title'] = $form_title;
 		if(isset($url)) $this->url =  $data['url'] =  $url;
 		  
 		if($this->html = $this->load->view($template, $data, true, 'smarty')) $this->status = true;

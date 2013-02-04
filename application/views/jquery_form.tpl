@@ -7,7 +7,9 @@
 	{if isset($form_title)}<h4>{t}{$form_title|ucwords}{/t}</h4>{/if}
 	
 	<div class="grid_8">
- 	<form id={$form_name} id={$form_name} action={$url}>
+
+	{* TODO change to default:'GET' after refactoring *}
+ 	<form class="jquery_form" id="{$form_name|default:'my_jquery_form'}" name="{$form_name|default:'my_jquery_form'}" method="{$form_method|default:'GET'}" action="{$url}">
  	<dl>
  	{foreach $object->_fields as $attribute => $specifics}
  		
@@ -61,6 +63,12 @@
 	 	
  	{/foreach}
  	</dl>
+
+ 	{if isset($object->contact_assets)}
+ 		<h4>{t}Assets{/t}</h4>
+ 		{include file="jquery_contact_assets.tpl"}
+ 		<div style="height: 10px;"></div>
+ 	{/if} 	
  	
  	{if isset($object->contact_locs)}
  		<h4>{t}Locations{/t}</h4>

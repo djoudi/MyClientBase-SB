@@ -235,38 +235,21 @@ function retrieveForm(form) {
 	return dataObj;
 }
 
+function jqueryChangeStatus(params, url) {
+	var agree=confirm("Are you sure ?");
+	if (agree)
+	{	
+		jquery_Noform_Post_Reload(params,url);
+	}
+}
+
 function jqueryDelete(params, url) {
 	var agree=confirm("Are you sure ?");
 	if (agree)
 	{	
 		if(!url) url = '/contact/ajax/delete';
 		
-		//console.log(params);
-		
-		$.ajax({
-			async : true,
-			type: 'POST',
-			dataType : 'jsonp',
-			url : url,
-			data : {
-				params: params,
-			}, 
-			error: errorCallback,
-		})
-		.done(function(json){
-			if(typeof json.error !== "undefined" && json.error){
-				//console.log('jqueryDelete has an error');
-				//alert(urldecode(json.error));
-			}
-		})
-	    .success(function(json){
-	    	if((typeof json.message !== "undefined" && json.message) || json.status){
-	    		//alert(urldecode(json.message));
-	    		window.location.hash = json.focus_tab;
-	    		window.location.reload(true);
-	        	//console.log('json' + json);
-	    	}
-	    });
+		jquery_Noform_Post_Reload(params,url);
 	}
 }
 
@@ -274,30 +257,63 @@ function jqueryAssociate(params) {
 	var agree=confirm("Are you sure ?");
 	if (agree)
 	{	
-		$.ajax({
-			async : true,
-			type: 'POST',
-			dataType : 'jsonp',
-			url : '/contact/ajax/associate',
-			data : {
-				params: params,
-			}, 
-			error: errorCallback,
-		})
-		.done(function(json){
-			if(typeof json.error !== "undefined" && json.error){
-				//console.log('jqueryDelete has an error');
-				//alert(urldecode(json.error));
-			}
-		})
-	    .success(function(json){
-	    	if(typeof json.message !== "undefined" && json.message){
-	    		//alert(urldecode(json.message));
-	        	window.location.hash = json.focus_tab;
-	        	window.location.reload(true);
-	    	}
-	    });
+		var url = '/contact/ajax/associate';
+		jquery_Noform_Post_Reload(params,url);
+//		$.ajax({
+//			async : true,
+//			type: 'POST',
+//			dataType : 'jsonp',
+//			url : '/contact/ajax/associate',
+//			data : {
+//				params: params,
+//			}, 
+//			error: errorCallback,
+//		})
+//		.done(function(json){
+//			if(typeof json.error !== "undefined" && json.error){
+//				//console.log('jqueryDelete has an error');
+//				//alert(urldecode(json.error));
+//			}
+//		})
+//	    .success(function(json){
+//	    	if(typeof json.message !== "undefined" && json.message){
+//	    		//alert(urldecode(json.message));
+//	        	window.location.hash = json.focus_tab;
+//	        	window.location.reload(true);
+//	    	}
+//	    });
 	}
+}
+
+function jquery_Noform_Post_Reload(params,url){
+	
+	//console.log(params);
+	//console.log(url);
+	
+	$.ajax({
+		async : true,
+		type: 'POST',
+		dataType : 'jsonp',
+		url : url,
+		data : {
+			params: params,
+		}, 
+		error: errorCallback,
+	})
+	.done(function(json){
+		if(typeof json.error !== "undefined" && json.error){
+			//console.log('jqueryDelete has an error');
+			//alert(urldecode(json.error));
+		}
+	})
+    .success(function(json){
+    	if((typeof json.message !== "undefined" && json.message) || json.status){
+    		//alert(urldecode(json.message));
+    		window.location.hash = json.focus_tab;
+    		window.location.reload(true);
+        	//console.log('json' + json);
+    	}
+    });	
 }
 
 //this intercepts the "enter" keystroke
@@ -417,8 +433,8 @@ function get_my_tj_organization(current_oid){
 }
 
 function jqueryForm(params,url) {
-//	console.log('jqueryForm');
-//	console.log(params);
+	console.log('jqueryForm');
+	//console.log(params);
 	
 	//default value TODO the ajax controller in contact module needs refactoring
 	if(!url) url = '/contact/ajax/getForm';
@@ -432,9 +448,15 @@ function jqueryForm(params,url) {
 			params: params,
 		},
 		success : function(json){
+			
 			if(json.html){
+				
+				console.log('calls openJqueryForm');
+				
 				openJqueryForm(json);
+				
 			} else {
+				
 				switch(json.procedure){
 					case 'searchPersonToAdd':
 						if(json.uid){
@@ -451,7 +473,8 @@ function jqueryForm(params,url) {
 					default:
 						postFormToAjax(json.url,'jsonp','POST',null,json.object_name,json.related_object_name,json.related_object_id,null,json.procedure,json.input_params);
 					break;
-				}			
+				}
+				
 			}
 		},
 		error: errorCallback,
@@ -462,6 +485,95 @@ function jqueryForm(params,url) {
 		}
 	});
 }
+
+function postFormToAjax(url, dataType, type, form_name, object_name, related_object_name, related_object_id, selected_radio, procedure, input_params){
+	console.log('postFormToAjax');
+//	console.log(input_params);
+	
+	url = urldecode(url);
+	
+	if(form_name) {
+		
+		
+		//console.log('form_name' + form_name);
+		
+		var form = document.forms[form_name];
+		
+		//console.log('form' + form);
+		
+		var formObj = retrieveForm(form);
+		
+		
+		json = retrieve_validate_form(form_name);	
+		
+		//let's see if the final url is an ajax request
+		if(!url.match(/^\/contact\/ajax/)) {
+			
+			console.log('submitting to page ' + url + ' and leaving');
+			
+			alert('submitting form');
+	    	$('#'+form_name).submit();
+	    	return true;
+		}    
+		console.log('should not be displayed');
+	} else {
+		var formObj = '';
+	}
+	
+	
+	
+	jQuery.ajax({
+    	url		: url,
+    	dataType: dataType,
+    	type	: type,
+        data    : {
+        		procedure: procedure,
+            	form: formObj,
+            	
+            	input_params: input_params,
+            	
+            	object_name: object_name,
+            	selected_radio: selected_radio,
+        
+            	related_object_name: related_object_name,
+            	related_object_id: related_object_id,                	
+        },
+        error	: errorCallback,
+    })
+	.done(function(json){
+		if(typeof json.error !== "undefined" && json.error){
+			alert(urldecode(json.error));
+			return false;
+		}
+	})        
+    .success(function(json) {
+    	console.log('postFormToAjax');
+    	console.log(json);
+    	if(typeof json.message !== "undefined" && json.message){
+			switch(json.procedure){
+				case 'create_person':
+					if(json.uid){
+						window.location = '/contact/form/uid/' + json.uid;
+					}
+				break;
+
+				case 'create_organization':
+					if(json.oid){
+						window.location = '/contact/form/oid/' + json.oid;
+					}
+				break;
+				
+				default:
+		    		//alert(urldecode(json.message));
+		        	window.location.hash = json.focus_tab;
+		        	window.location.reload(true);					
+				break;
+			}	    		
+    	} 
+    });
+	
+}
+
 
 function retrieve_validate_form(form_name){
 	
@@ -490,8 +602,9 @@ function retrieve_validate_form(form_name){
 }
 
 function openJqueryForm(json){
-//	console.log('openJqueryForm');
-//	console.log(json);
+	
+	console.log('openJqueryForm');
+	console.log(json);
 	
 	var tag = $('<div id="mydialog"></div>');
 	var procedure = '';
@@ -558,22 +671,30 @@ function openJqueryForm(json){
 					switch(json.procedure){
 						
 						case 'automated_form':
+							//console.log('form name: ' + json.form_name);
 							var form = document.forms[json.form_name];
 							var formObj = retrieveForm(form);
+							//console.log(formObj);
 							$('#'+json.form_name).submit();
 						break;
 						
 						case 'create_otr':
 						case 'create_appointment':
 						case 'create_appointment_for_task':
+						case 'edit_appointment_for_task':
+						case 'create_activity':
 						case 'close_task':
-							console.log('post to ajax');
-							console.log(json);
+						case 'create_task':
+						case 'edit_task':
+							//console.log('post to ajax');
+							//console.log(json);
 							postToAjax(json);
 						break;
 						
 						default:
-							console.log(json);
+							//console.log(json);
+							//alert('submitting to postFormToAjax');
+							//TODO after refactoring the function postFormToAjax should disappear
 							postFormToAjax(json.url,'jsonp','POST',json.form_name,json.object_name,json.related_object_name,json.related_object_id,selected_radio,json.procedure,null);
 						break;
 					}
@@ -600,8 +721,8 @@ function postToAjax(json, dataType, type){
 		var form = document.forms[json.form_name];
 		formObj = retrieveForm(form);
 		
-		console.log('formObj');
-		console.log(formObj);
+		//console.log('formObj');
+		//console.log(formObj);
 		
 	} 
 	
@@ -616,56 +737,101 @@ function postToAjax(json, dataType, type){
         error	: errorCallback,
     })
 	.done(function(json){
+		//console.log('done');
 		if(typeof json.error !== "undefined" && json.error){
-			console.log('error ' + json.error);
+			//console.log('error ' + json.error);
 			return false;
 		}
 	})        
-    .success(function(json) {
-
+    .success(function(json) {	
+    	
     	if(json.status){
     		
+			var focus_tab = null;
+			if(typeof json.focus_tab != 'undefined') {
+				focus_tab = json.focus_tab;
+			}
+    		
 			switch(urldecode(json.procedure)){
+			
+			
 				case 'replace_html':
 					
 					$.each(json.replace, function(index, item) {
-						console.log(item)
+						//console.log(item)
 						$('#' + item.id).html(item.html);
 					});
 					return true;
 					
 				break;
 
+				
+				
 				case 'show_alert':
-					alert(urldecode(json.message));
+					if(typeof json.message != 'undefined' && json.message != "") alert(urldecode(json.message));
 				break;
+				
+				
+				case 'refresh_page':
+					
+					var procedure = '';   
+					if(typeof json.procedure != 'undefined' && json.procedure != "") {
+						procedure = json.procedure; //note json.
+					}
+					
+					reload_page(focus_tab, procedure);	
+					
+				break;				
 				
 				case 'show_alert_and_refresh_page':
-					alert(urldecode(json.message));
-					var focus_tab = json.focus_tab;
-					var procedure = json.procedure;   //note json.
-					reload_page(focus_tab, procedure);									
+					
+					if(typeof json.message != 'undefined' && json.message != "") alert(urldecode(json.message));
+					
+					var procedure = ''; 
+					if(typeof json.procedure != 'undefined' && json.procedure != "") {
+						procedure = json.procedure; //note json.
+					}
+					
+					reload_page(focus_tab, procedure);	
+					
 				break;
 				
+				
+				
 				default:
-		    		alert(urldecode(json.message));
-					var focus_tab = json.focus_tab;
-					var procedure = params.procedure;
+
+					if(typeof json.message != 'undefined' && json.message != "") alert(urldecode(json.message));
+					
+					var procedure = '';
+					if(typeof params.procedure != 'undefined' && params.procedure != "") {
+						procedure = params.procedure; //note params.
+					}
+					
 					reload_page(focus_tab, procedure);
+					
 				break;
 			}	    		
     	} else {
     	
     		switch(urldecode(json.procedure)){
+    		
 				case 'show_alert':
-					alert(json.message);
+					if(typeof json.message != 'undefined' && json.message != "") alert(urldecode(json.message));
 				break;
+			
+				
 				
 				case 'show_alert_and_refresh_page':
-					alert(urldecode(json.message));
-					var focus_tab = json.focus_tab;
-					var procedure = json.procedure;   //note json.
-					reload_page(focus_tab, procedure);									
+					
+					if(typeof json.message != 'undefined' && json.message != "") alert(urldecode(json.message));
+					
+					var procedure = '';   
+					if(typeof json.procedure != 'undefined' && json.procedure != "") {
+						procedure = json.procedure; //note json.
+					}
+					
+					reload_page(focus_tab, procedure);
+					
 				break;
 				
 				default:
@@ -678,14 +844,14 @@ function postToAjax(json, dataType, type){
 }
 
 function reload_page(focus_tab, procedure){
-	console.log('reload page');
-	console.log('focustab: ' + focus_tab);
-	console.log('procedure: ' + procedure);
+//	console.log('reload page');
+//	console.log('focustab: ' + focus_tab);
+//	console.log('procedure: ' + procedure);
 	if(!focus_tab){
+		var focus_tab = '';
 		if(procedure == 'create_otr') focus_tab = 'tab_Tasks';
 		if(procedure == 'create_appointment') focus_tab = 'tab_Tasks';
 		if(procedure == 'create_appointment_for_task') focus_tab = 'tab_Tasks';
-		if(procedure ==  'close_task') focus_tab = 'tab_Tasks';
 		if(procedure == 'create_appointment_for_task') focus_tab = 'tab_Tasks';
 	}
 	//console.log('focus tab ' + focus_tab);
@@ -694,94 +860,6 @@ function reload_page(focus_tab, procedure){
 	window.location.reload(true);		
 }
 
-function postFormToAjax(url, dataType, type, form_name, object_name, related_object_name, related_object_id, selected_radio, procedure, input_params){
-//	console.log('postFormToAjax');
-//	console.log(input_params);
-	
-	url = urldecode(url);
-	
-	if(form_name) {
-		
-		var form = document.forms[form_name];
-		var formObj = retrieveForm(form);
-		
-		json = retrieve_validate_form(form_name);	
-		
-		//let's see if the final url is an ajax request
-		if(!url.match(/^\/contact\/ajax/)) {
-			//console.log('submitting to page ' + url + ' and leaving');
-			
-	    	$('#'+form_name).submit();
-	    	return true;
-		}    
-		
-	} else {
-		var formObj = '';
-	}
-	
-	
-	
-	jQuery.ajax({
-    	url		: url,
-    	dataType: dataType,
-    	type	: type,
-        data    : {
-        		procedure: procedure,
-            	form: formObj,
-            	
-            	input_params: input_params,
-            	
-            	object_name: object_name,
-            	selected_radio: selected_radio,
-        
-            	related_object_name: related_object_name,
-            	related_object_id: related_object_id,                	
-        },
-        error	: errorCallback,
-    })
-	.done(function(json){
-		if(typeof json.error !== "undefined" && json.error){
-			alert(urldecode(json.error));
-			return false;
-		}
-	})        
-    .success(function(json) {
-    	if(typeof json.message !== "undefined" && json.message){
-			switch(json.procedure){
-				case 'create_person':
-					if(json.uid){
-						window.location = '/contact/form/uid/' + json.uid;
-					}
-				break;
-
-				case 'create_organization':
-					if(json.oid){
-						window.location = '/contact/form/oid/' + json.oid;
-					}
-				break;
-				
-				case 'close_task':
-					console.log('after submit');
-					console.log(json);
-					if(json.status && json.html && json.html_id){
-						console.log('replacing');
-						$('#' + json.html_id).html(json.html);
-					} else {
-						console.log('wrong');
-						//window.location.reload(true);
-					}					
-				break;
-				
-				default:
-		    		//alert(urldecode(json.message));
-		        	window.location.hash = json.focus_tab;
-		        	window.location.reload(true);					
-				break;
-			}	    		
-    	} 
-    });
-	
-}
 
 function addAutoComplete(input){
 

@@ -14,7 +14,7 @@ class Otr extends Rb_Db_Obj
 
 		$this->db_table = self::table;
 		$this->obj_name = get_class($this);
-		$this->module_folder = 'otrs';
+		$this->module_folder = 'brm';
 		
 		//R::freeze( array($this->db_table));  //NOTE! comment this line when you develop!
 		

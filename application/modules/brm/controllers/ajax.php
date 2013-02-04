@@ -5,7 +5,7 @@ class Ajax extends Ajax_Controller {
 	public function __construct(){
 		parent::__construct();
 		
-		$this->load->model('otrs/otr','otr');
+		$this->load->model('brm/otr','otr');
 	}
 
 	

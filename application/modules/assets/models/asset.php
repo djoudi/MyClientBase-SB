@@ -22,9 +22,10 @@ class Asset extends Rb_Db_Obj
 		
 		$this->category = 'asset';
 		
-		R::freeze( array($this->db_table)); 
+		//R::freeze( array($this->db_table)); 
 		
 		$this->initialize();
+		
 	}
 	
 	public function create() {

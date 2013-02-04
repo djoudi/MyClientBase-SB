@@ -7,9 +7,9 @@
  * @author 		Damiano Venturin
  * @since		June 24, 2012 	
  */
-class Task extends Rb_Db_Obj
+class Activity extends Rb_Db_Obj
 {
-	const table = 'tasks';
+	const table = 'activities';
 	protected $module_folder = null;
 	//public $ownAssets = null;
 	
@@ -29,21 +29,7 @@ class Task extends Rb_Db_Obj
 	
 	private function fix_dates(){
 		
-		//TODO 14 should go in the config
-		
-		if(!$this->start_date) $this->start_date = date('Y-m-d');
-		
-		//set due_date if left blank
-		if(!$this->due_date) {
-			$this->due_date = date('Y-m-d', strtotime("$this->start_date +14 days"));
-		}
-		
-		//set due_date if non-sense
-		$duedate_unix = strtotime($this->due_date);
-		$stardate_unix = strtotime($this->start_date);
-		if($duedate_unix < $stardate_unix) {
-			$this->due_date = date('Y-m-d', strtotime("$this->start_date +14 days"));
-		}		
+		if(!$this->action_date) $this->action_date = date('Y-m-d');		
 		
 	}
 	
@@ -70,53 +56,17 @@ class Task extends Rb_Db_Obj
 
 		if(!parent::read()) return false;
 		
-		//gets the assets associated to the task
+		//gets the assets associated to the Activity
 		$this->assets = $this->get_assets($this->id);
-
-		$this->activities = $this->get_activities($this->id);
+		
 		return true;
 	}
 
 	/**
-	 * Retrieves the Activities associated to the task and returns them as an array
-	 *
-	 * @access		public
-	 * @param		int $id		Task id
-	 * @return		array		Array containing the Activity objects found
-	 *
-	 * @author 		Damiano Venturin
-	 * @since		Feb 1, 2013
-	 */
-	private function get_activities($id){
-	
-		$CI = &get_instance();
-		$CI->load->model('tasks/activity','activity');
-	
-		$activities = array();
-	
-		$task = R::load('tasks',$id);
-		if($bean_activities = $task->ownActivities){
-				
-			foreach ($bean_activities as $activity) {
-	
-				$CI->activity->id = $activity->id;
-				if($CI->activity->read()) {
-					$activities[] = $CI->activity->toArray();
-				}
-	
-			}
-				
-		}
-	
-		return $activities;
-	}
-	
-	
-	/**
-	 * Retrieves the Assets associated to the task and returns them as an array
+	 * Retrieves the Assets associated to the Activity and returns them an array of objects
 	 * 
 	 * @access		public
-	 * @param		int $id		Task id
+	 * @param		int $id		Activity id
 	 * @return		array		Array containing the Asset objects found
 	 * 
 	 * @author 		Damiano Venturin
@@ -131,14 +81,18 @@ class Task extends Rb_Db_Obj
 		
 		$assets = array();
 		
-		$task = R::load('tasks',$id);
-		if($bean_assets = $task->sharedAssets){
+		$Activity = R::load('activities',$id);
+		if($bean_assets = $Activity->sharedAssets){
 			
 			foreach ($bean_assets as $asset) {
 				
 				$CI->{$asset->category}->id = $asset->id;
 				if($CI->{$asset->category}->read()) {
 					$assets[] = $CI->{$asset->category}->toArray();
+// 					$tmp_asset = $CI->{$asset->category};
+// 					unset($tmp_asset->_config);
+// 					unset($tmp_asset->_fields);
+// 					$assets[] = $tmp_asset;
 				}
 
 			}
@@ -165,7 +119,7 @@ class Task extends Rb_Db_Obj
 		foreach ($records as $key => $record) {
 			
 			$records[$key]['assets'] = $this->get_assets($record['id']);
-			$records[$key]['activities'] = $this->get_activities($record['id']);
+			
 		}
 		
 		return $records;
@@ -203,23 +157,6 @@ class Task extends Rb_Db_Obj
 		return parent::update();
 	}
 	
-	public function open(){
-	
-		if(is_null($this->obj_ID_value)) return false;
-	
-		$CI = &get_instance();
-	
-		$this->fix_dates();
-	
-		//clear hidden system values
-		$this->complete_date = null;
-		$this->completed_by = null;
-		$this->completionist = null;
-		$this->endnote = null;
-	
-		return parent::update();
-	}	
-	
 	public function is_open(){
 		return !$this->is_closed();
 	}
@@ -230,7 +167,7 @@ class Task extends Rb_Db_Obj
 	
 	
 	public function delete() {
-		//we do not delete tasks
+		//we do not delete activities
 		return false;
 	}
 
@@ -260,7 +197,7 @@ class Task extends Rb_Db_Obj
 		
 		$data = array();
 		$return = array();		
-		$return = modules::run('/tasks/tasks/index');
+		$return = modules::run('/activities/activities/index');
 		$CI->session->unset_userdata('contact_id');
 		$CI->session->unset_userdata('contact_id_key');
 		
@@ -277,49 +214,18 @@ class Task extends Rb_Db_Obj
 		
 		switch ($type) {
 			
-			case 'close':
-				$tmp['url'] = '/' . $this->module_folder . '/ajax/change_task_status';
-				$tmp['form_name'] = 'jquery_form_close_task';
-				$tmp['form_method'] = 'POST';
-				$tmp['form_title'] = 'Close Task';
-				$tmp['procedure'] = 'close_task';
-				$button_label = 'Close';
-				$button_id = 'close_task';
-				
-				$this->reset_obj_config();
-				//Do not show the following fields when closing a task
-				$this->_config['never_display_fields'][] = 'task';
-				$this->_config['never_display_fields'][] = 'details';
-				$this->_config['never_display_fields'][] = 'start_date';
-				$this->_config['never_display_fields'][] = 'due_date';
-				$this->_config['never_display_fields'][] = 'urgent';
-			break;
-			
-			case 'open':
-				$tmp['url'] = '/' . $this->module_folder . '/ajax/change_task_status';
-				$tmp['procedure'] = 'open_task';
-				$button_label = 'Open task';
-				$button_id = 'open_task';
-			
-				$this->reset_obj_config();
-			break;			
-			
 			case 'edit':
-				$tmp['form_name'] = 'jquery_form_edit_task';
-				$tmp['form_method'] = 'POST';
-				$tmp['form_title'] = 'Edit Task';
-				$tmp['procedure'] = 'edit_task';
-				$button_label = 'Edit';
-				$button_id = 'edit_task';			
+				$tmp['form_title'] = 'Edit Activity';
+				$tmp['procedure'] = 'automated_form';
+				$button_label = 'Edit activity';
+				$button_id = 'edit_Activity';			
 			break;
 			
 			case 'create':
-				$tmp['form_name'] = 'jquery_form_create_task';
-				$tmp['form_method'] = 'POST';				
-				$tmp['form_title'] = 'New Task';
-				$tmp['procedure'] = 'create_task';
-				$button_label = 'Create task';
-				$button_id = 'create_task';					
+				$tmp['form_title'] = 'New Activity';
+				$tmp['procedure'] = 'create_activity';
+				$button_label = 'Add activity';
+				$button_id = 'create_Activity';
 			break;
 			
 			default:
@@ -329,28 +235,16 @@ class Task extends Rb_Db_Obj
 		
 		//common stuff for some cases
 		if($type == 'create' || $type == 'edit'){
-
 			$this->reset_obj_config();
-			//Do not show the endnote textarea when creating or editing
-			$this->_config['never_display_fields'][] = 'endnote';
-			$tmp['url'] = '/' . $this->module_folder . '/ajax/save_task';
+			$tmp['url'] = '/' . $this->module_folder . '/ajax/save_activity';
 		}
 		
 		//common stuff for all cases
 		$tmp['obj'] = $this->toJson();
+		$tmp['form_name'] = 'jquery_form_Activity';
 		
 		$string = json_encode($tmp, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_TAG | JSON_HEX_QUOT | JSON_FORCE_OBJECT);
-		
-		if($type == 'open'){
-			
-			$string = '$(this).live("click", jqueryChangeStatus(' . $string . ',"' . $tmp['url'] .'"))';
-			
-		} else {
-			
-			$tmp['form_name'] = 'jquery_form_task';
-			$string = '$(this).live("click", jqueryForm(' . $string . ',"/' . $this->module_folder . '/ajax/getForm"))';
-			
-		}
+		$string = '$(this).live("click", jqueryForm(' . $string . ',"/' . $this->module_folder . '/ajax/getForm"))';
 		
 		$button_url = '#';		
 		

@@ -24,7 +24,38 @@ class Ajax extends Ajax_Controller {
 			$object = json_decode($obj);
 			
 			switch ($procedure) {
+				
+				case 'create_task':
+				case 'edit_task':
+					//looks for the assets owned by the contact
+					$CI = &get_instance();
+					$CI->load->model('assets/asset','asset');
+					
+					$sql = 'select * from assets where contact_id_key="' . $object->contact_id_key . '" and contact_id="' . $object->contact_id . '"';
+					$assets = $this->asset->readAll($sql,false);
+					
+					if(count($assets)>0){
+						$contact_assets = array();
+						foreach ($assets as $key => $asset) {
+							$contact_assets[] = array(
+													'id' => $asset['id'],
+													'type' => $asset['type'],
+													'brand' => $asset['brand'],
+													'model' => $asset['model'],
+													'serial' => $asset['serial']
+												);
+								
+						}						
+						
+						$object->contact_assets = json_encode($contact_assets);
+						
+						$params['obj'] = json_encode($object, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_TAG | JSON_HEX_QUOT | JSON_FORCE_OBJECT);
+					}
+					
+				break;
+				
 				case 'create_appointment_for_task':
+				case 'edit_appointment_for_task':
 					//get the team
 					$CI = &get_instance();
 					$object->team = json_encode($CI->mcbsb->user->team);
@@ -94,10 +125,6 @@ class Ajax extends Ajax_Controller {
 					$params['obj'] = json_encode($object, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_TAG | JSON_HEX_QUOT | JSON_FORCE_OBJECT);
 				break;
 				
-				default:
-					parent::getForm();
-					return;
-				break;
 			}
 		}
 
@@ -121,7 +148,7 @@ class Ajax extends Ajax_Controller {
 			if($this->appointment->read()){
 
 				//delete all the relationships between the team and the appointment
-				$this->load->model('otrs/otr','otr');
+				$this->load->model('brm/otr','otr');
 				$this->otr->object_id = $obj->id;
 				$this->otr->object_name = 'appointment';
 				
@@ -163,7 +190,10 @@ class Ajax extends Ajax_Controller {
 						
 					} else {
 						
-						if($attribute == 'contact_locs' && empty($post['where'])){
+						//the attribute where will be always rewritten with the content of contact_locs (radio boxes)
+						if($attribute == 'where' && !empty($post['contact_locs'])) continue;
+						
+						if($attribute == 'contact_locs'){
 							$post['where'] = $post[$attribute];
 							$this->appointment->where = $post[$attribute];
 							
@@ -193,6 +223,13 @@ class Ajax extends Ajax_Controller {
 				}
 			}
 						
+			//removes all the colleagues involved in the appointment
+			$this->load->model('brm/otr','otr');
+			$this->otr = new Otr();
+			$this->otr->object_name = 'appointment';
+			$this->otr->object_id = $id;
+			$a = $this->otr->delete();
+			
 			if(isset($post['colleagues'])){
 				
 				if(!is_array($post['colleagues'])){
@@ -200,9 +237,7 @@ class Ajax extends Ajax_Controller {
 					$post['colleagues'] = array($tmp);
 				}
 				
-				$this->load->model('otrs/otr','otr');
-				
-				//finds colleagues involved in the task
+				//finds colleagues involved in the task 
 				$sql = 'select SQL_CALC_FOUND_ROWS * from '.$this->otr->db_table . ' where object_id=' . $this->appointment->task_id . ' and object_name="task"';
 				$involved_in_this_task = $this->otr->readAll($sql);
 				$colleagues_involved_in_this_task = array();
@@ -211,8 +246,11 @@ class Ajax extends Ajax_Controller {
 				}
 				
 				
+				
+				
 				foreach ($post['colleagues'] as $key => $uid) {
-
+					
+					//adds the just selected colleagues to the appointment
 					$this->otr = new Otr();
 					
 					$this->otr->object_name = 'appointment';
@@ -223,7 +261,7 @@ class Ajax extends Ajax_Controller {
 					if($this->otr->create()){
 						$this->mcbsb->system_messages->success = 'Successfully involved colleague ' . $this->otr->colleague_name . ' to ' . $this->otr->object_name .' #'.$this->otr->object_id ;
 						
-						//adds all the people involved in an appointment to the task connected to the appointment
+						//adds all the people involved in the appointment to the task connected to the appointment
 						if(!in_array($uid,$colleagues_involved_in_this_task)){
 							
 							$this->otr = new Otr();
@@ -244,6 +282,8 @@ class Ajax extends Ajax_Controller {
 			}
 			$this->status = true;
 			$this->mcbsb->system_messages->success = $message;
+			$this->procedure = 'refresh_page';
+			$this->focus_tab = 'tab_Tasks';
 			return true;
 		}	
 	}
@@ -256,86 +296,226 @@ class Ajax extends Ajax_Controller {
 	
 		return 'unknown';
 	}	
+
+	public function change_task_status(){
 	
-	public function close_task(){
-		
-		$post = $this->get_post_values();
-		
-		if($post){
-			if($post['id'] ){
-				$this->task->id = $post['id'];
-				if($this->task->read()){
-					$this->task->endnote = $post['endnote'];
-					$a = $this->task;
-					if($this->task->close()){
-						$this->status = true;
-						
-						$data = array();
-						$data['task'] = $this->task->toJson();
-						
-						$data['buttons'][] = $this->task->magic_button('edit');
-						$data['buttons'][] = $this->task->magic_button('close');
-						
-						$this->procedure = 'replace_html';
-						$this->replace = array();
-						$this->replace[] = array(
-												'id' => 'box_task_details',
-												'html' => $this->load->view('task_details_core.tpl', $data, true, 'smarty', 'tasks')
-						);
-						
-						$button = $this->task->magic_button('close');
-						$this->replace[] = array(
-								'id' => 'li_'.$button['id'],
-								'html' => '<a class="button" href="' . $button['url'] . '" id="' . $button['id'] . '"  onClick=\''. $button['onclick'] .'\'>'. $button['label'] .'</a>',
-						);												
-					}  
-				}
-			}
-		} else {
-			//TODO do something
+		if(!$post = $this->input->post()){
+			$this->status = false;
+			$this->message = t('POST is empty.');
+			exit();			
 		}
-	}
+		
+		//$post['params'] is set when the procedure is "open task"
+		if(empty($post['params'])) {
+			
+			//this returns true when the procedure is "close task" 
+			if(!$post = $this->get_post_values()){
+				$this->status = false;
+				$this->message = t('POST id is empty') . ' ' .  t('or is missing field' . ' : endnote');
+				exit();
+			}
+		}		
+		
+		$CI = &get_instance();
+		$CI->load->model('tasks/task','task');
+		
+		if(isset($post['params']['procedure'])) {
+			$procedure = 'open_task';
+			$object = json_decode($post['params']['obj']);
+			$CI->task->id = $object->id;
+		}
+		
+		if(isset($post['endnote'])){
+			$procedure = 'close_task';
+			if(empty($post['endnote'])) $post['endnote'] = '';
+			$CI->task->id = $post['id'];
+		}
+	
+		if($CI->task->read()){
+			
+			switch ($procedure) {
+				
+				case 'close_task':
+					$CI->task->endnote = $post['endnote'];
+					if($CI->task->close()){
+ 						$this->status = true;
+ 						$this->procedure = 'refresh_page';
+ 						$this->message  = t('The task has been closed');
+ 						exit();
+					}
+					
+				break;
+				
+				case 'open_task':
+					
+					if($CI->task->open()){
+						$this->status = true;
+						$this->message  = t('The task has been opened');
+						exit();
+					}
+									
+				break;
+			}
+		}
+
+		$this->status = false;
+		$this->message = t('Task status not updated');
+	}	
+	
 	
 	public function save_task(){
-		
-		if($get = $this->input->get()){
-			
-			if(!$get['task']) {
-				//TODO this should return something to js
-				$this->status = false;
-				return;
-			}
-			
-			foreach ($get as $attribute => $value) {
-				if(empty($get['id']) && $attribute == 'id'){
-					continue;
-				} else {
-					$this->task->$attribute = $value;
-				}
-			}
-			
-			if(empty($get['id'])) {
-				$id = $this->task->create();
-				$message = 'Task #' . $id . ' successfully created';
-			} else {
-				$id = $this->task->update();
-				$message = 'Task #' . $id . ' successfully updated';
-			}
-			
-			if($id){
-				$this->mcbsb->system_messages->success = $message;
-			} else {
-				$task_id = empty($this->task->id) ? '' : '#'.$this->task->id;
-				$this->mcbsb->system_messages->error = 'Error while saving the task '.$task_id;
-			}
-			
-			//TODO should I update contact's LDAP attribute lastAssignment?
-			if($this->task->contact_id_key && $this->task->contact_id) {
-				redirect('/contact/details/' .$this->task->contact_id_key. '/' . $this->task->contact_id .'/#tab_Tasks');
-			}	
+				
+		if(!$post = $this->get_post_values()){
+			$this->status = false;
+			$this->message = t('POST is empty.');
+			exit();			
 		}
 		
-		redirect('/');
-	}
+			
+		if(!isset($post['task'])) {
+			//TODO this should return something to js
+			$this->status = false;
+			$this->message = t('POST task is empty');
+			exit();
+		}
+		
+		foreach ($post as $attribute => $value) {
+			if(empty($post['id']) && $attribute == 'id'){
+				continue;
+			} else {
+				$this->task->$attribute = $value;
+			}
+		}
+		
+		if(empty($post['id'])) {
+			
+			if( $id = $this->task->create()) {
 
+				$this->message  = t('Task successfully created.') . ' Task: #' . $id;
+			
+			} else {
+
+				$this->status = false;
+				$this->message = t('Record not saved.') . t('Record') . ': task';
+				exit();
+				
+			}
+							
+		} else {
+			
+			if($id = $this->task->update()) {
+				
+				$this->message  = t('Task successfully updated.') . ' Task: #' . $id;;
+									
+			} else {
+				
+				$this->status = false;
+				$this->message = t('Record not updated.') . t('Record') . ': task';
+				exit();
+					
+			}
+
+		}
+	
+			
+		//if there are Assets associated to the tasks this code saves the many-to-many relationship between assets and tasks
+		$task = R::load('tasks',$id);
+		
+		//removes all the relationships previously set
+		$task->sharedAssets = array();
+		R::store($task);
+
+		$found_assets = false;
+		
+		foreach ($post as $attribute => $value) {
+			
+			if(strstr($attribute, 'asset_')){
+				$found_assets = true;
+				$asset = R::load('assets',$value);
+				$task->sharedAssets[] = $asset;
+				
+			}
+		}
+		
+		if($found_assets) R::store($task);
+	
+		//TODO should I update contact's LDAP attribute lastAssignment?
+		
+		$this->status = true;
+		$this->procedure = 'refresh_page';
+		$this->focus_tab = 'tab_Tasks';
+		
+// 		if($this->task->contact_id_key && $this->task->contact_id) {
+// 			redirect('/contact/details/' .$this->task->contact_id_key. '/' . $this->task->contact_id .'/#tab_Tasks');
+// 		}	
+		
+	
+// 		redirect('/');
+	}
+	
+	
+	
+	public function save_activity(){
+		
+		if(!$post = $this->get_post_values()){
+			$this->status = false;
+			$this->message = t('GET is empty.');
+			exit();			
+		}
+				
+		$this->load->model('tasks/activity','activity');
+		
+		if(!$post['activity']) {
+			$this->status = false;
+			$this->message = t('A mandatory field is missing.') . t('Field') . ': activity';
+			exit();
+		}
+		
+	
+		//binds POST values with the attributes of the object
+		foreach ($post as $attribute => $value) {
+	
+			if(empty($post['id']) && $attribute == 'id'){
+				continue; //it's a new record. There is no need to set the id.
+			} else {
+				$this->activity->$attribute = $value;
+			}
+				
+		}
+			
+		if(empty($post['id'])) {
+				
+			if($id = $this->activity->create()){
+	
+				$this->message  = t('Activity successfully created.') . ' Activity: #' . $id;
+	
+			} else {
+	
+				$this->status = false;
+				$this->message = t('Record not saved.') . t('Record') . ': activity';
+				exit();
+	
+			}
+				
+		} else {
+				
+			if($id = $this->activity->update()){
+				
+				$this->message  = t('Activity successfully updated.') . ' Activity: #' . $id;
+				
+			} else {
+	
+				$this->status = false;
+				$this->message = t('Record not updated.') . t('Record') . ': activity';
+				exit();
+	
+			}
+		}
+
+		$this->status = true;
+		$this->procedure = 'refresh_page';
+		$this->focus_tab = 'tab_Tasks';		
+	
+	}
+	
 }

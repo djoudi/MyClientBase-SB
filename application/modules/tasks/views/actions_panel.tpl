@@ -1,6 +1,6 @@
-{jdecode object=$task}
+{jdecode object=$task_json}
 
-<h4>{t}Actions panel{/t}</h4>
+<div class="box_header" style="margin-left: -5px; padding-left: 10px;"><h4>{t}Actions panel{/t}</h4></div>
 
 {* main action panel *}
 {include "{$fcpath}application/views/actions_panel.tpl"}
@@ -14,7 +14,7 @@
 	
 		{assign var=url value="/contact/details/{$object->contact_id_key}/{$object->contact_id}/#tab_Tasks"}
 		
-		<li class="ap"><a class="button" href="{$url}">{t}Back to profile{/t}</a></li>		
+		<li class="ap">{anchor("{$url}","{t}Back to profile{/t}",'class="button"')}</li>		
 		
 	{/if}
 	
