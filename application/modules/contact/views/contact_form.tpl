@@ -43,7 +43,13 @@
 			item_num = item_num[2];
 			$('#'+this.id).bubbletip($('#tip_autocomplete_'+item_num), { deltaDirection: 'right', calculateOnShow: true, bindShow: 'click', delayHide: 1500 });
 		});
-		
+
+		$("[id^=a_file_]").each(function(){
+			var item_num = this.id.split('_');
+			item_num = item_num[2];
+			$('#'+this.id).bubbletip($('#tip_file_'+item_num), { deltaDirection: 'right', calculateOnShow: true, bindShow: 'click', delayHide: 1500 });
+		});
+				
 		$('.phone').keyup(function() {
 			var phone = $(this).val();
 			if(phone == '') {
@@ -271,6 +277,16 @@
 					{if $fields[$property]["type"] == "file"}
 						<dd>
 							<input title="{t}{$fields[$property]["desc"]}{/t}" type="{$fields[$property]["type"]}" name="{$property}" />
+							
+							<a id="a_file_{$num}" href="#">
+								<img alt="{t}Upload a picture{/t}" src="/layout/images/question_mark.png" />
+							</a>
+							<div id="tip_file_{$num}" style="display: none;">
+								<p>{t}You can upload a picture for your contact having following requirements{/t}</p>
+								<p>{t}Max size{/t}: {$upload_settings.max_size} KB</p>
+								<p>{t}Max width{/t}: {$upload_settings.max_width} pixel</p>
+								<p>{t}Max height{/t}: {$upload_settings.max_height} pixel</p>
+							</div>
 						</dd>
 					{else}
 						<dd>

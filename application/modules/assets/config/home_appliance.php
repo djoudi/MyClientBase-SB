@@ -11,7 +11,7 @@ $config['home_appliance_default_values'] = array(
 
 $config['home_appliance_never_display_fields'] = array('creation_date', 'created_by', 'creator', 'update_date', 'updated_by', 'editor');
 
-$config['home_appliance_mandatory_fields'] = array('category', 'brand', 'model');
+$config['home_appliance_mandatory_fields'] = array('category', 'type', 'brand', 'model');
 
 $config['home_appliance_prototype'] = array(
 		

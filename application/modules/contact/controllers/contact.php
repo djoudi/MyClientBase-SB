@@ -130,9 +130,6 @@ class Contact extends Admin_Controller {
     
     	//loading Smarty template
     	$this->load->view('contact_search.tpl', $data, false, 'smarty','contact');
-    	
-    	//$this->pp->parse('contact_search.tpl', $data, false, 'smarty','contact');
-
     }
 
     public function all_people() {
@@ -272,8 +269,6 @@ class Contact extends Admin_Controller {
     }
     
     public function details() {
-    
-    	$this->load->model('templates/mdl_templates');     	//TODO is this necessary?
     
     	//array sent to the view
     	$data = array();
@@ -468,22 +463,6 @@ class Contact extends Admin_Controller {
     
     	}
     
-    	//allows creations of tasks for the contact
-//     	if($this->mcbsb->is_module_enabled('tasks')) {
-//     		$this->mcbsb->load('tasks/task','task');
-    
-//     		//TODO add a filter to get only the tasks of this contact
-//     		$params = array();
-//     		$params['where']['client_id'] = $contact->client_id;
-//     		if(strtolower($contact->objName) == 'person') $params['where']['client_id_key'] = 'uid';
-//     		if(strtolower($contact->objName) == 'organization') $params['where']['client_id_key'] = 'oid';
-    		 
-//     		if($tasks = $this->mcbsb->task->readAll($params)) {
-//     			$data['tasks'] = $tasks;
-//     			$data['tasks_html'] = $this->pp->parse('tasks_table.tpl', array('tasks' => $tasks), true, 'smarty', 'contact');
-//     		}
-//     	}
-    
     	if(isset($contact_locs)) $data['contact_locs'] = $contact_locs;
     	if(isset($contact_orgs)) $data['contact_orgs'] = $contact_orgs;
     	if(isset($members))
@@ -530,27 +509,33 @@ class Contact extends Admin_Controller {
     					
     				//clean up
     				$contact_tabs = array_filter(array_map('trim',$contact_tabs));
-    					
-    				foreach ($contact_tabs as $key => $selected_module_path){
-    					$tmp = array();
-    					$html = '';
-    					$tab_name = !is_numeric($key)? $key : null;
-    					if($return = $this->get_tab_content($selected_module_path, $contact)){
-    						$tabs[]= array(
-    								'title' => $tab_name,
-    								'counter' => $return['counter'],
-    								'buttons' => $return['buttons'],
-    								'html' => $return['html']
-    						);
-    					}
-    						
-    				}    				
+
+					foreach ($contact_tabs as $key => $selected_module_path){
+
+						$tmp = array();
+						$html = '';
+						$tab_name = !is_numeric($key)? $key : null;
+						if($return = $this->get_tab_content($selected_module_path, $contact)){
+						$tabs[]= array(
+										'title' => $tab_name,
+										'counter' => $return['counter'],
+										'buttons' => $return['buttons'],
+										'html' => $return['html']
+										);
+						}
+     				} 
     			}
     		}
     	}
 
     	return $tabs;
     }    
+    
+    private function parse_contact_tabs(Module $module , array $contact_tabs) {
+    	
+    	
+  	
+    }
     
     private function get_tab_content($selected_module_path, $contact){
     	
@@ -617,8 +602,15 @@ class Contact extends Admin_Controller {
 	    		
 	    		//The form has been validated. Let's check if there is any binary file uploaded
 	    		$upload_info = saveUploadedFile();
-	    		 
-	    		//TODO error handling
+
+	    		//error handling for upload
+				if(is_array($upload_info['error'])) {
+					foreach ($upload_info['error'] as $key => $error) {
+						$this->mcbsb->system_messages->warning = t(trim(strip_tags($error)));
+					}
+				}
+				
+				//converts to base_64 the uploaded file
 	    		if(is_array($upload_info['data'])) {
 	    		
 	    			$this->load->helper('file');
@@ -651,11 +643,22 @@ class Contact extends Admin_Controller {
     		}
     	}     	
              
+    	$upload_settings = array();
+    	
+    	if($conf = $this->load->config('upload',true,true)){
+    		
+	    	$upload_settings['max_size'] = $conf['max_size'];
+	    	$upload_settings['max_width'] = $conf['max_width'];
+	    	$upload_settings['max_height'] = $conf['max_height'];
+	    	
+    	}
+    			
     	$data = array(
-    			//'custom_fields'     =>	$this->mdl_contacts->custom_fields,   //TODO delme
     			'contact'			=>  $this->$obj_name,							
-    			'form_url'			=> 	$this->get_form_action_url($obj_name),		
-    			//'invoice_templates' =>  $this->mdl_templates->get('invoices'),	//TODO delme
+    			'form_url'			=> 	$this->get_form_action_url($obj_name),
+    			'upload_settings'	=> 	$upload_settings,
+    			
+    			//'custom_fields'     =>	$this->mdl_contacts->custom_fields,   //TODO delme
     			//'invoice_groups'    =>  $this->mdl_invoice_groups->get()			//TODO delme
     	);
     	

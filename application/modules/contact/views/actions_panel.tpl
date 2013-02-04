@@ -22,6 +22,7 @@
 	function shortcuts_ap(){
 		if(language == 'english' || language == 'italian'){
 	    	jQuery(document).bind('keydown', 'p',function (evt){
+		    	console.log('pd');
 		    	toggle_animate('add_person','first_name');
 		    	$('#first_name').val('');
 		    	$('#last_name').val('');

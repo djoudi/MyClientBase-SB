@@ -16,7 +16,6 @@ class Cron_Controller extends MX_Controller {
 
         $this->load->language('mcb', strtolower($this->mcbsb->settings->setting('default_language')));
 
-        $this->load->model('fields/mdl_fields');
 
     }
 

@@ -10,6 +10,10 @@ class Home_Appliance extends Asset
 		$this->category = 'home_appliance'; 
 	}
 	
+	public function contact_tab($contact){
+		return parent::contact_tab($contact);	
+	}
+	
 	public function magic_button($type = 'create'){
 	
 		$tmp = array();
@@ -23,6 +27,10 @@ class Home_Appliance extends Asset
 				$tmp['procedure'] = 'automated_form';
 				$button_label = 'Add home appliance';
 				$button_id = 'add_home_appliance';
+				
+				$but = array('contact_id','contact_id_key','contact_name');
+				$this->clean($but);
+				
 				$this->reset_obj_config();
 	
 			break;

@@ -26,6 +26,8 @@ trash/*
 /.*
 .*
 uploads/*
+!uploads/index.html
+
 /installation_steps.txt
 /installation_steps_dam.txt
 /captcha/*.jpg

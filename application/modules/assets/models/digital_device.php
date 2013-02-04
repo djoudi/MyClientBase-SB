@@ -10,6 +10,10 @@ class Digital_Device extends Asset
 		$this->category = 'digital_device';
 	}
 	
+	public function contact_tab($contact){
+		return parent::contact_tab($contact);
+	}
+	
 	private function set_network_name(){
 		
 		$this->network_name = strtolower(only_alphanum_dash_underscore($this->network_name));
@@ -73,6 +77,10 @@ class Digital_Device extends Asset
 				$tmp['procedure'] = 'automated_form';
 				$button_label = 'Add digital device';
 				$button_id = 'add_digital_device';
+				
+				$but = array('contact_id','contact_id_key','contact_name');
+				$this->clean($but);
+								
 				$this->reset_obj_config();
 	
 			break;

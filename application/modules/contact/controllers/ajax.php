@@ -220,7 +220,8 @@ class Ajax extends Admin_Controller {
 
     	if($rest_return['status']['results_number'] > 0) {
     		//returns the html to js
-    		$html_form = $this->pp->parse($template, $data, true, 'smarty', 'contact');
+    		//$html_form = $this->pp->parse($template, $data, true, 'smarty', 'contact'); //TODO delme
+    		$html_form = $this->load->view($template, $data, true, 'smarty', 'contact');
     		$to_js['html'] = urlencode($html_form);
     		
     	} else {
@@ -370,7 +371,8 @@ class Ajax extends Admin_Controller {
     	$data['form_name'] = 'jquery-form-'.$object_name;
 
     	//gets the html
-    	$html_form = $this->pp->parse('jquery_form.tpl', $data, true, 'smarty', 'contact');
+    	//$html_form = $this->pp->parse('jquery_form.tpl', $data, true, 'smarty', 'contact'); //TODO delme
+    	$html_form = $this->load->view('jquery_form.tpl', $data, true, 'smarty', 'contact');
     	
     	//returns the html to js
     	$to_js = array();

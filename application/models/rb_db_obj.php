@@ -103,20 +103,59 @@ class Rb_Db_Obj extends CI_Model
 	
 		return false;
 	}	
-	
+
 	protected function reset_obj_config(){
-		
+	
 		if(!isset($this->module_folder) || is_null($this->module_folder)) $this->module_folder = strtolower($this->db_table);
-		
+	
 		//gets object configuration
 		$CI = &get_instance();
 		$CI->config->load(strtolower($this->obj_name), false, true, $this->module_folder);
-		
+	
 		$items = array('attributes_aliases', 'default_values', 'hidden_fields','mandatory_fields','never_display_fields','prototype');
 		foreach ($items as $item) {
 			$this->_config[$item] = $CI->config->item(strtolower($this->obj_name) . '_' . $item);
 		}
-				
+	
+	}	
+	
+	/**
+	 * Cleans all the public attributes of the object but those ones specified in $but
+	 * 
+	 * @access		protected
+	 * @param		array $but	Simple list of the attributes to preserve
+	 * @return		none
+	 * 
+	 * @author 		Damiano Venturin
+	 * @since		Feb 4, 2013
+	 */
+	protected function clean(array $but){
+		
+		//reflects this object
+		$reflection = new ReflectionClass($this);
+		
+		//gets object properties
+		$properties = $reflection->getProperties();
+		
+		//protects private and protected attributes from being wiped
+		if(!empty($properties))
+		{
+			foreach ($properties as $property) {
+		
+				$property_name = (string) $property->name;
+
+				if(!$property->isPublic()) {
+					$but[] = $property_name;
+				}
+			}
+		}
+		
+		//cleans values
+		foreach (json_decode($this->toJson()) as $attribute => $value) {
+			if(in_array($attribute, $but)) continue;
+			$this->$attribute = '';
+		}
+			
 	}
 	
 	//retrieves the table/object structure

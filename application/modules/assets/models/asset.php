@@ -25,7 +25,7 @@ class Asset extends Rb_Db_Obj
 		//R::freeze( array($this->db_table)); 
 		
 		$this->initialize();
-		
+	
 	}
 	
 	public function create() {
@@ -104,12 +104,13 @@ class Asset extends Rb_Db_Obj
 			foreach ($modules_to_load as $module_to_load){
 				
 				if(strtolower($module_to_load) != strtolower(get_class($this))){
-					$CI->load->model('/assets/'.$module_to_load,$module_to_load);
-					//adds hidden fields for all the other asset models
+
+					$CI->load->model($this->module_folder . '/'. $module_to_load , $module_to_load);
 					$CI->$module_to_load->contact_id = $this->contact_id;
 					$CI->$module_to_load->contact_id_key = $this->contact_id_key;
 					$CI->$module_to_load->contact_name = $this->contact_name;
 					$return['buttons'][] = $CI->$module_to_load->magic_button('create');
+				
 				} 
 			}
 		}
@@ -139,6 +140,10 @@ class Asset extends Rb_Db_Obj
 				$tmp['procedure'] = 'automated_form';
 				$button_label = 'Add asset';
 				$button_id = 'add_asset';
+				
+				$but = array('contact_id','contact_id_key','contact_name');
+				$this->clean($but);
+								
 				$this->reset_obj_config();
 				
 			break;

@@ -18,10 +18,13 @@
 			// check to see if the tip is a descendant of 
 			// a table.bubbletip element and therefore
 			// has already been instantiated as a bubbletip
-			if ($('table.bubbletip #' + $(tip).get(0).id).length > 0) {
-				return this;
-			}
-
+			
+//			if ($('table.bubbletip #' + $(tip).get(0).id).length > 0) {
+//				return this;
+//			}
+			//patch http://code.google.com/p/bubbletip/issues/detail?id=5
+			if ($(tip).length == 0 ) return this;
+			
 			var _this, _tip, _options, _calc, _timeoutAnimate, _timeoutRefresh, _isActive, _isHiding, _wrapper, _bindIndex;
 			// hack for IE6,IE7
 			var _windowWidth, _windowHeight;

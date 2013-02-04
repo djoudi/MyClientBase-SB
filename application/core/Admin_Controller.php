@@ -29,13 +29,10 @@ class Admin_Controller extends MX_Controller {
 
 			$this->load->language('mcb', strtolower($this->mcbsb->settings->setting('default_language')));
 
-            $this->load->model('fields/mdl_fields'); //TODO is this necessary?
-
 			$this->load->library(array('form_validation', 'redir'));
  
 			//customization of validation_errors()
 			$this->form_validation->set_error_delimiters('|', ''); //TODO maybe this should go in mcbsb class 
-			//$this->form_validation->set_error_delimiters('<div class="error">', '</div>');  //TODO delme
 
             if ($this->mcbsb->settings->setting('enable_profiler')) {
 

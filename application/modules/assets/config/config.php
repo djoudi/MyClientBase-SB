@@ -13,7 +13,9 @@ $config['module'] = array(
 	'module_version'		=>	'0.13.0',
 	'module_order'			=>	10,
 	'module_config'			=>	array(
-			'contact_tabs'	=>	array('Assets' => '/assets/asset')
+	'contact_tabs'			=>	array(
+								'assets' => '/assets/asset'
+							),
 	)
 );
 /* End of file config.php */
