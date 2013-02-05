@@ -10,10 +10,6 @@ class Home_Appliance extends Asset
 		$this->category = 'home_appliance'; 
 	}
 	
-	public function contact_tab($contact){
-		return parent::contact_tab($contact);	
-	}
-	
 	public function magic_button($type = 'create'){
 	
 		$tmp = array();

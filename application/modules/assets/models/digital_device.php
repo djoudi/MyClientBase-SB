@@ -10,10 +10,6 @@ class Digital_Device extends Asset
 		$this->category = 'digital_device';
 	}
 	
-	public function contact_tab($contact){
-		return parent::contact_tab($contact);
-	}
-	
 	private function set_network_name(){
 		
 		$this->network_name = strtolower(only_alphanum_dash_underscore($this->network_name));
