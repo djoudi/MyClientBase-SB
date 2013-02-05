@@ -24,11 +24,11 @@ class Home_Appliance extends Asset
 					
 				$tmp['form_title'] = 'New home appliance';
 				$tmp['url'] = '/' . $this->module_folder . '/ajax/save_asset';
-				$tmp['procedure'] = 'automated_form';
+				$tmp['procedure'] = 'behave_as_form';
 				$button_label = 'Add home appliance';
 				$button_id = 'add_home_appliance';
 				
-				$but = array('contact_id','contact_id_key','contact_name');
+				$but = array('category','contact_id','contact_id_key','contact_name');
 				$this->clean($but);
 				
 				$this->reset_obj_config();
@@ -38,7 +38,7 @@ class Home_Appliance extends Asset
 			case 'edit':
 				$tmp['form_title'] = 'Edit home appliance';
 				$tmp['url'] = '/' . $this->module_folder . '/ajax/save_asset';
-				$tmp['procedure'] = 'automated_form';
+				$tmp['procedure'] = 'behave_as_form';
 				$button_label = 'Edit home appliance';
 				$button_id = 'edit_home_appliance';
 				$this->reset_obj_config();

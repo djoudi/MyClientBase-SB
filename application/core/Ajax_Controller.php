@@ -84,24 +84,51 @@ class Ajax_Controller extends Admin_Controller {
 		
 	}
 	
+	/**
+	 * This method is generally trigged by a jquery ajax request.
+	 * It gets some input parameters that are manipulated and sent to a template
+	 * which returns some html. The html is then returned.
+	 * 
+	 * Typically the $params array might contain:
+	 * - a json encoded Form Object: $params['obj']
+	 * - a template url: $params['template'] 							(it has a default value used if not specified in $params)
+	 * - a module name (to spot the template file): $params['module']	(it has a default value used if not specified in $params)
+	 * - a js procedure name: $params['procedure']						(it has a default value used if not specified in $params)
+	 * - the form method: $params['form_method']						(it has a default value used if not specified in $params)
+	 * - the form name: $params['form_name']							(it has a default value used if not specified in $params)
+	 * - the form title: $params['form_title']							(it has a default value used if not specified in $params)
+	 * - the form action url or the url to send the next ajax request: $params['url']  
+	 * 
+	 * @access		public
+	 * @param		array $params	
+	 * @return		
+	 * 
+	 * @author 		Damiano Venturin
+	 * @since		Feb 5, 2013
+	 */
 	public function getForm(array $params = null){
 		
 		if(is_null($params)){
-			if(!$params = $this->input->post('params') or !is_array($params)){
+			$params = $this->input->post('params');
+			if(!is_array($params)){
 				$this->message = 'Ajax: input parameters are missing';
 				return false;
 			}
 		}
 		
 		//defaults
+		$form_method = 'POST';
+		$form_name = 'my_form';
+		$form_title	= 'Unknown Form';
+		$module = '';
+		$procedure = 'procedure_not_set';
 		$template = 'jquery_form.tpl';
-		$module = null;
-		
-		extract($params);
-		
 		$data = array();
 		
-		if(isset($obj)){
+		//if $params contains variables described among the "defaults" they will be overwritten
+		extract($params,EXTR_OVERWRITE);
+		
+		if(isset($obj) && is_string($obj)){
 			$object = json_decode($obj);
 			if(isset($object->_fields) && is_object($object->_fields)) {
 				foreach ($object->_fields as $attribute => $specifics){
@@ -112,13 +139,25 @@ class Ajax_Controller extends Admin_Controller {
 			$data['object'] = $object;
 		}
 		
-		if(isset($procedure)) $this->procedure = $procedure;
-		if(isset($form_name)) $this->form_name = $data['form_name'] = $form_name;
-		if(isset($form_method)) $this->form_method = $data['form_method'] = $form_method;
-		if(isset($form_title)) $this->form_title = $data['form_title'] = $form_title;
-		if(isset($url)) $this->url =  $data['url'] =  $url;
+		
+		$this->form_name = $data['form_name'] = $form_name;
+		$this->form_method = $data['form_method'] = $form_method;
+		$this->form_title = $data['form_title'] = $form_title;
+		if(isset($url)) $this->url =  $data['url'] = $url;
+		$this->procedure = $procedure;
+		
 		  
-		if($this->html = $this->load->view($template, $data, true, 'smarty')) $this->status = true;
+		if($this->html = $this->load->view($template, $data, true, 'smarty', $module)) {
+			$this->status = true;
+		}
 		 
+	}
+	
+	
+	public function t($text){
+		
+		if(!is_string($text) || empty($text)) return $text;
+			
+		return t($text);
 	}
 }

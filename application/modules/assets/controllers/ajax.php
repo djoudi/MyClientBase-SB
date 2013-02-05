@@ -21,24 +21,24 @@ class Ajax extends Ajax_Controller {
 	
 	public function save_asset(){
 		
-		if($get = $this->input->get()){
+		if($post = $this->input->post()){
 			
-			if(!isset($get['category']) || empty($get['category'])) {
+			if(!isset($post['category']) || empty($post['category'])) {
 				$this->mcbsb->system_messages->error = 'Error while saving the asset '.$asset_id;
 				redirect('/'); //TODO here it would be nice to load the last position
 			}
 			
-			$obj = $get['category'];
+			$obj = $post['category'];
 			
-			foreach ($get as $attribute => $value) {
-				if(empty($get['id']) && $attribute == 'id'){
+			foreach ($post as $attribute => $value) {
+				if(empty($post['id']) && $attribute == 'id'){
 					continue;
 				} else {
 					$this->$obj->$attribute = $value;
 				}
 			}
 			
-			if(empty($get['id'])) {
+			if(empty($post['id'])) {
 				$id = $this->$obj->create();
 				$message = 'asset #' . $id . ' successfully created';
 			} else {

@@ -140,7 +140,7 @@ class Product extends Rb_Db_Obj
 			//Do not show the endnote textarea when creating or editing
 			$this->_config['never_display_fields'][] = 'endnote';
 			$tmp['url'] = '/' . $this->module_folder . '/ajax/save_product';
-			$tmp['procedure'] = 'automated_form';
+			$tmp['procedure'] = 'behave_as_form';
 		}
 		
 		//common stuff for all cases

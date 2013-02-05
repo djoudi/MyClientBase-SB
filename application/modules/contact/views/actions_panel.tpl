@@ -376,6 +376,8 @@
 			
 			{if isset($extra_tabs)}
 				{foreach $extra_tabs as $key => $extra_tab}
+					{* separates buttons per module using a line *} 
+					<hr style="margin-top: 10px; margin-bottom: 10px;"/>
 					{if $extra_tab.buttons}
 						{foreach $extra_tab.buttons as $key => $button}
 							{* {$button.onclick} *}

@@ -28,11 +28,20 @@ class Asset extends Rb_Db_Obj
 	
 	}
 	
+	private function normalize() {
+		
+		if(isset($this->category)) $this->category = strtolower($this->category);
+		if(isset($this->type)) $this->type = strtolower($this->type);
+		
+	}
+	
 	public function create() {
 		
 		if(!is_null($this->obj_ID_value)) return false;
 		
 		$CI = &get_instance();
+		
+		$this->normalize();
 		
 		//add hidden system values
 		$this->creation_date = time();
@@ -56,6 +65,8 @@ class Asset extends Rb_Db_Obj
 		if(is_null($this->obj_ID_value)) return false;
 		
 		$CI = &get_instance();
+		
+		$this->normalize();
 		
 		//add hidden system values
 		$this->update_date = time();
@@ -137,13 +148,13 @@ class Asset extends Rb_Db_Obj
 					
 				$tmp['form_title'] = 'New asset';
 				$tmp['url'] = '/' . $this->module_folder . '/ajax/save_asset';
-				$tmp['procedure'] = 'automated_form';
+				$tmp['procedure'] = 'behave_as_form';
 				$button_label = 'Add asset';
 				$button_id = 'add_asset';
 				
-				$but = array('contact_id','contact_id_key','contact_name');
+				$but = array('category','contact_id','contact_id_key','contact_name');
 				$this->clean($but);
-								
+				
 				$this->reset_obj_config();
 				
 			break;
@@ -151,7 +162,7 @@ class Asset extends Rb_Db_Obj
 			case 'edit':
 				$tmp['form_title'] = 'Edit asset';
 				$tmp['url'] = '/' . $this->module_folder . '/ajax/save_asset';
-				$tmp['procedure'] = 'automated_form';				
+				$tmp['procedure'] = 'behave_as_form';				
 				$button_label = 'Edit asset';
 				$button_id = 'edit_asset';
 				$this->reset_obj_config();

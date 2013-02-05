@@ -9,7 +9,7 @@
 	<div class="grid_8">
 
 	{* TODO change to default:'GET' after refactoring *}
- 	<form class="jquery_form" id="{$form_name|default:'my_jquery_form'}" name="{$form_name|default:'my_jquery_form'}" method="{$form_method|default:'GET'}" action="{$url}">
+ 	<form class="jquery_form" id="{$form_name|default:'my_jquery_form'}" name="{$form_name|default:'my_jquery_form'}" method="{$form_method|default:'GET'}" action="{$url|default:''}">
  	<dl>
  	{foreach $object->_fields as $attribute => $specifics}
  		

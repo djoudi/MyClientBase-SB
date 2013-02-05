@@ -74,13 +74,13 @@ class Digital_Device extends Asset
 					
 				$tmp['form_title'] = 'New digital device';
 				$tmp['url'] = '/' . $this->module_folder . '/ajax/save_asset';
-				$tmp['procedure'] = 'automated_form';
+				$tmp['procedure'] = 'behave_as_form';
 				$button_label = 'Add digital device';
 				$button_id = 'add_digital_device';
 				
-				$but = array('contact_id','contact_id_key','contact_name');
+				$but = array('category','contact_id','contact_id_key','contact_name');
 				$this->clean($but);
-								
+				
 				$this->reset_obj_config();
 	
 			break;
@@ -88,7 +88,7 @@ class Digital_Device extends Asset
 			case 'edit':
 				$tmp['form_title'] = 'Edit digital device';
 				$tmp['url'] = '/' . $this->module_folder . '/ajax/save_asset';
-				$tmp['procedure'] = 'automated_form';				
+				$tmp['procedure'] = 'behave_as_form';				
 				$button_label = 'Edit digital device';
 				$button_id = 'edit_digital_device';
 				$this->reset_obj_config();

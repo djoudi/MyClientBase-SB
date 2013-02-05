@@ -216,7 +216,7 @@ class Activity extends Rb_Db_Obj
 			
 			case 'edit':
 				$tmp['form_title'] = 'Edit Activity';
-				$tmp['procedure'] = 'automated_form';
+				$tmp['procedure'] = 'behave_as_form';
 				$button_label = 'Edit activity';
 				$button_id = 'edit_Activity';			
 			break;

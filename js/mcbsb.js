@@ -434,8 +434,9 @@ function get_my_tj_organization(current_oid){
 
 function jqueryForm(params,url) {
 	console.log('jqueryForm');
-	//console.log(params);
-	
+	console.log(params);
+	console.log(url);
+	 
 	//default value TODO the ajax controller in contact module needs refactoring
 	if(!url) url = '/contact/ajax/getForm';
 	
@@ -451,9 +452,10 @@ function jqueryForm(params,url) {
 			
 			if(json.html){
 				
-				console.log('calls openJqueryForm');
+				console.log('calls openFormDialog');
+				//console.log(json);
 				
-				openJqueryForm(json);
+				openFormDialog(json);
 				
 			} else {
 				
@@ -485,6 +487,113 @@ function jqueryForm(params,url) {
 		}
 	});
 }
+
+function openFormDialog(json){
+	
+	console.log('openFormDialog');
+	console.log(json);
+	
+	var tag = $('<div id="mydialog"></div>');
+	var procedure = '';
+	selected_radio = ''; //global
+	
+	if(typeof json == "object") {
+		
+		if(json.html){
+				
+			var html_form = urldecode(json.html);
+			
+			var dialog_title = '';
+			
+			//TODO uncomment once I can translate js messages
+			//if(json.form_title) dialog_title = json.form_title;
+			tag.html(html_form).dialog({
+			
+				autoOpen: false,
+				closeOnEscape: true,
+				height: 'auto',
+				width: 'auto',
+				modal: true,
+				position: ['center',30],
+				resizable: true,
+				title: dialog_title,
+				//zIndex: 900,
+				buttons: {
+					"Ok": function() {
+						$(this).dialog("close");
+					},
+					"Cancel": function(){
+						$(this).dialog("destroy");
+					},
+	//				"Reset": function(){
+	//					var form = document.forms[json.form_name];
+	//					form.reset();					
+	//				},
+				},
+				open: function(){
+
+					//this remove the X button but causes the dialog to open twice when all the text in the page is selected (ctr+A on the browser)
+					//$('#mydialog').dialog({ dialogClass: 'no-close' });
+					
+					//enables datetimepicker for all the form fields with class datetimepicker
+					$(".datetimepicker").datetimepicker({ 
+						dateFormat: 'yy-mm-dd',
+						hour: 7,
+						hourMin: 7,
+						hourMax: 20,
+						stepMinute: 15,
+//						minDateTime: 0,
+//						maxDateTime: null
+					});
+					
+					//enables datepicker for all the form fields with class datepicker
+					$(".datepicker").datepicker({ 
+						dateFormat: 'yy-mm-dd',
+//						minDate: 0,
+//						maxDate: null
+					});
+				},
+				close: function(event, ui) {
+					
+					switch(json.procedure){
+						
+						case 'behave_as_form':
+							//console.log('form name: ' + json.form_name);
+							var form = document.forms[json.form_name];
+							var formObj = retrieveForm(form);
+							//console.log(formObj);
+							$('#'+json.form_name).submit();
+						break;
+						
+						case 'create_otr':
+						case 'create_appointment':
+						case 'create_appointment_for_task':
+						case 'edit_appointment_for_task':
+						case 'create_activity':
+						case 'close_task':
+						case 'create_task':
+						case 'edit_task':
+						case 'post_to_ajax':
+							//console.log('post to ajax');
+							//console.log(json);
+							postToAjax(json);
+						break;
+						
+						//procedure_not_set  (retro compatibility. Delme after refactoring)
+						default:
+							//console.log(json);
+							//alert('submitting to postFormToAjax');
+							//TODO after refactoring the function postFormToAjax should disappear
+							postFormToAjax(json.url,'jsonp','POST',json.form_name,json.object_name,json.related_object_name,json.related_object_id,selected_radio,json.procedure,null);
+						break;
+					}
+				} 
+			}
+			).dialog('open');
+		} 
+	}
+}
+
 
 function postFormToAjax(url, dataType, type, form_name, object_name, related_object_name, related_object_id, selected_radio, procedure, input_params){
 	console.log('postFormToAjax');
@@ -601,109 +710,6 @@ function retrieve_validate_form(form_name){
 	});
 }
 
-function openJqueryForm(json){
-	
-	console.log('openJqueryForm');
-	console.log(json);
-	
-	var tag = $('<div id="mydialog"></div>');
-	var procedure = '';
-	selected_radio = ''; //global
-	
-	if(typeof json == "object") {
-		
-		if(json.html){
-				
-			var html_form = urldecode(json.html);
-			
-			var dialog_title = '';
-			
-			//TODO uncomment once I can translate js messages
-			//if(json.form_title) dialog_title = json.form_title;
-			tag.html(html_form).dialog({
-			
-				autoOpen: false,
-				closeOnEscape: true,
-				height: 'auto',
-				width: 'auto',
-				modal: true,
-				position: ['center',30],
-				resizable: true,
-				title: dialog_title,
-				//zIndex: 900,
-				buttons: {
-					"Ok": function() {
-						$(this).dialog("close");
-					},
-					"Cancel": function(){
-						$(this).dialog("destroy");
-					},
-	//				"Reset": function(){
-	//					var form = document.forms[json.form_name];
-	//					form.reset();					
-	//				},
-				},
-				open: function(){
-
-					//this remove the X button but causes the dialog to open twice when all the text in the page is selected (ctr+A on the browser)
-					//$('#mydialog').dialog({ dialogClass: 'no-close' });
-					
-					//enables datetimepicker for all the form fields with class datetimepicker
-					$(".datetimepicker").datetimepicker({ 
-						dateFormat: 'yy-mm-dd',
-						hour: 7,
-						hourMin: 7,
-						hourMax: 20,
-						stepMinute: 15,
-//						minDateTime: 0,
-//						maxDateTime: null
-					});
-					
-					//enables datepicker for all the form fields with class datepicker
-					$(".datepicker").datepicker({ 
-						dateFormat: 'yy-mm-dd',
-//						minDate: 0,
-//						maxDate: null
-					});
-				},
-				close: function(event, ui) {
-					
-					switch(json.procedure){
-						
-						case 'automated_form':
-							//console.log('form name: ' + json.form_name);
-							var form = document.forms[json.form_name];
-							var formObj = retrieveForm(form);
-							//console.log(formObj);
-							$('#'+json.form_name).submit();
-						break;
-						
-						case 'create_otr':
-						case 'create_appointment':
-						case 'create_appointment_for_task':
-						case 'edit_appointment_for_task':
-						case 'create_activity':
-						case 'close_task':
-						case 'create_task':
-						case 'edit_task':
-							//console.log('post to ajax');
-							//console.log(json);
-							postToAjax(json);
-						break;
-						
-						default:
-							//console.log(json);
-							//alert('submitting to postFormToAjax');
-							//TODO after refactoring the function postFormToAjax should disappear
-							postFormToAjax(json.url,'jsonp','POST',json.form_name,json.object_name,json.related_object_name,json.related_object_id,selected_radio,json.procedure,null);
-						break;
-					}
-				} 
-			}
-			).dialog('open');
-		} 
-	}
-}
 
 //TODO refactoring: this function replaces postFormToAjax
 function postToAjax(json, dataType, type){
