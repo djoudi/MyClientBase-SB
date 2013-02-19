@@ -1,22 +1,15 @@
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-CREATE TABLE IF NOT EXISTS `appointments` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `task_id` double DEFAULT NULL,
-  `what` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `description` text COLLATE utf8_unicode_ci,
-  `where` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `start_time` int(11) unsigned DEFAULT NULL,
-  `end_time` int(11) unsigned DEFAULT NULL,
-  `creation_date` int(11) unsigned DEFAULT NULL,
-  `created_by` double DEFAULT NULL,
-  `creator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `update_date` int(11) unsigned DEFAULT NULL,
-  `updated_by` double DEFAULT NULL,
-  `editor` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+CREATE TABLE IF NOT EXISTS  `ci_sessions` (
+	session_id varchar(40) DEFAULT '0' NOT NULL,
+	ip_address varchar(45) DEFAULT '0' NOT NULL,
+	user_agent varchar(120) NOT NULL,
+	last_activity int(10) unsigned DEFAULT 0 NOT NULL,
+	user_data text NOT NULL,
+	PRIMARY KEY (session_id),
+	KEY `last_activity_idx` (`last_activity`)
+);
 
 CREATE TABLE IF NOT EXISTS `devices` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -61,20 +54,6 @@ CREATE TABLE IF NOT EXISTS `login_attempts` (
   `time` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
-CREATE TABLE IF NOT EXISTS `mcb_activities` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `task_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `date` int(11) DEFAULT NULL,
-  `description` text NOT NULL,
-  `duration` float(8,2) NOT NULL DEFAULT '0.00',
-  `mileage` int(11) NOT NULL DEFAULT '0',
-  `tag` varchar(250) DEFAULT NULL,
-  `task_weight` int(11) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `task_id` (`task_id`,`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `mcb_client_credits` (
   `client_credit_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -159,11 +138,11 @@ INSERT INTO `mcb_data` (`mcb_data_id`, `mcb_key`, `mcb_value`) VALUES
 (53, 'email_footer', ''),
 (54, 'enable_profiler', '0'),
 (55, 'sendmail_path', ''),
-(56, 'smtp_host', 'mail.squadrainformatica.com'),
-(57, 'smtp_pass', 'C4mmeLL0.C4mmeLLat0'),
+(56, 'smtp_host', ''),
+(57, 'smtp_pass', ''),
 (58, 'smtp_port', '25'),
 (59, 'smtp_timeout', '100'),
-(60, 'smtp_user', 'd.venturin@squadrainformatica.com'),
+(60, 'smtp_user', ''),
 (61, 'dashboard_show_quotes', 'TRUE'),
 (62, 'default_item_tax_option', '1'),
 (63, 'default_apply_invoice_tax', '1'),
@@ -389,18 +368,14 @@ CREATE TABLE IF NOT EXISTS `mcb_modules` (
 
 INSERT INTO `mcb_modules` (`module_id`, `module_path`, `module_name`, `module_description`, `module_enabled`, `module_author`, `module_homepage`, `module_version`, `module_available_version`, `module_config`, `module_change_status`, `module_order`, `module_top_menu`) VALUES
 (1, 'tasks', 'Tasks', 'A simple task manager which allows task based invoice creation.', 1, 'Damiano Venturin', 'http://www.mcbsb.com', '0.13.0', NULL, 'a:1:{s:12:"contact_tabs";a:1:{s:5:"Tasks";s:11:"/tasks/task";}}', 0, 9, 1),
-(2, 'invoice_search', 'Invoice Search', NULL, 0, NULL, NULL, NULL, NULL, 'a:0:{}', 0, 99, 0),
-(4, 'payments', 'Payments', NULL, 0, NULL, NULL, NULL, NULL, 'a:2:{s:13:"settings_view";s:33:"payments/payment_settings/display";s:13:"settings_save";s:30:"payments/payment_settings/save";}', 0, 4, 0),
-(5, 'activities', 'Activities', 'An supplementary module for the task manager.', 0, 'Damiano Venturin', 'http://www.mcbsb.com', '0.0.1', NULL, 'a:0:{}', 0, 99, 1),
-(6, 'google', 'Google', NULL, 1, NULL, NULL, NULL, NULL, 'a:2:{s:13:"settings_view";s:23:"google/display_settings";s:13:"settings_save";s:20:"google/save_settings";}', 0, 2, 0),
-(7, 'mailer', 'Mailer', NULL, 0, NULL, NULL, NULL, NULL, 'a:2:{s:13:"settings_view";s:23:"mailer/display_settings";s:13:"settings_save";s:20:"mailer/save_settings";}', 0, 5, 0),
-(8, 'invoices', 'Invoices', NULL, 0, NULL, NULL, NULL, NULL, 'a:2:{s:13:"settings_view";s:33:"invoices/invoice_settings/display";s:13:"settings_save";s:30:"invoices/invoice_settings/save";}', 0, 3, 1),
-(9, 'inventory', 'Inventory', NULL, 0, NULL, NULL, NULL, NULL, 'a:0:{}', 0, 4, 1),
+(15, 'assets', 'Assets', 'Assets manager.', 1, 'Damiano Venturin', 'http://tooljar.biz', '0.13.0', NULL, 'a:1:{s:12:"contact_tabs";a:1:{s:6:"assets";s:13:"/assets/asset";}}', 0, 10, 0),
+(2552, 'on_site_assistance', 'On_Site', NULL, 1, NULL, NULL, NULL, NULL, 'a:2:{s:13:"settings_view";a:1:{s:6:"Routes";s:37:"on_site/route_settings/display_routes";}s:13:"settings_save";s:0:"";}', 0, 13, 0),
+(6, 'google', 'Google', NULL, 1, NULL, NULL, NULL, NULL, 'a:4:{s:13:"settings_view";s:23:"google/display_settings";s:13:"settings_save";s:20:"google/save_settings";s:22:"personal_settings_view";s:32:"google/display_personal_settings";s:22:"personal_settings_save";s:29:"google/save_personal_settings";}', 0, 2, 0),
 (10, 'contact', 'Contact', NULL, 1, NULL, NULL, NULL, NULL, 'a:2:{s:13:"settings_view";a:3:{s:6:"Person";s:39:"contact/contact_settings/display_person";s:12:"Organization";s:45:"contact/contact_settings/display_organization";s:8:"Location";s:41:"contact/contact_settings/display_location";}s:13:"settings_save";s:29:"contact/contact_settings/save";}', 0, 3, 1),
 (11, 'tooljar', 'Tooljar', 'API client for Tooljar', 1, 'Damiano Venturin', 'http://www.tooljar.biz', '0.0.1', NULL, 'a:0:{}', 0, 3, 0),
-(12, 'dashboard', 'Dashboard', NULL, 0, NULL, NULL, NULL, NULL, 'a:2:{s:13:"settings_view";s:36:"dashboard/dashboard_settings/display";s:13:"settings_save";s:33:"dashboard/dashboard_settings/save";}', 0, 10, 1),
-(13, 'products', 'Products', 'A products list manager.', 1, 'Damiano Venturin', 'http://tooljar.biz', '0.13.0', NULL, 'a:0:{}', 0, 9, 1),
-(14, 'devices', 'Devices', 'A device list manager.', 1, 'Damiano Venturin', 'http://tooljar.biz', '0.13.0', NULL, 'a:1:{s:12:"contact_tabs";a:1:{s:7:"Devices";s:15:"/devices/device";}}', 0, 10, 1);
+(13, 'products', 'Products', 'A products list manager.', 0, 'Damiano Venturin', 'http://tooljar.biz', '0.13.0', NULL, 'a:0:{}', 0, 9, 1),
+(17, 'brm', 'Brm', 'Beans Relationships Manager', 1, 'Damiano Venturin', 'http://tooljar.biz', '0.13.0', NULL, 'a:0:{}', 0, 0, 0);
+
 
 CREATE TABLE IF NOT EXISTS `mcb_payments` (
   `payment_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -485,79 +460,19 @@ CREATE TABLE IF NOT EXISTS `otrs` (
   `created_by` double DEFAULT NULL,
   `creator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
-CREATE TABLE IF NOT EXISTS `products` (
+
+CREATE TABLE IF NOT EXISTS `assets_tasks` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `product` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `details` text COLLATE utf8_unicode_ci,
-  `code_number` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `brand` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `model` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `note` text COLLATE utf8_unicode_ci,
-  `price` double DEFAULT NULL,
-  `months_warranty` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `salable` tinyint(3) unsigned DEFAULT NULL,
-  `creation_date` int(11) unsigned DEFAULT NULL,
-  `created_by` double DEFAULT NULL,
-  `creator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `update_date` int(11) unsigned DEFAULT NULL,
-  `updated_by` double DEFAULT NULL,
-  `editor` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+  `assets_id` int(11) unsigned DEFAULT NULL,
+  `tasks_id` int(11) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UQ_c6b2fba78717cd8ef63d70c853a00f06ad5eafdb` (`assets_id`,`tasks_id`),
+  KEY `index_for_assets_tasks_assets_id` (`assets_id`),
+  KEY `index_for_assets_tasks_tasks_id` (`tasks_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
-CREATE TABLE IF NOT EXISTS `tasks` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `task` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `details` text COLLATE utf8_unicode_ci,
-  `urgent` tinyint(3) unsigned DEFAULT NULL,
-  `creation_date` int(11) unsigned DEFAULT NULL,
-  `created_by` double DEFAULT NULL,
-  `creator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `update_date` int(11) unsigned DEFAULT NULL,
-  `updated_by` double DEFAULT NULL,
-  `editor` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `contact_id_key` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `contact_id` double DEFAULT NULL,
-  `contact_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `start_date` date DEFAULT NULL,
-  `due_date` date DEFAULT NULL,
-  `complete_date` date DEFAULT NULL,
-  `completed_by` double DEFAULT NULL,
-  `completionist` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `endnote` text COLLATE utf8_unicode_ci,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(20) unsigned NOT NULL DEFAULT '0',
-  `ip_address` varbinary(16) NOT NULL,
-  `username` varchar(100) NOT NULL,
-  `password` varchar(80) NOT NULL,
-  `salt` varchar(40) DEFAULT NULL,
-  `email` varchar(100) NOT NULL,
-  `activation_code` varchar(40) DEFAULT NULL,
-  `forgotten_password_code` varchar(40) DEFAULT NULL,
-  `forgotten_password_time` int(11) unsigned DEFAULT NULL,
-  `remember_code` varchar(40) DEFAULT NULL,
-  `created_on` int(11) unsigned NOT NULL,
-  `last_login` int(11) unsigned DEFAULT NULL,
-  `active` tinyint(1) unsigned DEFAULT NULL,
-  `first_name` varchar(50) DEFAULT NULL,
-  `last_name` varchar(50) DEFAULT NULL,
-  `company` varchar(100) DEFAULT NULL,
-  `phone` varchar(20) DEFAULT NULL,
-  `preferred_language` varchar(50) DEFAULT 'english',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-CREATE TABLE IF NOT EXISTS `users_groups` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(20) unsigned NOT NULL,
-  `group_id` mediumint(8) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `assets` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -592,5 +507,206 @@ CREATE TABLE IF NOT EXISTS `assets` (
   `updated_by` double DEFAULT NULL,
   `editor` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `tasks` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `task` text COLLATE utf8_unicode_ci,
+  `details` text COLLATE utf8_unicode_ci,
+  `where` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `city` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `budget` double(9,2) DEFAULT NULL,
+  `hours_budget` double(9,2) DEFAULT NULL,
+  `urgent` tinyint(3) unsigned DEFAULT NULL,
+  `creation_date` int(11) unsigned DEFAULT NULL,
+  `created_by` double DEFAULT NULL,
+  `creator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `update_date` int(11) unsigned DEFAULT NULL,
+  `updated_by` double DEFAULT NULL,
+  `editor` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `contact_id_key` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `contact_id` double DEFAULT NULL,
+  `contact_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `start_date` date DEFAULT NULL,
+  `due_date` date DEFAULT NULL,
+  `complete_date` date DEFAULT NULL,
+  `completed_by` double DEFAULT NULL,
+  `completionist` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `endnote` text COLLATE utf8_unicode_ci,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+
+ALTER TABLE `assets_tasks`
+  ADD CONSTRAINT `assets_tasks_ibfk_1` FOREIGN KEY (`assets_id`) REFERENCES `assets` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `assets_tasks_ibfk_2` FOREIGN KEY (`tasks_id`) REFERENCES `tasks` (`id`) ON DELETE CASCADE;
+
+
+CREATE TABLE IF NOT EXISTS `appointments` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `tasks_id` int(11) DEFAULT NULL,
+  `what` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8_unicode_ci,
+  `where` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `start_time` int(11) unsigned DEFAULT NULL,
+  `end_time` int(11) unsigned DEFAULT NULL,
+  `creator_is_owner` tinyint(1) NOT NULL DEFAULT '0',
+  `creation_date` int(11) unsigned DEFAULT NULL,
+  `created_by` double DEFAULT NULL,
+  `creator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `update_date` int(11) unsigned DEFAULT NULL,
+  `updated_by` double DEFAULT NULL,
+  `editor` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+
+CREATE TABLE IF NOT EXISTS `activities` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `activity` text COLLATE utf8_unicode_ci,
+  `note` text COLLATE utf8_unicode_ci,
+  `action_date` date NOT NULL,
+  `duration` float(5,2) DEFAULT NULL,
+  `mileage` float(6,1) DEFAULT NULL,
+  `billable` tinyint(1) NOT NULL DEFAULT '0',
+  `weight` int(3) unsigned DEFAULT NULL,
+  `tasks_id` int(11) unsigned DEFAULT NULL,
+  `contact_id_key` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `contact_id` double DEFAULT NULL,
+  `contact_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `creation_date` int(11) unsigned DEFAULT NULL,
+  `created_by` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `creator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `update_date` int(11) unsigned DEFAULT NULL,
+  `updated_by` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `editor` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `gtokens` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_token` text COLLATE utf8_unicode_ci,
+  `email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `access_token` text COLLATE utf8_unicode_ci,
+  `token_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `expires_in` int(11) unsigned DEFAULT NULL,
+  `refresh_token` text COLLATE utf8_unicode_ci,
+  `contact_id_key` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `contact_id` double DEFAULT NULL,
+  `contact_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `creation_date` int(11) unsigned DEFAULT NULL,
+  `created_by` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `creator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `update_date` int(11) unsigned DEFAULT NULL,
+  `updated_by` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `editor` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+
+CREATE TABLE IF NOT EXISTS `ogrs` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `google_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `google_name` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `google_mimeType` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `google_url` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `google_icon_url` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `google_resource_name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `google_resource_id` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `object_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `object_id` int(11) unsigned DEFAULT NULL,
+  `creation_date` int(11) unsigned DEFAULT NULL,
+  `created_by` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `creator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `update_date` int(11) unsigned DEFAULT NULL,
+  `updated_by` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `editor` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+
+CREATE TABLE IF NOT EXISTS `routes` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `city` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `route_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `contact_id_key` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `contact_id` double DEFAULT NULL,
+  `contact_name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `creation_date` int(11) unsigned DEFAULT NULL,
+  `created_by` double DEFAULT NULL,
+  `creator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `update_date` int(11) unsigned DEFAULT NULL,
+  `updated_by` double DEFAULT NULL,
+  `editor` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE TABLE IF NOT EXISTS `products` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `product` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `details` text COLLATE utf8_unicode_ci,
+  `code_number` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `brand` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `model` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `note` text COLLATE utf8_unicode_ci,
+  `price` double DEFAULT NULL,
+  `months_warranty` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `salable` tinyint(3) unsigned DEFAULT NULL,
+  `creation_date` int(11) unsigned DEFAULT NULL,
+  `created_by` double DEFAULT NULL,
+  `creator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `update_date` int(11) unsigned DEFAULT NULL,
+  `updated_by` double DEFAULT NULL,
+  `editor` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(20) unsigned NOT NULL DEFAULT '0',
+  `ip_address` varbinary(16) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `password` varchar(80) NOT NULL,
+  `salt` varchar(40) DEFAULT NULL,
+  `email` varchar(100) NOT NULL,
+  `activation_code` varchar(40) DEFAULT NULL,
+  `forgotten_password_code` varchar(40) DEFAULT NULL,
+  `forgotten_password_time` int(11) unsigned DEFAULT NULL,
+  `remember_code` varchar(40) DEFAULT NULL,
+  `created_on` int(11) unsigned NOT NULL,
+  `last_login` int(11) unsigned DEFAULT NULL,
+  `active` tinyint(1) unsigned DEFAULT NULL,
+  `first_name` varchar(50) DEFAULT NULL,
+  `last_name` varchar(50) DEFAULT NULL,
+  `company` varchar(100) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `preferred_language` varchar(50) DEFAULT 'english',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `users_groups` (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(20) unsigned NOT NULL,
+  `group_id` mediumint(8) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
 
