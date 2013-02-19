@@ -168,7 +168,7 @@ msgid "Organization Type"
 msgstr "Tipo Organizzazione"
 
 msgid "Activity"
-msgstr "Settore"
+msgstr "Attivitá"
 
 msgid "Client Base"
 msgstr "Clientela"
@@ -1327,3 +1327,111 @@ msgstr "Video"
 
 msgid "Enable"
 msgstr "Abilita"
+
+msgid "Are you sure"
+msgstr "Sei sicuro"
+
+msgid "Files & Products"
+msgstr "File & Prodotti"
+
+msgid "No products found for this task"
+msgstr "Nessun prodotto trovato per questo incarico"
+
+msgid "No files found for this task"
+msgstr "Nessun file trovato per questo incarico"
+
+msgid "Attach file"
+msgstr "Allega file"
+
+msgid "Add appointment"
+msgstr "Aggiungi appuntamento"
+
+msgid "Add activity"
+msgstr "Aggiungi attivitá"
+
+msgid "No colleague involved yet"
+msgstr "Nessun collega coinvolto"
+
+msgid "Detach"
+msgstr "Scollega"
+
+msgid "Files"
+msgstr "File"
+
+msgid "I Own This"
+msgstr "Sono il Proprietario"
+
+msgid "main"
+msgstr "principale"
+
+msgid "Personal Settings"
+msgstr "Impostazioni Personali"
+
+msgid "No appointements or activities found for this task"
+msgstr "Nessun appuntamento o attivitá trovati per questo incarico"
+
+msgid "Close"
+msgstr "Chiudi"
+
+msgid "Hours Budget"
+msgstr "Ore a Budget"
+
+msgid "All tasks"
+msgstr "Tutti gli incarichi"
+
+msgid "User"
+msgstr "Utente"
+
+msgid "Groups"
+msgstr "Gruppi"
+
+msgid "Help"
+msgstr "Aiuto"
+
+msgid "Community"
+msgstr "Comunitá"
+
+msgid "Assets"
+msgstr "Beni"
+
+msgid "Add asset"
+msgstr "Aggiungi bene"
+
+msgid "Add home appliance"
+msgstr "Aggiungi elettrodomestico"
+
+msgid "Add digital device"
+msgstr "Aggiungi dispositivo digitale"
+
+msgid "Set as your organization"
+msgstr "Imposta come tua organizzazione"
+
+msgid "Type"
+msgstr "Tipo"
+
+msgid "Value"
+msgstr "Valore"
+
+msgid "Purchase Date"
+msgstr "Data Acquisto"
+
+msgid "New asset"
+msgstr "Nuovo bene"
+
+msgid "Registration #"
+msgstr "# Registrazione"
+
+msgid "Net. Device"
+msgstr "Disp. Rete"
+
+msgid "Net. Name"
+msgstr "Nome di Rete"
+
+msgid "Mac Address"
+msgstr "Indirizzo Mac"
+
+msgid "Oper. System"
+msgstr "Sistema Op."
+
+msgid "Storage Space"
+msgstr "Spazio disco"

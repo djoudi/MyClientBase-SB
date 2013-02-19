@@ -1,10 +1,12 @@
 <?php (defined('BASEPATH')) OR exit('No direct script access allowed');
 
 $config['asset_attributes_aliases'] = array(
+		'purchase_date' => 'Purchase Date'
 );
 
 $config['asset_hidden_fields'] = array('id', 'category', 'contact_id_key','contact_id','contact_name');
 
+//note: default values do not apply to checkboxes
 $config['asset_default_values'] = array(
 				'category' => 'asset',
 );
@@ -41,4 +43,4 @@ $config['asset_prototype'] = array(
 $config['asset_modules_to_load'] = array(
 			'home_appliance',
 			'digital_device'
-		);
+);

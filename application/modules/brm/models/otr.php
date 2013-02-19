@@ -73,42 +73,61 @@ class Otr extends Rb_Db_Obj
 	
 	public function magic_button($type = 'create'){
 		
-		$tmp = array();
+		$form_parameters = array();
+		$button_properties = array();
+		$js_function = 'jqueryForm';
+		$ajax_url = '/' . $this->module_folder . '/ajax/getForm';
 		
 		switch ($type) {
-			
-			
+							
 			case 'create_otr':
-				//$tmp['form_title'] = 'Involve';
-				$button_label = 'Involve';
-				$button_id = 'create_otr';
-				$tmp['procedure'] = 'create_otr';
-				$tmp['url'] = '/' . $this->module_folder . '/ajax/save_otr';
+				$form_parameters['url'] = '/' . $this->module_folder . '/ajax/save_otr';
+				$form_parameters['form_name'] = 'jquery_form_involve';
+				$form_parameters['form_title'] = 'Involve';
+				$form_parameters['procedure'] = 'create_otr';
+					
+				$button_properties['label'] = 'Involve';
+				$button_properties['id'] = 'create_appointment';
 			break;
-			
+					
 			default:
 				return array();
 			break;
 		}
 		
-		
-		//common stuff for all cases
-		$tmp['obj'] = $this->toJson();
-		$tmp['form_name'] = 'jquery_form_otr';
-		
-		$string = json_encode($tmp, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_TAG | JSON_HEX_QUOT | JSON_FORCE_OBJECT);
-		$string = '$(this).live("click", jqueryForm(' . $string . ',"/' . $this->module_folder . '/ajax/getForm"))';
-		
-		$button_url = '#';		
-		
-		$button = array(
-						'label' => $button_label,
-						'id' => $button_id,
-						'url' => $button_url,
-						'onclick' => $string,
-		);
-	
-
-		return $button;
+		return $this->make_magic_button($button_properties, $form_parameters, $js_function, $ajax_url);
 	}
+	
+	public function toJson(){
+	
+		$return = json_decode(parent::toJson());
+	
+		$CI = &get_instance();
+		
+		$return->team = json_encode($CI->mcbsb->user->team);
+		
+		if(!empty($this->object_id) && !empty($this->object_name)){
+						
+			if($CI->load->is_loaded_module(strtolower($this->object_name))) {
+			
+				$obj = new $this->object_name();
+				
+				$obj->id = $this->object_id;
+				
+				if($obj->read()) {
+					if(isset($obj->involved) && count($obj->involved) > 0) {
+						
+						$return->involved = array();
+						
+						foreach ($obj->involved as $item) {
+							$return->involved[] = $item['colleague_id'];
+						}
+	
+					}
+				}
+			}		
+		}
+	
+		return json_encode($return);
+	}	
 }

@@ -324,4 +324,15 @@ class MY_Loader extends MX_Loader {
 
 		return $vars;
 	}
+	
+	public function is_loaded_module($module){
+		
+		if (in_array($module,$this->_ci_models))
+		{
+			return true;
+		}
+		
+		return FALSE;
+		
+	}
 }

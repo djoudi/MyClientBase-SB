@@ -1,10 +1,14 @@
 <?php (defined('BASEPATH')) OR exit('No direct script access allowed');
 
 $config['home_appliance_attributes_aliases'] = array(
+		'code_number' => 'Code Number',
+		'purchase_date' => 'Purchase Date',
+		'registration_number' => 'Registration #'
 );
 
 $config['home_appliance_hidden_fields'] = array('id', 'category', 'contact_id_key','contact_id','contact_name');
 
+//note: default values do not apply to checkboxes
 $config['home_appliance_default_values'] = array(
 				'category' => 'home_appliance',
 );

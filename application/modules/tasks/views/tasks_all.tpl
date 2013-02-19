@@ -31,7 +31,7 @@
 
 
 
-<div class="grid_18">
+<div class="grid_24">
 
 	<div class="box profile" id="tabs">
 	
@@ -52,9 +52,11 @@
 
 </div>
 
+{*
 <div class="grid_6">
 	<div class="box" style="padding-left: 5px;">{include file=	"{$fcpath}application/modules/tasks/views/actions_panel.tpl"}</div>
 </div>
+*}
 
 {include file="$pager_file"}
 

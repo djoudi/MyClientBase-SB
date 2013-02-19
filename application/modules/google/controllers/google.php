@@ -20,20 +20,61 @@ class Google extends Admin_Controller {
     }
 
     public function index() {
-    	return true;
+    	
+    	$this->load->model('google/goo','goo');
+    	
+    	if (isset($_GET['code'])) {
+    		
+    		//TODO move this in the object
+    		$this->goo->client->authenticate($_GET['code']);
+    		$gtoken = $this->goo->client->getAccessToken();
+    		$this->session->set_userdata('gtoken',$gtoken);
+    	}
+    	
+    	if ($this->session->userdata('gtoken')) {
+    		$this->goo->client->setAccessToken($this->session->userdata('gtoken'));
+    	}
+
+    	redirect('personal_settings#tab_Google');
+    	
     }
     
     public function display_settings() {
     	
-     	$data = array();
+     	$data = array();     	
+     	
+     	//GADS Settings
      	foreach ($this->config_items as $item_name) {
      		$data[$item_name] = $this->config->item($item_name);
      	}
+     	     	
      	$this->load->view('settings.tpl', $data, false, 'smarty','google');
-    	//$this->pp->parse('settings.tpl', $data, false, 'smarty', 'google');
     }
     
-   
+    public function display_personal_settings() {
+    	
+    	$data = array();
+    	//Google Apps
+    	$this->load->model('google/goo','goo');
+    	
+    	if (!$this->goo->client->getAccessToken()) {
+    		$authUrl = $this->goo->client->createAuthUrl();
+    		$data['authUrl'] = $authUrl;
+    	}
+    	
+    	//TODO REVOKE BUTTON
+    	//      if (isset($_REQUEST['logout'])) {
+    	//      	unset($_SESSION['token']);
+    	//      	$this->goo->client->revokeToken();
+    	//      }
+
+    	$this->load->view('personal_settings.tpl', $data, false, 'smarty','google');
+    }
+    
+    public function save_personal_settings(){
+    	redirect('/');
+    }
+    
     public function save_settings()
     {	 
     	//update the configuration file

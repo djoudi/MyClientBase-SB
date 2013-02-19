@@ -148,7 +148,7 @@ class Asset extends Rb_Db_Obj
 					
 				$tmp['form_title'] = 'New asset';
 				$tmp['url'] = '/' . $this->module_folder . '/ajax/save_asset';
-				$tmp['procedure'] = 'behave_as_form';
+				$tmp['procedure'] = 'post_to_ajax';
 				$button_label = 'Add asset';
 				$button_id = 'add_asset';
 				
@@ -162,7 +162,7 @@ class Asset extends Rb_Db_Obj
 			case 'edit':
 				$tmp['form_title'] = 'Edit asset';
 				$tmp['url'] = '/' . $this->module_folder . '/ajax/save_asset';
-				$tmp['procedure'] = 'behave_as_form';				
+				$tmp['procedure'] = 'post_to_ajax';				
 				$button_label = 'Edit asset';
 				$button_id = 'edit_asset';
 				$this->reset_obj_config();

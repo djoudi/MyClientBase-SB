@@ -93,6 +93,7 @@ class Ajax extends Admin_Controller {
     }
     
     public function getForm(){
+    	
     	$params = $this->input->post('params');
     	if(!is_array($params) || count($params) == 0) $this->returnError('Some information are missing'); //TODO translate with CI standard way
     	 
@@ -115,6 +116,7 @@ class Ajax extends Admin_Controller {
     }
 
     protected function getSearchResults(array $params){
+    	
     	$procedure = urlencode(trim($params['procedure']));
     	
     	if(isset($params['object_name'])) $searched_object = urldecode(trim($params['object_name']));
@@ -371,7 +373,6 @@ class Ajax extends Admin_Controller {
     	$data['form_name'] = 'jquery-form-'.$object_name;
 
     	//gets the html
-    	//$html_form = $this->pp->parse('jquery_form.tpl', $data, true, 'smarty', 'contact'); //TODO delme
     	$html_form = $this->load->view('jquery_form.tpl', $data, true, 'smarty', 'contact');
     	
     	//returns the html to js
@@ -767,7 +768,7 @@ class Ajax extends Admin_Controller {
     	}	
     }
     
-    public function t(){
+    public function k(){
     	$this->load->helper('security');
     	$str = rand(100000000000, 9000000000000);
     	$str2 = do_hash($str); // SHA1
@@ -945,6 +946,5 @@ class Ajax extends Admin_Controller {
     	$this->output($to_js);
     
     }
-    
-    
+ 
 }

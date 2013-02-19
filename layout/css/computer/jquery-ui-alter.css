@@ -81,6 +81,12 @@
 	z-index: 1000; /* must be > than popup editor (950) */
 }
 
+.ui-dialog-title {font-size: 18px; font-weight: normal;}
+
+.ui-dialog-titlebar {border: 0px; color:#555555;}
+
+.ui-dialog-buttonpane{border: 0px;}
+
 /* this is to hide the X button in dialogs. It requires modification in mcbsb.js too */
 .no-close .ui-dialog-titlebar-close {display: none; }
 
@@ -95,3 +101,7 @@
 .ui-timepicker-rtl{ direction: rtl; }
 .ui-timepicker-rtl dl { text-align: right; }
 .ui-timepicker-rtl dl dd { margin: 0 65px 10px 10px; }
+
+form.jquery_form{
+	width: 530px;
+}

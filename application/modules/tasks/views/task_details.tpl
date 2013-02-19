@@ -29,6 +29,25 @@
 </script>	
 {/literal}
 
+{* The standard Google Loader script. *}
+<script src="http://www.google.com/jsapi"></script>
+
+{if $language == 'english'}
+	{literal}
+	<script type="text/javascript">
+	google.load('picker', '1', {'language':'en'});
+	</script>
+	{/literal}
+{/if}
+
+{if $language == 'italian'}
+	{literal}
+	<script type="text/javascript">
+	google.load('picker', '1', {'language':'it'});
+	</script>
+	{/literal}
+{/if}
+
 <div class="grid_18">
 
 	<div class="box profile" id="tabs">
@@ -39,14 +58,18 @@
 		<div id="tab_task">
 			
 			{include file="task_details_core.tpl"}
-
+			
 		</div>
 	</div>
+	
 </div>
+
 
 <div class="grid_6">
 	<div class="box" style="padding-left: 5px;">{include "{$fcpath}application/modules/tasks/views/actions_panel.tpl"}</div>
 </div>
 
-<div style="clear: both;"></div>
+
+
+
 {include file="$footer_file"}

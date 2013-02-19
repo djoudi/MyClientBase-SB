@@ -9,9 +9,12 @@ class Tasks extends Admin_Controller {
 		$this->load->helper('date');
 		
 		$this->load->model('tasks/task','task');
-	
+		$this->load->model('tasks/appointment','appointment');
+		$this->load->model('brm/otr','otr');
+		$this->load->model('tasks/activity','activity');		
 	}
 
+	
 	/**
 	 * Shows task details and builds the buttons for the Action Panel
 	 * 
@@ -28,36 +31,31 @@ class Tasks extends Admin_Controller {
 		if(!isset($segments['id']) || !is_numeric($segments['id'])) redirect('/'); //TODO in this case would be nice to  roll back to last position
 		
 		$data = array();
+		$tasks = array();
+		$tmp = array();
 		
 		$this->task->id = $segments['id'];
-		$this->task->read();
+		if(!$this->task->read()) redirect('/');
+
+		if($return = $this->process_task($this->task,0,$tasks,$tmp)) {
+			$tasks = $return['tasks'];
+			$tmp = $return['tmp'];
+		}		
 		
-		$data['task'] = $this->task;
+		$data['task'] = $tasks[0];
 		$data['task_json'] = $this->task->toJson();
-		
-		$this->load->model('tasks/appointment','appointment');
-		$sql = 'select SQL_CALC_FOUND_ROWS * from '.$this->appointment->db_table . ' where task_id=' . $this->task->id . ' order by id DESC';
-		$data['appointments'] = $appointments = $this->appointment->readAll($sql);
-		
-		$this->load->model('brm/otr','otr');
-		$data['involved_in_appointment'] = array();
-		foreach ($appointments as $k => $appointment){
-			$sql = 'select SQL_CALC_FOUND_ROWS * from '.$this->otr->db_table . ' where object_id=' . $appointment['id'] . ' and object_name="appointment" order by id ASC';
-			$data['involved_in_appointment'][$k] = $this->otr->readAll($sql);
-		}
+		$data['timeline'] = $this->sort_timeline($tmp);
 				
 		//BUTTONS
-		
-		
 		if($this->task->is_open()) {
 			
 			//adds the edit button
 			$data['buttons'][] = $this->task->magic_button('edit');
 			
 			//adds the "add appointment" button
-			$this->appointment->task_id = $this->task->id;
+			$this->appointment->tasks_id = $this->task->id;
 			$this->appointment->what = $this->task->task;
-			$data['buttons'][] = $this->appointment->magic_button('create_appointment_for_task');
+			$data['buttons'][] = $this->appointment->magic_button('create_appointment');
 			
 			//adds the "add activity" button
 			$this->load->model('tasks/activity','activity');
@@ -67,6 +65,14 @@ class Tasks extends Admin_Controller {
 			$this->activity->contact_name = $this->task->contact_name;
 			$data['buttons'][] = $this->activity->magic_button('create');
 
+			//TODO adds the "add file" button
+			$data['buttons'][] = array(
+								'label' => 'Attach file',
+								'id' => '',
+								'url' => '#',
+								'onclick' => '$(this).live("click",createPicker(' . $this->task->id . '))',
+			);				
+			
 			//adds close button
 			$data['buttons'][] = $this->task->magic_button('close');
 				
@@ -76,11 +82,118 @@ class Tasks extends Admin_Controller {
 			$data['buttons'][] = $this->task->magic_button('open');
 		}
 		
-
-		
-		//$this->load->model('brm/otr','otr');
-		
 		$this->load->view('task_details.tpl', $data, false, 'smarty', 'tasks');
+	}
+	
+	
+	private function process_task(Task $task,$key,array $tasks, array $tmp){
+		
+		if(!is_object($task)) return false;
+		
+		$tasks[$key] = $task;
+		
+		//status button
+		if($task->is_open()){
+			$tasks[$key]->edit_button = $task->magic_button('edit');
+			$tasks[$key]->close_button = $task->magic_button('close');
+		}
+			
+		//button to involve people in the task
+		$otr = new Otr();
+		$otr->object_id = $task->id;
+		$otr->object_name = $task->obj_name;
+		$tasks[$key]->involve_button = $otr->magic_button('create_otr');
+		
+			
+		//adds the buttons to add appointments
+		$appointment = new Appointment();
+		$appointment->tasks_id = $task->id;
+		$appointment->what = '#'.$task->id . ' ' . $task->contact_name;
+		$appointment->description = $task->task;
+		
+		$tasks[$key]->create_appointment_button = $appointment->magic_button('create_appointment');
+		
+		
+		//adds the buttons to add activities
+		$activity = new Activity();
+		$activity->tasks_id = $task->id;
+		$activity->contact_id_key = $task->contact_id_key;
+		$activity->contact_id = $task->contact_id;
+		$activity->contact_name = $task->contact_name;
+		$tasks[$key]->create_activity_button = $activity->magic_button();
+		
+		
+		
+		
+		
+		
+		
+		//buttons for each appointment
+		$tasks[$key]->edit_appointment_buttons = array();
+		$tasks[$key]->delete_appointment_buttons = array();
+		$tasks[$key]->appointment_involve_buttons = array();
+		foreach ($task->appointments as $k => $appointment){
+		
+			$tasks[$key]->edit_appointment_buttons[$k] = $appointment->magic_button('edit_appointment');
+			$tasks[$key]->delete_appointment_buttons[$k] = $appointment->magic_button('delete_appointment');
+		
+		
+			$otr = new Otr();
+			$otr->object_id = $appointment->id;
+			$otr->object_name = 'appointment';
+			$tasks[$key]->appointment_involve_buttons[$k] = $otr->magic_button('create_otr');
+		
+		}
+		
+		
+		
+		
+		
+		//buttons for each activity
+		$tasks[$key]->edit_activity_buttons = array();
+		$tasks[$key]->delete_activity_buttons = array();
+		foreach ($task->activities as $k => $activity){
+		
+			$tasks[$key]->edit_activity_buttons[$k] = $activity->magic_button('edit');
+			$tasks[$key]->delete_activity_buttons[$k] = $activity->magic_button('delete');
+		
+		}
+		
+		
+		
+		//stores info to create the timeline
+		if(count($task->appointments) > 0 || count($task->activities) > 0) {
+				
+			$tmp[$task->id][] = array(
+					'id'  	=> 'none',
+					'day' 	=> $task->start_date,
+					'type' 	=> 'start'
+			);
+			$tmp[$task->id][] = array(
+					'id'  	=> 'none',
+					'day' 	=> $task->due_date,
+					'type' 	=> 'end'
+			);
+		
+		}
+		
+		foreach ($task->appointments as $appointment) {
+			$tmp[$task->id][] = array(
+					'id'  	=> $appointment->id,
+					'day' 	=> $appointment->start_time,
+					'type' 	=> 'appointment'
+			);
+		}
+			
+		foreach ($task->activities as $activity) {
+			$tmp[$task->id][] = array(
+					'id' 	=> $activity->id,
+					'day' 	=> $activity->action_date,
+					'type'	=> 'activity'
+			);
+		}
+		
+		return array('tasks' => $tasks, 'tmp' => $tmp);
 	}
 	
 	/**
@@ -101,143 +214,40 @@ class Tasks extends Admin_Controller {
 		$contact_id_key = $this->session->userdata('contact_id_key');
 		
 		$data = array();
+		$tasks = array();
+		$tmp = array();
+		
+		//filters tasks
 		if($contact_id && $contact_id_key) {
-			$sql = 'select SQL_CALC_FOUND_ROWS * from '.$this->task->db_table . ' where contact_id=' . $contact_id . ' and contact_id_key="' . $contact_id_key. '" order by id DESC';
-			$tasks = $this->task->readAll($sql,true,$from);
+			$sql = 'select SQL_CALC_FOUND_ROWS id from '.$this->task->db_table . ' where contact_id=' . $contact_id . ' and contact_id_key="' . $contact_id_key. '" order by id DESC';
+			$tasks_id = $this->task->readAll($sql,true,$from);
 		} else {
-			$tasks = $this->task->readAll(null,true,$from);
+			$sql = 'select id from '.$this->task->db_table;
+			$tasks_id = $this->task->readAll($sql,true,$from);
 		}
 		
 		
-		if(is_array($tasks) && count($tasks) > 0){
-						
-			$this->load->model('brm/otr','otr');
-			$this->load->model('tasks/appointment','appointment');
-			$this->load->model('tasks/activity','activity');
+		if(is_array($tasks_id) && count($tasks_id) > 0){
 			
-			foreach ($tasks as $key => $task) {
+			foreach ($tasks_id as $key => $item) {
 
 				//edit button
-				$tmp_task = new Task();
-				$tmp_task->id = $task['id'];
+				$task = new Task();
+				$task->id = $item['id'];
 				
-				if($tmp_task->read()) {
-					
-					//status button
-					if($tmp_task->is_open()){
-						$tasks[$key]['edit_button'] = $tmp_task->magic_button('edit');
-						$tasks[$key]['close_button'] = $tmp_task->magic_button('close');
-					}
-					
+				if(!$task->read()) continue;
+
+				if($return = $this->process_task($task,$key,$tasks,$tmp)) {
+					$tasks = $return['tasks'];
+					$tmp = $return['tmp'];
 				}
-
-				
-				//people involved
-				$this->otr->object_name = 'task';
-				$sql = 'select SQL_CALC_FOUND_ROWS * from '.$this->otr->db_table . ' where object_id=' . $task['id'] . ' and object_name="task" order by colleague_name ASC';
-				$tasks[$key]['involved'] = $this->otr->readAll($sql);
-				
-				$this->otr->object_id = $task['id'];
-				$tasks[$key]['involve_buttons'][] = $this->otr->magic_button('create_otr');
-				
-				//gets all the appointments related to the task				
-				$sql = 'select SQL_CALC_FOUND_ROWS * from '.$this->appointment->db_table . ' where task_id=' . $task['id'] . ' order by id DESC';
-				$tasks[$key]['appointments'] = $appointments = $this->appointment->readAll($sql);
-				
- 				foreach ($appointments as $k => $appointment){
- 					
- 					//gets the colleagues involved in the task
- 					$sql = 'select SQL_CALC_FOUND_ROWS * from '.$this->otr->db_table . ' where object_id=' . $appointment['id'] . ' and object_name="appointment" order by id ASC';
- 					$tasks[$key]['involved_in_appointment'][$k] = $this->otr->readAll($sql);
-
- 					//reads the appointment and makes the buttons for the edit and delete
- 					$this->appointment->id = $appointment['id'];
- 					
- 					//reads the appointment but doesn't get in return the "never_display_fields"
- 					if($this->appointment->read(true)) { 
- 						
- 						$tasks[$key]['edit_appointment_buttons'][$k] = $this->appointment->magic_button('edit_appointment_for_task');
- 						$tasks[$key]['delete_appointment_buttons'][$k] = $this->appointment->magic_button('delete_appointment');
- 						
- 					} else {
- 						
- 						$tasks[$key]['edit_appointment_buttons'][$k] =
- 						$tasks[$key]['delete_appointment_buttons'][$k] = null;
- 					}
- 					
- 					$this->otr = new Otr();
- 					$this->otr->object_id = $appointment['id'];
- 					$this->otr->object_name = 'appointment';
- 					$tasks[$key]['appointment_involve_buttons'][$k] = $this->otr->magic_button('create_otr'); 					
- 				}
-
- 				
- 				
- 				//gets all the appointments related to the task
- 				//?? come fanno ad esserci gli appuntamenti se qui non li leggo via sql? magari non serve nemmeno la query degli appuntamenti
- 				
- 				
- 				
- 				
- 				//adds the buttons to add appointments
- 				$appointment = new Appointment();
-				$appointment->task_id = $task['id'];
-				$appointment->what = '#'.$task['id'] . ' ' . $task['contact_name'];
-				$appointment->description = $task['task'];
-				
-				$tasks[$key]['create_appointment_buttons'][] = $appointment->magic_button('create_appointment_for_task');
-				
-		
-				//adds the buttons to add activities
-				$activity = new Activity();
-				$activity->tasks_id = $task['id'];
-				$activity->contact_id_key = $task['contact_id_key'];
-				$activity->contact_id = $task['contact_id'];
-				$activity->contact_name = $task['contact_name'];				
-				$tasks[$key]['create_activity_buttons'][] = $activity->magic_button();
 			}
 		}
 		
+
 		$data['tasks'] = $tasks;
 		$data['pager'] = $this->mcbsb->_pagination_links;
-		
-		
-		
-		
-		$timeline = array();
-		
-		if(is_array($tasks) && count($tasks) > 0){
-			$tmp = array();
-			foreach ($tasks as $key => $task) {
-			
-				foreach ($task['appointments'] as $appointment) {
-					$tmp[$task['id']][] = array(
-							'id'  	=> $appointment['id'],
-							'day' 	=> date('Y-m-d',$appointment['start_time']),
-							'type' 	=> 'appointment'
-					);
-				}
-			
-				foreach ($task['activities'] as $activity) {
-					$tmp[$task['id']][] = array(
-							'id' 	=> $activity['id'],
-							'day' 	=> $activity['action_date'],
-							'type'	=> 'activity'
-					);
-				}
-			
-			}
-			
-			
-			foreach ($tmp as $task_id => $events) {
-				$e = $events;
-				usort($e,'cmp');
-				$timeline[$task_id] = $e;
-			}			
-		}
-			
-		$data['timeline'] = $timeline;		
-		
+		$data['timeline'] = $this->sort_timeline($tmp);
 		
 		
 		if($contact_id && $contact_id_key) {
@@ -250,6 +260,19 @@ class Tasks extends Admin_Controller {
 		}
 	}
 	
+	private function sort_timeline(array $tmp) {
+		
+		$timeline = array();
+		
+		foreach ($tmp as $tasks_id => $events) {
+			$e = $events;
+			usort($e,'cmp');
+			$timeline[$tasks_id] = $e;
+		}
+		
+		return $timeline;
+	}
+	
 }
 
 function cmp($a,$b){
@@ -258,6 +281,12 @@ function cmp($a,$b){
 		
 		if($a['type'] == 'appointment' && $b['type'] == 'appointment') return 0;
 		
+		if($a['type'] == 'start') return 1;
+		if($b['type'] == 'start') return -1;
+
+		if($a['type'] == 'end') return -1;
+		if($b['type'] == 'end') return 1;
+				
 		//gives priority to appointments
 		if($a['type'] == 'appointment') return -1;
 		return 1;

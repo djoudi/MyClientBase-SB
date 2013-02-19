@@ -6,8 +6,10 @@ $config['activity_attributes_aliases'] = array(
 
 $config['activity_hidden_fields'] = array('id', 'tasks_id','contact_id_key','contact_id','contact_name');
 
+//note: default values do not apply to checkboxes
 $config['activity_default_values'] = array(
-				'homePhone' => '+3902',
+				'action_date' => date('Y-m-d'),
+				'billable' => 1,
 );
 
 $config['activity_never_display_fields'] = array('creation_date', 'created_by', 'creator', 'update_date', 'updated_by', 'editor', 'complete_date', 'completed_by', 'completionist');
@@ -21,7 +23,8 @@ $config['activity_prototype'] = array(
 				'action_date' => 1354128792,
 				'duration' => 1000.99,
 				'mileage' => 112980.7,
-				'weight' => 99,
+				'billable' => 1,
+				//'weight' => 99,
 		
 				'tasks_id' => 1354128792,
 

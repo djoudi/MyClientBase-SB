@@ -24,7 +24,6 @@ class Task extends Rb_Db_Obj
 		//R::freeze( array($this->db_table));  //NOTE! comment this line when you develop!
 		
 		$this->initialize();
-
 	}
 	
 	private function fix_dates(){
@@ -47,9 +46,10 @@ class Task extends Rb_Db_Obj
 		
 	}
 	
-	public function create() {
+	public function create(array $assets = null) {
 		
 		if(!is_null($this->obj_ID_value)) return false;
+		if(!is_null($assets) && !is_array($assets)) return false;
 		
 		$CI = &get_instance();
 		
@@ -60,23 +60,173 @@ class Task extends Rb_Db_Obj
 		
 		$this->fix_dates();
 				
-		return parent::create();
+		if(parent::create()) {
+
+			$this->auto_involve();
+			
+			if(!is_null($assets)) $this->associate_asset($assets);
+			
+			return $this->obj_ID_value;
+		}
+		
+		return false;		
 	}
 
-	public function read() {
+	private function associate_asset(array $assets){
+		
+		if(!is_array($assets)) return false;
+		
+		//if there are Assets associated to the tasks this code saves the many-to-many relationship between assets and tasks
+		$task = R::load($this->db_table,$this->obj_ID_value);
+		
+		//removes all the relationships previously set
+		$task->sharedAssets = array();
+		R::store($task);
+		
+		foreach ($assets as $key => $asset_id) {
+			
+			$asset = R::load('assets',$asset_id);
+			$task->sharedAssets[] = $asset;
+			
+		}
+		
+		return R::store($task);
+		
+		//TODO should I update contact's LDAP attribute lastAssignment?
+	}
+	
+	public function read($return_relationships = true) {
+		
 		if(is_null($this->obj_ID_value)) return false;
 
 		$this->_config['never_display_fields'] = array();	
 
 		if(!parent::read()) return false;
 		
-		//gets the assets associated to the task
-		$this->assets = $this->get_assets($this->id);
+		if($return_relationships){
+				
+			//gets colleagues involved
+			$this->involved = $this->get_people_involved();
+		
+			//gets the assets associated to the task
+			$this->assets = $this->get_assets();
+	
+			//gets the appointments associated to the task
+			$this->appointments = $this->get_appointments(false);
+	
+			//gets the activities associated to the task
+			$this->activities = $this->get_activities(false);
 
-		$this->activities = $this->get_activities($this->id);
+			$CI = &get_instance();
+			$this->show_add_file_button = false;
+			if($CI->mcbsb->is_module_enabled('google')){
+				$this->show_add_file_button = true;
+				//gets files associated to the task
+				$this->files = $this->get_files();
+			}
+							
+			$this->get_summary();
+		}
+		
 		return true;
 	}
 
+	
+	/**
+	 * Retrieves the Assets associated to the task and returns them as an array
+	 *
+	 * @access		public
+	 * @param		int $id		Task id
+	 * @return		array		Array containing the Asset objects found
+	 *
+	 * @author 		Damiano Venturin
+	 * @since		Feb 1, 2013
+	 */
+	public function get_assets($return_array = true){
+	
+		$CI = &get_instance();
+		
+		$CI->load->model('assets/asset','asset');
+		$CI->load->model('assets/home_appliance','home_appliance');
+		$CI->load->model('assets/digital_device','digital_device');
+	
+		$assets = array();
+	
+		$task = R::load('tasks',$this->id);
+		if($bean_assets = $task->sharedAssets){
+				
+			foreach ($bean_assets as $bean_asset) {
+				
+				$obj = new $bean_asset->category();
+				$obj->id = $bean_asset->id;
+				
+				if($obj->read()) {
+					
+					if($return_array) {
+						
+						$assets[] = $obj->toArray();
+						
+					} else {
+						
+						$assets[] = $obj;
+						
+					}
+					
+				}
+	
+			}
+				
+		}
+	
+		return $assets;
+	}	
+	
+	/**
+	 * Retrieves the Appointments associated to the task and returns them as an array
+	 *
+	 * @access		public
+	 * @param		int $id		Task id
+	 * @return		array		Array containing the Appointment objects found
+	 *
+	 * @author 		Damiano Venturin
+	 * @since		Feb 6, 2013
+	 */
+	public function get_appointments($return_array = true){
+
+		$CI = &get_instance();
+		
+		$CI->load->model('tasks/appointment','appointment');
+		
+		$appointments = array();
+	
+		$task = R::load('tasks',$this->id);
+		if($bean_appointments = $task->ownAppointments){
+	
+			foreach ($bean_appointments as $bean_appointment) {
+				
+				$appointment = new Appointment();
+				$appointment->id = $bean_appointment->id;
+				
+				if($appointment->read(true,true)) {
+					
+					if($return_array){
+
+						$appointments[] = $appointment->toArray();
+						
+					} else {
+						
+						$appointments[] = $appointment;
+						
+					}
+				}
+	
+			}
+	
+		}
+	
+		return $appointments;
+	}	
+	
 	/**
 	 * Retrieves the Activities associated to the task and returns them as an array
 	 *
@@ -87,21 +237,33 @@ class Task extends Rb_Db_Obj
 	 * @author 		Damiano Venturin
 	 * @since		Feb 1, 2013
 	 */
-	private function get_activities($id){
-	
+	public function get_activities($return_array = true){
+		
 		$CI = &get_instance();
+	
 		$CI->load->model('tasks/activity','activity');
 	
 		$activities = array();
 	
-		$task = R::load('tasks',$id);
+		$task = R::load('tasks',$this->id);
 		if($bean_activities = $task->ownActivities){
 				
-			foreach ($bean_activities as $activity) {
-	
-				$CI->activity->id = $activity->id;
-				if($CI->activity->read()) {
-					$activities[] = $CI->activity->toArray();
+			foreach ($bean_activities as $bean_activity) {
+				
+				$activity = new Activity();
+				$activity->id = $bean_activity->id;
+				
+				if($activity->read(true)) {
+					
+					if($return_array){
+						
+						$activities[] = $activity->toArray();
+						
+					} else {
+						
+						$activities[] = $activity;
+						
+					}
 				}
 	
 			}
@@ -112,68 +274,44 @@ class Task extends Rb_Db_Obj
 	}
 	
 	
-	/**
-	 * Retrieves the Assets associated to the task and returns them as an array
-	 * 
-	 * @access		public
-	 * @param		int $id		Task id
-	 * @return		array		Array containing the Asset objects found
-	 * 
-	 * @author 		Damiano Venturin
-	 * @since		Feb 1, 2013
-	 */
-	private function get_assets($id){
+	public function get_files($return_array = true){
 		
 		$CI = &get_instance();
-		$CI->load->model('assets/asset','asset');
-		$CI->load->model('assets/home_appliance','home_appliance');
-		$CI->load->model('assets/asset','digital_device');
+		$CI->load->model('google/ogr','ogr');
 		
-		$assets = array();
+		$ogr = new Ogr();
+		$sql = 'select * from ' . $ogr->db_table . ' where object_name="' . $this->obj_name . '" and object_id="' . $this->obj_ID_value . '" and google_resource_name="gdrive"';
+		return $ogr->readAll($sql);
+	}
+	
+	public function get_summary(){
 		
-		$task = R::load('tasks',$id);
-		if($bean_assets = $task->sharedAssets){
-			
-			foreach ($bean_assets as $asset) {
-				
-				$CI->{$asset->category}->id = $asset->id;
-				if($CI->{$asset->category}->read()) {
-					$assets[] = $CI->{$asset->category}->toArray();
-				}
+		$this->summary = array();
+		
+		if(isset($this->activities)) $this->summary['activities'] = count($this->activities);
+		if(isset($this->appointments)) $this->summary['appointments'] = count($this->appointments);
+		
+		if($this->summary['activities'] == 0 && $this->summary['appointments'] == 0) {
+			unset($this->summary);
+			return;
+		}
+		
+		
+		$this->summary['mileage'] = 0;
+		$this->summary['worked_hours'] = 0;
 
-			}
-			
+		foreach ($this->activities as $activity) {
+			if(isset($activity->mileage)) $this->summary['mileage'] = $this->summary['mileage'] + $activity->mileage;
+			if(isset($activity->duration)) $this->summary['worked_hours'] = $this->summary['worked_hours'] + $activity->duration;
 		}
 		
-		return $assets;
+		if(isset($this->hours_budget) && $this->hours_budget > 0) $this->summary['hours_left'] = $this->hours_budget - $this->summary['worked_hours'];		
 	}
-	
-	/**
-	 * Returns all the records matching the sql select plus the assets related to each record
-	 * 
-	 * @access		public
-	 * @param		
-	 * @return		
-	 * 
-	 * @author 		Damiano Venturin
-	 * @since		Feb 1, 2013
-	 */
-	public function readAll($sql = null, $paginate = false, $from = 0, $results_per_page = 0){
-		
-		$records = parent::readAll($sql, $paginate, $from, $results_per_page);
-		
-		foreach ($records as $key => $record) {
-			
-			$records[$key]['assets'] = $this->get_assets($record['id']);
-			$records[$key]['activities'] = $this->get_activities($record['id']);
-		}
-		
-		return $records;
-	}
-	
-	public function update() {
+
+	public function update(array $assets = null) {
 		
 		if(is_null($this->obj_ID_value)) return false;
+		if(!is_null($assets) && !is_array($assets)) return false;
 		
 		$CI = &get_instance();
 		
@@ -184,16 +322,26 @@ class Task extends Rb_Db_Obj
 				
 		$this->fix_dates();
 		
-		return parent::update();
+		if(parent::update()) {
+			
+			$this->auto_involve();
+			
+			if(!is_null($assets)) $this->associate_asset($assets);
+			
+			return $this->obj_ID_value;
+				
+		}
+		
+		return false;		
 	}	
 	
 	public function close(){
 		
 		if(is_null($this->obj_ID_value)) return false;
 		
-		$CI = &get_instance();
-		
 		$this->fix_dates();
+		
+		$CI = &get_instance();
 		
 		//add hidden system values
 		$this->complete_date = date('Y-m-d');
@@ -206,8 +354,6 @@ class Task extends Rb_Db_Obj
 	public function open(){
 	
 		if(is_null($this->obj_ID_value)) return false;
-	
-		$CI = &get_instance();
 	
 		$this->fix_dates();
 	
@@ -234,12 +380,54 @@ class Task extends Rb_Db_Obj
 		return false;
 	}
 
+	public function auto_involve(){
+		
+		//none will be automatically involved if someone is already involved. I give priority to user's decisions
+		$this->involved = $this->get_people_involved();
+		if(count($this->involved) > 0) return false;
+		
+		//loads the route class
+		$CI  = &get_instance();
+		
+		if(!$CI->mcbsb->is_module_enabled('on_site')) return false;
+		
+		$CI->load->model('on_site/route','route');
+		
+		
+		//gets the route name by passing the selected city
+		if(!$route = $CI->route->get_route($this->city)) return false;
+		
+		//looks for a route match among people
+		$CI->load->model('contact/mdl_contact','contact');
+		$CI->load->model('contact/mdl_person','person');
+		
+		$input = array('filter' => '(routes=' . $route . ')');
+		$return = $CI->person->get($input);
+		
+		if($return['status']['status_code'] != 200) return false;
+		
+		$CI->load->model('brm/otr','otr');
+		foreach ($return['data'] as $key => $person){
+			
+			//if a team member matches a route then involve him
+			$otr = new Otr();
+			
+			$otr->object_name = $this->obj_name;
+			$otr->object_id = $this->id;
+			$otr->colleague_id = $person['uid'][0];
+			$otr->colleague_name = $person['cn'][0];
+			if(!$otr->create()) return false;
+		}
+		
+		return true;	
+	}
 	
 	public function contact_tab($contact){
 	
 		if(!is_object($contact)) return false;
 	
 		$CI = &get_instance();
+		
 		switch ($contact->objName) {
 			case 'person':
 				$CI->session->set_userdata('contact_id',$contact->uid);
@@ -273,95 +461,100 @@ class Task extends Rb_Db_Obj
 	
 	public function magic_button($type = 'create'){
 		
-		$tmp = array();
+		$form_parameters = array();
+		$button_properties = array();
+		$js_function = 'jqueryForm';
+		$ajax_url = '/' . $this->module_folder . '/ajax/getForm';
 		
 		switch ($type) {
 			
 			case 'close':
-				$tmp['url'] = '/' . $this->module_folder . '/ajax/change_task_status';
-				$tmp['form_name'] = 'jquery_form_close_task';
-				$tmp['form_method'] = 'POST';
-				$tmp['form_title'] = 'Close Task';
-				$tmp['procedure'] = 'close_task';
-				$button_label = 'Close';
-				$button_id = 'close_task';
+				$form_parameters['url'] = '/' . $this->module_folder . '/ajax/change_task_status';
+				$form_parameters['form_name'] = 'jquery_form_close_task';
+				$form_parameters['form_title'] = 'Close Task';
+				$form_parameters['procedure'] = 'close_task';
+				
+				$button_properties['label'] = 'Close';
+				$button_properties['id'] = 'close_task';
 				
 				$this->reset_obj_config();
+				
 				//Do not show the following fields when closing a task
 				$this->_config['never_display_fields'][] = 'task';
 				$this->_config['never_display_fields'][] = 'details';
 				$this->_config['never_display_fields'][] = 'start_date';
 				$this->_config['never_display_fields'][] = 'due_date';
 				$this->_config['never_display_fields'][] = 'urgent';
-			break;
-			
-			case 'open':
-				$tmp['url'] = '/' . $this->module_folder . '/ajax/change_task_status';
-				$tmp['procedure'] = 'open_task';
-				$button_label = 'Open task';
-				$button_id = 'open_task';
-			
-				$this->reset_obj_config();
-			break;			
-			
-			case 'edit':
-				$tmp['form_name'] = 'jquery_form_edit_task';
-				$tmp['form_method'] = 'POST';
-				$tmp['form_title'] = 'Edit Task';
-				$tmp['procedure'] = 'edit_task';
-				$button_label = 'Edit';
-				$button_id = 'edit_task';			
+				$this->_config['never_display_fields'][] = 'budget';
+				$this->_config['never_display_fields'][] = 'hours_budget';
 			break;
 			
 			case 'create':
-				$tmp['form_name'] = 'jquery_form_create_task';
-				$tmp['form_method'] = 'POST';				
-				$tmp['form_title'] = 'New Task';
-				$tmp['procedure'] = 'create_task';
-				$button_label = 'Create task';
-				$button_id = 'create_task';					
+				$form_parameters['url'] = '/' . $this->module_folder . '/ajax/save_task';
+				$form_parameters['form_name'] = 'jquery_form_create_task';
+				$form_parameters['form_title'] = 'New Task';
+				$form_parameters['procedure'] = 'create_task';
+			
+				$button_properties['label'] = 'Create task';
+				$button_properties['id'] = 'create_task';
+			
+				$this->reset_obj_config();
+			
+				//Do not show the endnote textarea when creating or editing
+				$this->_config['never_display_fields'][] = 'endnote';
 			break;
+			
+			case 'edit':
+				$form_parameters['url'] = '/' . $this->module_folder . '/ajax/save_task';
+				$form_parameters['form_name'] = 'jquery_form_edit_task';
+				$form_parameters['form_title'] = 'Edit Task';
+				$form_parameters['procedure'] = 'edit_task';
+			
+				$button_properties['label'] = 'Edit';
+				$button_properties['id'] = 'edit_task';
+			
+				$this->reset_obj_config();
+			
+				//Do not show the endnote textarea when creating or editing
+				$this->_config['never_display_fields'][] = 'endnote';
+			break;			
+							
+			case 'open':
+				$form_parameters['url'] = '/' . $this->module_folder . '/ajax/change_task_status';
+				$form_parameters['procedure'] = 'open_task';
+				
+				$button_properties['label'] = 'Open task';
+				$button_properties['id'] = 'open_task';
+			
+				$this->reset_obj_config();
+				
+				$js_function = 'jqueryChangeStatus';
+				$ajax_url = $form_parameters['url'];
+			break;			
 			
 			default:
 				return array();
 			break;
 		}
-		
-		//common stuff for some cases
-		if($type == 'create' || $type == 'edit'){
 
-			$this->reset_obj_config();
-			//Do not show the endnote textarea when creating or editing
-			$this->_config['never_display_fields'][] = 'endnote';
-			$tmp['url'] = '/' . $this->module_folder . '/ajax/save_task';
-		}
-		
-		//common stuff for all cases
-		$tmp['obj'] = $this->toJson();
-		
-		$string = json_encode($tmp, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_TAG | JSON_HEX_QUOT | JSON_FORCE_OBJECT);
-		
-		if($type == 'open'){
-			
-			$string = '$(this).live("click", jqueryChangeStatus(' . $string . ',"' . $tmp['url'] .'"))';
-			
-		} else {
-			
-			$tmp['form_name'] = 'jquery_form_task';
-			$string = '$(this).live("click", jqueryForm(' . $string . ',"/' . $this->module_folder . '/ajax/getForm"))';
-			
-		}
-		
-		$button_url = '#';		
-		
-		$button = array(
-						'label' => $button_label,
-						'id' => $button_id,
-						'url' => $button_url,
-						'onclick' => $string,
-		);
+		return $this->make_magic_button($button_properties, $form_parameters, $js_function, $ajax_url);
+	}
 	
+	public function toJson(){
+		
+		$return = json_decode(parent::toJson());
 
-		return $button;
+		//adds the assets already associated with the task
+		if(isset($this->assets) && count($this->assets)>0){
+
+			$return->assets = array();
+			
+			foreach ($this->assets as $asset){
+				$return->assets[] = $asset['id'];
+			}
+			
+		}
+		
+		return json_encode($return);
 	}
 }

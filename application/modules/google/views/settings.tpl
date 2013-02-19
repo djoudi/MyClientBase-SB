@@ -8,32 +8,32 @@
 </script>
 {/literal}
 
-<p>
-	{t}By enabling Google Contacts synchronization, all the contacts will be synchronized with you Google Account{/t}
-	<a id="a_google_tip" href="#"><img style="margin-left: 10px;" src="/layout/images/question_mark.png" /></a>
-</p>
+<h4>{t}Google Shared Contacts{/t}</h4>
 
-<div id="tip_google" style="display:none;">
-	<p>{t}Google Contacts synchronization will provide{/t}:
-	<ul>
-		<li>- {t}Email autocomplete when you write a new email{/t}</li>
-		<li>- {t}Possibility to import any business contact into your personal contacts. Consequently you'll find all your personal contacts inside you mobile phone address book{/t}</li>
-		<li>- {t}Possibility to import any business contact into your Google+ account{/t}</li>
-		<li>- {t}Possibility to import any business contact into your LinkedIn account{/t}</li>
-		<li>- {t}Capability to look for any business contact from the mobile phone even if it's not in your personal contacts{/t}</li>
-		<li>- {t}Possibility to use{/t} <a href="http://support.google.com/a/bin/answer.py?hl=en&answer=115739&ctx=cb&src=cb&cbid=-ye89m9c89gvz&cbrank=2" target="_blank">Google Secure Data Connector</a> (SDC) {t}to connect gadgets, applications, and spreadsheets to your data{/t}</li>
-	</ul>
+<form method="post" action="/google/save_settings" class="box settings" style="padding: 10px;">
+	
+	<p>
+		{t}By enabling Google Contacts synchronization, all the contacts will be synchronized with you Google Account{/t}
+		<a id="a_google_tip" href="#"><img style="margin-left: 10px;" src="/layout/images/question_mark.png" /></a>
 	</p>
 	
-	{$video_code="ZdVPq6M-WKE"}
-	{if $language == 'italian'}{$video_code="91wq_8yRne4"}{/if}
-	<p style="float: right; margin-top: 15px;"><a class="tj_videos button" href="{$video_code}">{t}More details{/t}</a></p>
-	<div style="clear: both;"></div>	
-</div>
-
-
-
-<form method="post" action="/google/save_settings" class="box settings" style="margin-top: 20px; padding: 10px;">
+	<div id="tip_google" style="display:none;">
+		<p>{t}Google Contacts synchronization will provide{/t}:
+		<ul>
+			<li>- {t}Email autocomplete when you write a new email{/t}</li>
+			<li>- {t}Possibility to import any business contact into your personal contacts. Consequently you'll find all your personal contacts inside you mobile phone address book{/t}</li>
+			<li>- {t}Possibility to import any business contact into your Google+ account{/t}</li>
+			<li>- {t}Possibility to import any business contact into your LinkedIn account{/t}</li>
+			<li>- {t}Capability to look for any business contact from the mobile phone even if it's not in your personal contacts{/t}</li>
+			<li>- {t}Possibility to use{/t} <a href="http://support.google.com/a/bin/answer.py?hl=en&answer=115739&ctx=cb&src=cb&cbid=-ye89m9c89gvz&cbrank=2" target="_blank">Google Secure Data Connector</a> (SDC) {t}to connect gadgets, applications, and spreadsheets to your data{/t}</li>
+		</ul>
+		</p>
+		
+		{$video_code="ZdVPq6M-WKE"}
+		{if $language == 'italian'}{$video_code="91wq_8yRne4"}{/if}
+		<p style="float: right; margin-top: 15px;"><a class="tj_videos button" href="{$video_code}">{t}More details{/t}</a></p>
+		<div style="clear: both;"></div>	
+	</div>	
 	
 	<dl>
 	    <dt>{t}Google domain{/t}:</dt>
@@ -70,3 +70,6 @@
 	<div style="clear: both;"></div>
 
 </form>
+
+<div style="clear: both"></div>
+

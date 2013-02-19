@@ -36,6 +36,7 @@ class System_Settings extends Admin_Controller {
 		$this->load->helper('mcb_date');
 		
         //gets data about the tabs to display
+        $a =$this->mcbsb->_modules['enabled'];
 		foreach ($this->mcbsb->_modules['enabled'] as $item) {
 			
 			$module = new Module();

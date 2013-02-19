@@ -4,7 +4,7 @@
 
 $config['module'] = array(
 	'module_path'			=>	'assets',
-	'module_name'			=>	'assets',
+	'module_name'			=>	'Assets',
 	'module_enabled'		=>	true,
 	'module_top_menu' 		=>	false,	
 	'module_description'	=>	'Assets manager.',

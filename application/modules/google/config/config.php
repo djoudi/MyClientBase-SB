@@ -10,7 +10,9 @@ $config['module'] = array(
 	'module_top_menu'	=>	false,		
 	'module_config'	=>	array(
 		'settings_view'	=>	'google/display_settings',
-		'settings_save'	=>	'google/save_settings'
+		'settings_save'	=>	'google/save_settings',
+		'personal_settings_view'	=>	'google/display_personal_settings',
+		'personal_settings_save'	=>	'google/save_personal_settings'
 	)
 );
 

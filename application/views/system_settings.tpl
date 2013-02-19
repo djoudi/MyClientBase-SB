@@ -47,14 +47,15 @@
 
 <div class="grid_18">
 
-		<div class="box profile" id="tabs">
-			<ul>
-				<li><a href="#tab_application">{t}Application{/t}</a></li>
-				{foreach $tabs as $key => $tab}
-					<li><a href="#tab_{$tab['title']}">{t}{$tab['title']}{/t}</a></li>
-				{/foreach}
-			</ul>		
-		
+	<div class="box profile" id="tabs">
+	
+		{* TABS *}
+		<ul>
+			<li><a href="#tab_application">{t}Application{/t}</a></li>
+			{foreach $tabs as $key => $tab}
+				<li><a href="#tab_{$tab['title']}">{t}{$tab['title']}{/t}</a></li>
+			{/foreach}
+		</ul>		
 	
 			<div id="tab_application" class="settings">
 				<form method="post" >
@@ -145,20 +146,28 @@
 						</dl>													
 					</div>
 					
-					<div style="clear: both;"></div>
 					
 					<input  class="button" style="float: right; margin-top: 10px; margin-right: 10px;" type="submit" name="btn_save_settings" value="{t}Save{/t}" />
 					
 					<div style="clear: both;"></div>
 				</form>
 			</div>
+			
 
 			{foreach $tabs as $key => $tab}
 				<div id="tab_{$tab['title']}">{$tab['html']}</div>
 			{/foreach}
 			
-		</div>
-	
+		</div>	
+	</div>
 </div>
+
+
+<div class="grid_6" style="width: 293px;">
+	<div class="box" style="padding-left: 5px;">{include 'system_settings_actions_panel.tpl'}</div>
+</div>
+
+<div style="clear: both;"></div>
+
 
 {include file="$footer_file"}

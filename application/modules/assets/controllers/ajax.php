@@ -3,6 +3,7 @@
 class Ajax extends Ajax_Controller {
 	
 	public function __construct(){
+		
 		parent::__construct();
 		
 		$this->load->model('assets/asset','asset');
@@ -13,52 +14,66 @@ class Ajax extends Ajax_Controller {
 			
 				if(strtolower($module_to_load) != strtolower(get_class($this))){
 					
-					$this->load->model('assets/'.$module_to_load,$module_to_load);
+					$parent_folder = $this->asset->module_folder;
+					if(!ends_with($parent_folder, '/')) $parent_folder = $parent_folder . '/';
+					$this->load->model($parent_folder . $module_to_load , $module_to_load);
+
+					//TODO delme
+					//$this->load->model('assets/'.$module_to_load,$module_to_load);
 				}
 			}			
 		}		
 	}
 	
+	/**
+	 * Creates or updates any asset. Returns json
+	 * 
+	 * @access		public
+	 * @param		none
+	 * @return		none. It uses Ajax_Controller->destruct()
+	 * 
+	 * @author 		Damiano Venturin
+	 * @since		Feb 5, 2013
+	 */
 	public function save_asset(){
 		
-		if($post = $this->input->post()){
+		if(!$post = $this->get_post_values()){
+			$this->status = false;
+			$this->message = t('POST is empty');
+			exit();			
+		}
 			
-			if(!isset($post['category']) || empty($post['category'])) {
-				$this->mcbsb->system_messages->error = 'Error while saving the asset '.$asset_id;
-				redirect('/'); //TODO here it would be nice to load the last position
-			}
-			
-			$obj = $post['category'];
-			
-			foreach ($post as $attribute => $value) {
-				if(empty($post['id']) && $attribute == 'id'){
-					continue;
-				} else {
-					$this->$obj->$attribute = $value;
-				}
-			}
-			
-			if(empty($post['id'])) {
-				$id = $this->$obj->create();
-				$message = 'asset #' . $id . ' successfully created';
-			} else {
-				$id = $this->$obj->update();
-				$message = 'asset #' . $id . ' successfully updated';
-			}
-			
-			if($id){
-				$this->mcbsb->system_messages->success = $message;
-			} else {
-				$asset_id = empty($this->$obj->id) ? '' : '#'.$this->$obj->id;
-				$this->mcbsb->system_messages->error = 'Error while saving the asset '.$asset_id;
-			}
-			
-			if($this->$obj->contact_id_key && $this->$obj->contact_id) {
-				redirect('/contact/details/' .$this->$obj->contact_id_key. '/' . $this->$obj->contact_id .'/#tab_Assets');
-			}			
+		if(!isset($post['category']) || empty($post['category'])) {
+			$this->status = false;
+			$this->message= t('Error while saving the asset') . ' #' . $asset_id;
+			exit();
 		}
 		
-		redirect('/');
+		$obj = $post['category'];
+		
+		foreach ($post as $attribute => $value) {
+			if(empty($post['id']) && $attribute == 'id'){
+				continue;
+			} else {
+				$this->$obj->$attribute = $value;
+			}
+		}
+		
+		if(empty($post['id'])) {
+			$id = $this->$obj->create();
+			$this->message = t(ucwords(str_replace('_', ' ',$this->$obj->category))) . ' ' . t('successfully created') . ' #' . $id;
+		} else {
+			$id = $this->$obj->update();
+			$this->message = t(ucwords(str_replace('_', ' ',$this->$obj->category))) . ' ' . t('successfully updated') . ' #' . $id;
+		}
+		
+		if($id){
+			$this->status = true;
+			$this->procedure = 'refresh_page';
+		} else {
+			$this->status = false;
+			$this->message = t('Error while saving the asset') . ' #' . $id;
+		}
 	}
 	
 	
@@ -226,4 +241,5 @@ class Ajax extends Ajax_Controller {
 
 		exit();
 	}
+		
 }

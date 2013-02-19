@@ -307,3 +307,99 @@ li.ap {
 }
 
 
+
+ul.time_line {
+	margin: 0px;
+	padding: 0px;
+	padding-left: 5px; 
+	list-style: none; 
+	line-height: 18px; 
+	min-height: 60px;
+	max-height: 400px;
+	overflow-x: hidden; 
+	overflow-y: scroll;
+	background-color: transparent;
+}
+
+ul.time_line li{
+	font-size: 11px;
+	margin: 0px;
+	padding: 0px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	background-color: transparent;
+	background-image:url('/layout/images/timeline_bcg.png');
+	background-repeat:repeat-y;
+}
+
+
+ul.task_assets_list{
+	margin: 0px;
+	padding: 0px; 
+	list-style: none; 
+	line-height: 18px;
+}
+
+ul.task_assets_list li{
+	font-size: 11px;	
+	margin: 0px;
+	padding: 0px;
+	padding-left: 20px;
+	padding-right: 3px;
+	background-color: transparent;
+	background-image: url('/layout/images/asset.png');
+	background-repeat: no-repeat;		
+}
+
+ul.involved_list{
+	margin: 0px;
+	padding: 0px; 
+	list-style: none; 
+	line-height: 18px;
+}
+
+ul.involved_list li{
+	font-size: 11px;	
+	margin: 0px;
+	padding: 0px;
+	padding-left: 25px;
+	padding-right: 3px;
+	background-color: transparent;
+	background-image: url('/layout/images/hat.png');
+	background-repeat: no-repeat;		
+}
+
+ul.task_files_list{
+	margin: 0px;
+	padding: 0px; 
+	list-style: none; 
+	line-height: 25px; 	
+	min-height: 60px;
+	max-height: 100px;
+	overflow-x: hidden; 
+	overflow-y: scroll;	
+}
+
+ul.task_files_list li{
+	font-size: 11px;	
+	margin: 0px;
+	padding: 0px;
+	padding-left: 5px;
+	padding-right: 3px;
+	background-color: transparent;	
+}
+
+
+
+ul.tasks_inline_buttons {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+ul.tasks_inline_buttons li {
+	display: inline;
+	margin: 0px;
+	padding: 0px;
+}
+

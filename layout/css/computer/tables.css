@@ -73,6 +73,7 @@ table.tasks{
 	margin-top: 10px;
 	padding: 0px;
 	padding-bottom: 5px;
+	width: 100%;
 }
 
 
@@ -100,7 +101,7 @@ table.tasks td{
 	vertical-align: top;
 	padding: 5px;
 	padding-top: 10px;
-	border-top: 5px solid #f3f3f3;
+	/* border-bottom: 10px solid #f3f3f3; */
 }
 
 table.tasks td:hover {
@@ -121,7 +122,7 @@ table.tasks th.description, td.description{
 }
 
 table.tasks th.involved, td.involved{
-	width: 180px;
+	width: 150px;
 	border-left: 1px dashed #ccc;
 }
 
@@ -129,21 +130,32 @@ table.tasks th.time_line {
 	border-left: 1px dashed #ccc;
 }
 
-
-
 table.tasks td.time_line{
+	width: 400px;
 	padding-top: 0px;
 	padding-bottom: 0px;
+	
 	border-left: 1px dashed #ccc;
 	/* background-image:url('/layout/images/grid.jpg'); */
 }
 
+table.tasks th.files_products, td.files_products {
+	border-left: 1px dashed #ccc;
+}
+
+table.tasks td.files_products{
+	padding-top: 0px;
+	padding-bottom: 0px;
+	border-left: 1px dashed #ccc;
+}
+
 table.tasks td.task_buttons {
-	border-top: 0px solid #ccc;
-	border-bottom: 1px solid #ccc;
+	border-top: 0px;
+	border-bottom: 15px solid #f3f3f3;
 	background-color: white;
-	padding-top: 10px;
-	padding-bottom: 10px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	vertical-align: middle;
 }
 
 table.tasks tr.task_buttons:hover {
@@ -153,63 +165,6 @@ table.tasks tr.task_buttons:hover {
 
 
 
-form.jquery_form{
-	width: 500px;
-}
-
-ul.time_line {
-	margin: 0px;
-	padding: 0px; 
-	list-style: none; 
-	line-height: 18px; 
-	min-height: 60px;
-	max-height: 400px;
-	overflow-x: hidden; 
-	overflow-y: scroll;
-	background-color: transparent;
-}
-
-ul.time_line li{
-	font-size: 11px;
-	margin: 0px;
-	padding: 0px;
-	padding-top: 8px;
-	padding-bottom: 8px;
-	background-color: transparent;
-	background-image:url('/layout/images/timeline_bcg.png');
-	background-repeat:repeat-y;
-}
-
-
-ul.task_assets_list{
-	margin: 0px;
-	padding: 0px; 
-	list-style: none; 
-	line-height: 18px; 	
-}
-
-ul.task_assets_list li{
-	font-size: 11px;	
-	margin: 0px;
-	padding: 0px;
-	padding-left: 20px;
-	padding-right: 3px;
-	background-color: transparent;
-	background-image: url('/layout/images/asset.png');
-	background-repeat: no-repeat;		
-}
-
-ul.tasks_inline_buttons {
-	list-style-type: none;
-	margin: 0px;
-	padding: 0px;
-}
-
-ul.tasks_inline_buttons li {
-	display: inline;
-	margin: 0px;
-	padding: 0px;
-}
 
 
 
@@ -218,33 +173,37 @@ ul.tasks_inline_buttons li {
 
 
 
-table.appointment{
-	    	
+table.event{
+
+	background-color: white;
+	
     border-collapse: separate;
     border-spacing: 0px;
     border: 1px solid #ccc;	
 	        	
 	margin: 0px;
-	margin-top: -15px;
-	margin-left: 20px;
+	margin-top: -25px;
+	margin-left: 23px;
+	
 	padding: 0px;
+	
 	min-height: 100px;
 	max-height: 600px;
-	background-color: white;
+	
 	width: 350px;
 	max-width: 350px;
 }
 
-table.appointment tr{
+table.event tr{
 	background-color: white;
 	line-height: 100%;
 }
 
-table.appointment tr:hover{
-	background-color: white;
+table.event tr:hover{
+	background-color: transparent;
 }
 
-table.appointment td{
+table.event td{
 	text-align: left;
 	vertical-align: top;
 	padding: 5px;
@@ -253,15 +212,52 @@ table.appointment td{
 	border: 1px;
 }
 
-table.appointment td:hover {
-	background-color: white;
+table.event td:hover {
+	background-color: transparent;
 }
 
-table.appointment td.left{
+table.event td.left{
 	width: 18px;
 }
 
-table.appointment td.center{
+table.event td.center{
 	width: 180px;
 	max-width: 180px;
+}
+
+
+
+
+
+
+table.task_summary {
+	
+	background-color: white;
+
+    border-collapse: separate;
+    border-spacing: 0px;
+    border: 0px;
+    border-top: 1px solid #ccc;	        	
+	border-bottom: 1px solid #ccc;
+
+	margin: 0px;
+	margin-bottom: 10px;
+	
+	padding: 0px;
+
+	/* width: 350px;
+	max-width: 350px; */	
+}
+
+table.task_summary tr{
+	background-color: white;
+	line-height: 100%;
+}
+
+table.task_summary td{
+	vertical-align: middle;
+	padding: 5px;
+	font-size: 11px;
+	line-height: 8px;
+	border: 0px;
 }

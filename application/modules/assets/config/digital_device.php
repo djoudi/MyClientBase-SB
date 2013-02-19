@@ -1,10 +1,18 @@
 <?php (defined('BASEPATH')) OR exit('No direct script access allowed');
 
 $config['digital_device_attributes_aliases'] = array(
+		'code_number' => 'Code Number',
+		'purchase_date' => 'Purchase Date',
+		'storage_space' => 'Storage Space',
+		'operating_system' => 'Oper. System',
+		'mac_address' => 'Mac Address',
+		'network_device' => 'Net. Device',
+		'network_name' => 'Net. Name'		
 );
 
 $config['digital_device_hidden_fields'] = array('id', 'category', 'contact_id_key','contact_id','contact_name');
 
+//note: default values do not apply to checkboxes
 $config['digital_device_default_values'] = array(
 				'category' => 'digital_device',
 				'network_device' => 0,

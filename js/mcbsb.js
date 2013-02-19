@@ -173,7 +173,7 @@ function submit_password(){
 }
 
 function toggle_enable(){
-	var agree=confirm("Are you sure ?");
+	var agree=confirm(t("Are you sure") + " ?");
 	if (agree)
 	{			
 		$.ajax({
@@ -236,7 +236,7 @@ function retrieveForm(form) {
 }
 
 function jqueryChangeStatus(params, url) {
-	var agree=confirm("Are you sure ?");
+	var agree=confirm(t("Are you sure") + " ?");
 	if (agree)
 	{	
 		jquery_Noform_Post_Reload(params,url);
@@ -244,7 +244,7 @@ function jqueryChangeStatus(params, url) {
 }
 
 function jqueryDelete(params, url) {
-	var agree=confirm("Are you sure ?");
+	var agree=confirm(t("Are you sure") + " ?");
 	if (agree)
 	{	
 		if(!url) url = '/contact/ajax/delete';
@@ -254,41 +254,18 @@ function jqueryDelete(params, url) {
 }
 
 function jqueryAssociate(params) {
-	var agree=confirm("Are you sure ?");
+	var agree=confirm(t("Are you sure") + " ?");
 	if (agree)
 	{	
 		var url = '/contact/ajax/associate';
 		jquery_Noform_Post_Reload(params,url);
-//		$.ajax({
-//			async : true,
-//			type: 'POST',
-//			dataType : 'jsonp',
-//			url : '/contact/ajax/associate',
-//			data : {
-//				params: params,
-//			}, 
-//			error: errorCallback,
-//		})
-//		.done(function(json){
-//			if(typeof json.error !== "undefined" && json.error){
-//				//console.log('jqueryDelete has an error');
-//				//alert(urldecode(json.error));
-//			}
-//		})
-//	    .success(function(json){
-//	    	if(typeof json.message !== "undefined" && json.message){
-//	    		//alert(urldecode(json.message));
-//	        	window.location.hash = json.focus_tab;
-//	        	window.location.reload(true);
-//	    	}
-//	    });
 	}
 }
 
 function jquery_Noform_Post_Reload(params,url){
 	
-	//console.log(params);
-	//console.log(url);
+	console.log(params);
+	console.log(url);
 	
 	$.ajax({
 		async : true,
@@ -382,7 +359,7 @@ function search(params){
 };	
 
 function set_as_my_tj_organization(params){
-	var agree=confirm("Are you sure ?");
+	var agree=confirm(t("Are you sure") + " ?");
 	if (agree)
 	{	
 		$.ajax({
@@ -435,7 +412,7 @@ function get_my_tj_organization(current_oid){
 function jqueryForm(params,url) {
 	console.log('jqueryForm');
 	console.log(params);
-	console.log(url);
+	console.log('url' + url);
 	 
 	//default value TODO the ajax controller in contact module needs refactoring
 	if(!url) url = '/contact/ajax/getForm';
@@ -453,7 +430,7 @@ function jqueryForm(params,url) {
 			if(json.html){
 				
 				console.log('calls openFormDialog');
-				//console.log(json);
+				console.log(json);
 				
 				openFormDialog(json);
 				
@@ -488,6 +465,22 @@ function jqueryForm(params,url) {
 	});
 }
 
+function t(text){
+
+	var translation = $.ajax({
+			async : false,
+			type: 'POST',
+			url : '/ajax/tr',
+			global: false,
+			data : {
+				text: text,
+			}
+	}).responseText;
+
+	return translation;
+}
+
+
 function openFormDialog(json){
 	
 	console.log('openFormDialog');
@@ -504,9 +497,8 @@ function openFormDialog(json){
 			var html_form = urldecode(json.html);
 			
 			var dialog_title = '';
+			if(json.form_title) dialog_title = urldecode(json.form_title);
 			
-			//TODO uncomment once I can translate js messages
-			//if(json.form_title) dialog_title = json.form_title;
 			tag.html(html_form).dialog({
 			
 				autoOpen: false,
@@ -520,15 +512,18 @@ function openFormDialog(json){
 				//zIndex: 900,
 				buttons: {
 					"Ok": function() {
+						//button = 'ok';
 						$(this).dialog("close");
 					},
 					"Cancel": function(){
+						//button = 'cancel';
 						$(this).dialog("destroy");
+						//$(this).dialog("close");
 					},
-	//				"Reset": function(){
-	//					var form = document.forms[json.form_name];
-	//					form.reset();					
-	//				},
+//					"Reset": function(){
+//						var form = document.forms[json.form_name];
+//						form.reset();					
+//					},
 				},
 				open: function(){
 
@@ -554,7 +549,7 @@ function openFormDialog(json){
 					});
 				},
 				close: function(event, ui) {
-					
+			
 					switch(json.procedure){
 						
 						case 'behave_as_form':
@@ -566,13 +561,11 @@ function openFormDialog(json){
 						break;
 						
 						case 'create_otr':
-						case 'create_appointment':
-						case 'create_appointment_for_task':
-						case 'edit_appointment_for_task':
-						case 'create_activity':
 						case 'close_task':
 						case 'create_task':
 						case 'edit_task':
+						case 'create_appointment':
+						case 'edit_appointment':							
 						case 'post_to_ajax':
 							//console.log('post to ajax');
 							//console.log(json);
@@ -743,9 +736,7 @@ function postToAjax(json, dataType, type){
         error	: errorCallback,
     })
 	.done(function(json){
-		//console.log('done');
 		if(typeof json.error !== "undefined" && json.error){
-			//console.log('error ' + json.error);
 			return false;
 		}
 	})        
@@ -759,7 +750,6 @@ function postToAjax(json, dataType, type){
 			}
     		
 			switch(urldecode(json.procedure)){
-			
 			
 				case 'replace_html':
 					
@@ -853,15 +843,10 @@ function reload_page(focus_tab, procedure){
 //	console.log('reload page');
 //	console.log('focustab: ' + focus_tab);
 //	console.log('procedure: ' + procedure);
-	if(!focus_tab){
-		var focus_tab = '';
-		if(procedure == 'create_otr') focus_tab = 'tab_Tasks';
-		if(procedure == 'create_appointment') focus_tab = 'tab_Tasks';
-		if(procedure == 'create_appointment_for_task') focus_tab = 'tab_Tasks';
-		if(procedure == 'create_appointment_for_task') focus_tab = 'tab_Tasks';
+	if(focus_tab){
+		window.location.hash = focus_tab;
 	}
-	//console.log('focus tab ' + focus_tab);
-	window.location.hash = focus_tab;
+	
 	//console.log('reloading');
 	window.location.reload(true);		
 }
@@ -941,4 +926,81 @@ function show_message(message,type){
 	
 	$('#notification_area_messages').prepend(message);
 	
+}
+
+
+// Create and render a Picker object for searching images and uploading files.
+function createPicker(task_id) {
+    
+	console.log('createPicker');
+	
+    // Use DocsUploadView to upload documents to Google Drive.
+    var uploadView = new google.picker.DocsUploadView();
+	
+    //FIXME REMOVE THE APP ID!!!
+    var picker = new google.picker.PickerBuilder().
+    	enableFeature(google.picker.Feature.MULTISELECT_ENABLED).
+        //addView(view).
+        addView(google.picker.ViewId.DOCS).
+        addView(uploadView).
+        addView(google.picker.ViewId.RECENTLY_PICKED).
+        addView(google.picker.ViewId.DOCUMENTS).
+        addView(google.picker.ViewId.SPREADSHEETS).
+        addView(google.picker.ViewId.PDFS).
+        addView(google.picker.ViewId.PRESENTATIONS).
+        addView(google.picker.ViewId.FOLDERS).
+        addView(google.picker.ViewId.PHOTO_ALBUMS).            	            
+        addView(new google.picker.PhotosView().
+        	setType(google.picker.PhotosView.Type.UPLOADED)).
+        addView(google.picker.ViewId.IMAGE_SEARCH).
+        addView(google.picker.ViewId.VIDEO_SEARCH).
+        addView(google.picker.ViewId.YOUTUBE).
+        setAppId("279448382036.apps.googleusercontent.com").
+        setCallback(function pickerCallback(data) {
+            
+        	console.log('afterCallBack');
+        	console.log(data);
+        	
+            switch (data.action) {
+            
+                case google.picker.Action.PICKED:
+
+			    	var dataType = 'jsonp';
+			    	var type = 'POST';
+					var json = {};
+					json.url = '/tasks/ajax/attach_file_to_task';
+					json.task_id = task_id;
+					json.google_response = data.docs;
+					
+                    postToAjax(json, dataType, type);	                        
+                break;
+            }
+            
+        })
+        .build();
+    picker.setVisible(true);
+}
+
+// A simple callback implementation.
+function pickerCallback(data) {
+	
+    console.log('pickerCallback');
+    console.log(data);
+    
+    if (data.action == google.picker.Action.PICKED) {
+        var fileId = data.docs[0].id;
+        console.log('The user selected: ' + fileId);
+        return fileId;
+    }
+}
+
+function detach_file(gfile_id) {
+
+	var dataType = 'jsonp';
+	var type = 'POST';
+	var json = {};
+	json.url = '/tasks/ajax/detach_file_from_task',
+	json.gfile_id = gfile_id;
+
+    postToAjax(json, dataType, type);	    	        
 }

@@ -49,15 +49,18 @@ class Activity extends Rb_Db_Obj
 		return parent::create();
 	}
 
-	public function read() {
+	public function read($limited_return = false, $return_relationships = true) {
+		
 		if(is_null($this->obj_ID_value)) return false;
 
-		$this->_config['never_display_fields'] = array();	
+		if(!$limited_return) $this->_config['never_display_fields'] = array();
 
 		if(!parent::read()) return false;
 		
-		//gets the assets associated to the Activity
-		$this->assets = $this->get_assets($this->id);
+		if($return_relationships){
+			//gets the assets associated to the Activity
+			$this->assets = $this->get_assets($this->id);
+		} 
 		
 		return true;
 	}
@@ -77,10 +80,11 @@ class Activity extends Rb_Db_Obj
 		$CI = &get_instance();
 		$CI->load->model('assets/asset','asset');
 		$CI->load->model('assets/home_appliance','home_appliance');
-		$CI->load->model('assets/asset','digital_device');
+		$CI->load->model('assets/digital_device','digital_device');
 		
 		$assets = array();
 		
+		//TODO this part is not finished or not well defined yet
 		$Activity = R::load('activities',$id);
 		if($bean_assets = $Activity->sharedAssets){
 			
@@ -89,10 +93,6 @@ class Activity extends Rb_Db_Obj
 				$CI->{$asset->category}->id = $asset->id;
 				if($CI->{$asset->category}->read()) {
 					$assets[] = $CI->{$asset->category}->toArray();
-// 					$tmp_asset = $CI->{$asset->category};
-// 					unset($tmp_asset->_config);
-// 					unset($tmp_asset->_fields);
-// 					$assets[] = $tmp_asset;
 				}
 
 			}
@@ -167,8 +167,10 @@ class Activity extends Rb_Db_Obj
 	
 	
 	public function delete() {
-		//we do not delete activities
-		return false;
+		
+		if(is_null($this->obj_ID_value)) return false;
+		
+		return parent::delete();	
 	}
 
 	
@@ -210,52 +212,55 @@ class Activity extends Rb_Db_Obj
 	
 	public function magic_button($type = 'create'){
 		
-		$tmp = array();
+		$form_parameters = array();
+		$button_properties = array();
+		$js_function = 'jqueryForm';
+		$ajax_url = '/' . $this->module_folder . '/ajax/getForm';
 		
 		switch ($type) {
 			
+			case 'create':
+				$form_parameters['url'] = '/' . $this->module_folder. '/ajax/save_activity';
+				$form_parameters['form_name'] = 'jquery_form_edit_activity';
+				$form_parameters['form_title'] = 'New Activity';
+				$form_parameters['procedure'] = 'post_to_ajax';
+			
+				$button_properties['label'] = 'Add activity';
+				$button_properties['id'] = 'create_Activity';
+				
+				$this->reset_obj_config();
+			break;
+
+			case 'delete':
+				$form_parameters['url'] = '/' . $this->module_folder. '/ajax/delete_activity';
+				$form_parameters['form_name'] = 'jquery_form_delete_activity';
+				$form_parameters['form_title'] = 'Delete Activity';
+				$form_parameters['procedure'] = 'post_to_ajax';
+			
+				$button_properties['label'] = 'Delete';
+				$button_properties['id'] = 'delete_Activity';
+				
+				$js_function = 'jqueryDelete';
+				$ajax_url = '/' . $this->module_folder . '/ajax/delete_activity';				
+			break;
+							
 			case 'edit':
-				$tmp['form_title'] = 'Edit Activity';
-				$tmp['procedure'] = 'behave_as_form';
-				$button_label = 'Edit activity';
-				$button_id = 'edit_Activity';			
+				$form_parameters['url'] = '/' . $this->module_folder. '/ajax/save_activity';
+				$form_parameters['form_name'] = 'jquery_form_edit_activity';
+				$form_parameters['form_title'] = 'Edit activity';
+				$form_parameters['procedure'] = 'post_to_ajax';				
+
+				$button_properties['label'] = 'Edit';
+				$button_properties['id'] = 'edit_Activity';			
 			break;
 			
-			case 'create':
-				$tmp['form_title'] = 'New Activity';
-				$tmp['procedure'] = 'create_activity';
-				$button_label = 'Add activity';
-				$button_id = 'create_Activity';
-			break;
+
 			
 			default:
 				return array();
 			break;
 		}
-		
-		//common stuff for some cases
-		if($type == 'create' || $type == 'edit'){
-			$this->reset_obj_config();
-			$tmp['url'] = '/' . $this->module_folder . '/ajax/save_activity';
-		}
-		
-		//common stuff for all cases
-		$tmp['obj'] = $this->toJson();
-		$tmp['form_name'] = 'jquery_form_Activity';
-		
-		$string = json_encode($tmp, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_TAG | JSON_HEX_QUOT | JSON_FORCE_OBJECT);
-		$string = '$(this).live("click", jqueryForm(' . $string . ',"/' . $this->module_folder . '/ajax/getForm"))';
-		
-		$button_url = '#';		
-		
-		$button = array(
-						'label' => $button_label,
-						'id' => $button_id,
-						'url' => $button_url,
-						'onclick' => $string,
-		);
-	
 
-		return $button;
+		return $this->make_magic_button($button_properties, $form_parameters, $js_function, $ajax_url);
 	}
 }

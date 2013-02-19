@@ -173,6 +173,59 @@ class Mcbsb  extends CI_Model {
 	}
 	
 	/**
+	 * Given a uid it returns the full name of the contact if found, otherwise returns "unknown"
+	 *
+	 * @access		public
+	 * @param		string	$uid
+	 * @return
+	 *
+	 * @author 		Damiano Venturin
+	 * @since		Feb 12, 2013
+	 */
+	public function get_colleague_name($uid){
+	
+		$return = t('unknown');
+	
+		if(!is_string($uid) || empty($uid)) return $return;
+	
+		$team = $this->user->team;
+	
+		foreach ($team as $key => $colleague) {
+	
+			if($colleague['uid'] == $uid) return $colleague['name'];
+	
+		}
+	
+		return $return;
+	}	
+	
+	
+	/**
+	 * Given a uid it returns the email of the colleague if found, otherwise returns false
+	 *
+	 * @access		public
+	 * @param		string	$uid
+	 * @return
+	 *
+	 * @author 		Damiano Venturin
+	 * @since		Feb 12, 2013
+	 */
+	public function get_colleague_email($uid){
+	
+		if(!is_string($uid) || empty($uid)) return $return;
+	
+		$team = $this->user->team;
+	
+		foreach ($team as $key => $colleague) {
+	
+			if($colleague['uid'] == $uid && isset($colleague['email'])) return $colleague['email'];
+	
+		}
+	
+		return false;
+	}
+		
+	/**
 	 * Sets the attributes "_language" and "_locale".
 	 * $this->_language will be used by the standard Code Igniter translation system
 	 * $this->_locale will be used by phpgettext 
@@ -333,6 +386,13 @@ class Mcbsb  extends CI_Model {
 						'item_selected' => false,
 				);
 			}
+
+			$this->_modules['top_menu'][] = array(
+					'item_name' => 'Personal Settings',
+					'item_link' => '/personal_settings',
+					'item_selected' => false,
+			);
+				
 			//TODO also add something for the MCBSB admin user?
 		}		
 		/*

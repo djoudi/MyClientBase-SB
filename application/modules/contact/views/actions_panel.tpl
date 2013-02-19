@@ -312,6 +312,7 @@
 				<li class="ap">
 					{assign u 5}
 					{if $language == 'italian'} {assign u 10} {/if}
+					 
 					<a class="button" id="button_add_location" href="#" onClick="jqueryForm({ 'form_type':'form','object_name':'location','related_object_name':'{$object_type}','related_object_id':'{$contact_id}','hash':'set_here_the_hash' })">{t u=$u}Add location{/t}</a>
 				</li>
 			{/if}

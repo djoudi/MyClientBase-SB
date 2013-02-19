@@ -78,6 +78,20 @@ class Rb_Db_Obj extends CI_Model
 			}
 		}
 		
+		//applies to object the default values found in the config file
+		if(is_array($this->_config['default_values'])){
+			
+			foreach ($this->_config['default_values'] as $attribute => $default){
+				
+				if(in_array($attribute, array_keys($this->_fields))){
+					
+					$this->$attribute = $default;
+					
+				}
+				
+			}
+		}		
+		
 	}
 	
 	protected function prototype(){
@@ -85,9 +99,6 @@ class Rb_Db_Obj extends CI_Model
 		$record = R::dispense($this->db_table);
 	
 		$CI = &get_instance();
-	
-// 		$a = $this->obj_name;
-// 		$b = $this->module_folder;
 		
 		//loads the config file from the folder "config" contained in this module
 		$CI->config->load(strtolower($this->obj_name), false, true, $this->module_folder);
@@ -177,7 +188,7 @@ class Rb_Db_Obj extends CI_Model
 		
 		if($fields && count($fields) > 0){
 
-			//marks mandatory fields
+			//marks mandatory fields so that they can be retrieved in the form/template
 			if(is_array($this->_config['mandatory_fields'])){
 				foreach ($this->_config['mandatory_fields'] as $key => $attribute){
 					if(in_array($attribute, array_keys($fields))){
@@ -186,7 +197,7 @@ class Rb_Db_Obj extends CI_Model
 				}
 			}
 				
-			//marks form hidden fields
+			//marks form hidden fields so that they can be retrieved in the form/template
 			if(is_array($this->_config['hidden_fields'])){
 				foreach ($this->_config['hidden_fields'] as $key => $attribute){
 					if(in_array($attribute, array_keys($fields))){
@@ -196,7 +207,7 @@ class Rb_Db_Obj extends CI_Model
 				}
 			}
 			
-			//applies alias found in the config file
+			//applies alias found in the config file so that they can be retrieved in the form/template
 			if(is_array($this->_config['attributes_aliases'])){
 				foreach ($this->_config['attributes_aliases'] as $attribute => $alias){
 					if(in_array($attribute, array_keys($fields))){					
@@ -204,7 +215,15 @@ class Rb_Db_Obj extends CI_Model
 					}
 				}
 			}
-			
+
+			//applies default values found in the config file so that they can be retrieved in the form/template
+			if(is_array($this->_config['default_values'])){
+				foreach ($this->_config['default_values'] as $attribute => $default){
+					if(in_array($attribute, array_keys($fields))){
+						$fields[$attribute]['default'] = $default;
+					}
+				}
+			}			
 		}
 				
 		$this->_fields = $fields;
@@ -358,7 +377,7 @@ class Rb_Db_Obj extends CI_Model
 			}
 		}
 		
-		return $this->obj_ID_value = R::store($rb_obj);
+		return $this->{$this->obj_ID_field} = R::store($rb_obj);
 	}
 	
 	
@@ -419,4 +438,50 @@ class Rb_Db_Obj extends CI_Model
 		return true;
 	}
 	
+	
+	protected function make_magic_button(array $button_properties, array $form_parameters, $js_method, $ajax_url){
+
+		if(!is_array($button_properties) || count($button_properties)==0) return array();
+		if(!is_array($form_parameters) || count($form_parameters)==0) return array();
+		if(!is_string($js_method) || empty($js_method)) return array();
+		if(!is_string($ajax_url) || empty($ajax_url)) return array();
+		
+		$form_parameters['obj'] = $this->toJson();
+		
+		$string = json_encode($form_parameters, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_TAG | JSON_HEX_QUOT | JSON_FORCE_OBJECT);
+		
+		$string = '$(this).live("click", ' . $js_method . '(' . $string . ',"' . $ajax_url .'"))';
+		
+		$button_properties = array(
+				'label' => $button_properties['label'],
+				'id' => $button_properties['id'],
+				'url' => '#',
+				'onclick' => $string,
+		);
+		
+		return $button_properties;
+	}
+
+	/**
+	 * Returns the array of people involved with the object
+	 * 
+	 * @access		public
+	 * @param		none
+	 * @return		array
+	 * 
+	 * @author 		Damiano Venturin
+	 * @since		Feb 12, 2013
+	 */
+	public function get_people_involved(){
+	
+		if(is_null($this->__get('obj_ID_value'))) return array();
+		
+		$CI = &get_instance();
+		$CI->load->model('brm/otr','otr');
+	
+		//people involved in the appointment
+		$otr = new Otr();
+		$sql = 'select SQL_CALC_FOUND_ROWS * from '.$otr->db_table . ' where object_id=' . $this->obj_ID_value . ' and object_name="' . $this->obj_name . '" order by colleague_name ASC';
+		return $otr->readAll($sql);
+	}	
 }

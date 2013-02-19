@@ -71,7 +71,8 @@
 			<th><a href="?order_by=mozillaHomeLocalityName&flow_order={$next_flow_order}">{t}City{/t}</a></th>
 			<th>{t}Telephone{/t}</th>
 			<th>{t}Mobile{/t}</th>
-			<th>{t}E-mail{/t}</th>			
+			<th>{t}E-mail{/t}</th>
+			<th>{t}Org.{/t}</th>			
 		</tr>
 		{foreach $people as $key => $person}
 	    <tr>
@@ -86,7 +87,8 @@
 			<td>{$person->mozillaHomeLocalityName|truncate:25:"[..]":true|default:'-'}</td>
 			<td style="font-size: 11px;">{$person->homePhone|default:'-'}</td>
 			<td style="font-size: 11px;">{$person->mobile|default:'-'}</td>
-			<td><a href="mailto:{$person->mail}">{$person->mail|truncate:25:"[..]"|default:'-'}</a></td>
+			<td><a href="mailto:{$person->mail}">{$person->mail|truncate:20:"[..]":true|default:'-'}</a></td>
+			<td>{$person->o|truncate:15:"[..]":true|default:'-'}</td>
 	    </tr> 
 	    {/foreach}
 	    </table>
