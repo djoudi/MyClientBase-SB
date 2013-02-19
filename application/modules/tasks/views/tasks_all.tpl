@@ -43,7 +43,7 @@
 			{if $tasks}
 				{include file=	"{$fcpath}application/modules/tasks/views/tasks_table.tpl"}
 			{else}
-				<p style="padding-top: 10px;">{t}No tasks found{/t}. {t}You can add one by going on a contact profile and clicking the "add task" button{/t}.</p>	
+				<p style="padding-top: 10px;">{t}No tasks found{/t}. {t}You can add one by going on a contact profile and clicking the -add task- button{/t}.</p>	
 			{/if}			
 
 		</div>

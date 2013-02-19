@@ -168,9 +168,13 @@
 	
 	{if $type == ''}
 		{$type = 'text'}
+		
 		{if $details["max-length"] <= 255}
+		
 			{$type = 'text'}
+			
 		{else}
+		
 			{if $details['syntax'] == '1.3.6.1.4.1.1466.115.121.1.15'}
 				{$type = 'textarea'}
 			{/if}
@@ -180,6 +184,7 @@
 			{/if}
 			*}
 		{/if}
+		
 	{/if}	
 	
 	{* particular case *}
@@ -301,6 +306,11 @@
 							
 							{if $fields[$property]["type"]=="text"}
 								{assign class ''}
+								
+								{if $fields[$property]['syntax'] == '1.3.6.1.4.1.1466.115.121.1.40'}
+									{$fields[$property]["type"] = 'password'}
+								{/if}
+								
 								{if $property == 'birthDate'}{assign class 'class="datepicker"'}{/if}
 								
 								{if $fields[$property]["syntax"] == '1.3.6.1.4.1.1466.115.121.1.22' || $fields[$property]["syntax"] == '1.3.6.1.4.1.1466.115.121.1.50' || $fields[$property]["syntax"] == '1.3.6.1.4.1.1466.115.121.1.51' || $fields[$property]["syntax"] == '1.3.6.1.4.1.1466.115.121.1.52'}

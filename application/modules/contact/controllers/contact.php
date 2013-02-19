@@ -591,6 +591,8 @@ class Contact extends Admin_Controller {
     	
      	if($this->input->post('contact_save')){
      		
+     		//$b = $this->$obj_name;
+     		
      		//Sets the form rules for the specified object
      		if($obj_name) $this->$obj_name->setFormRules();
      		
@@ -599,6 +601,8 @@ class Contact extends Admin_Controller {
      		// 2) the submitted form matches the form and it's an update
     		
 	    	if($this->$obj_name->validateForm()){
+	    		
+	    		//$c = $this->$obj_name;
 	    		
 	    		//The form has been validated. Let's check if there is any binary file uploaded
 	    		$upload_info = saveUploadedFile();

@@ -5,10 +5,6 @@ class Personal_Settings extends Admin_Controller {
 	function __construct() {
 
 		parent::__construct();
-
-		if($this->mcbsb->module->is_enabled('tooljar')){
-			if(!$this->mcbsb->user->is_tj_admin()) redirect('/');
-		}
 		
 		$this->_post_handler();
 

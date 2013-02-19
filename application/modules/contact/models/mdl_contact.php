@@ -224,9 +224,11 @@ class Mdl_Contact extends MY_Model {
 		$properties = array_keys($this->properties);
 		
 		foreach ($data as $property => $value) {
-			if(in_array($property, $properties))
-			{
+			
+			if(in_array($property, $properties)) {
+				
 				$this->$property = $this->getReturnValue($property, $data);
+				
 			}
 		}
 		
@@ -287,7 +289,18 @@ class Mdl_Contact extends MY_Model {
 			{
 				$value = implode(', ',$data[$attribute]); //shows array attributes as a string of values separated by ', '
 			} else {
-				$value = $data[$attribute];
+				
+				if($attribute == 'userPassword'){
+					
+					if(!strstr($data[$attribute],'{SHA}')){
+						$value = '{SHA}'.base64_encode(pack("H*",sha1($data[$attribute])));
+					} else {
+						$value = $data[$attribute];
+					}
+					
+				} else {
+					$value = $data[$attribute];
+				}
 			}
 			return $value;
 		}
@@ -368,7 +381,6 @@ class Mdl_Contact extends MY_Model {
  					if(!empty($original_values['oRDN'])) $this->oRDN = $original_values['oRDN'];
  					if(!empty($original_values['oAdminRDN'])) $this->oAdminRDN = $original_values['oAdminRDN'];
  					if(!empty($original_values['locRDN'])) $this->locRDN = $original_values['locRDN'];
- 					if(!empty($original_values['userPassword'])) $this->userPassword = $original_values['userPassword'];	
  				}
  			}
  		}

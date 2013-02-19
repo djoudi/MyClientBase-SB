@@ -1435,3 +1435,15 @@ msgstr "Sistema Op."
 
 msgid "Storage Space"
 msgstr "Spazio disco"
+
+msgid "No tasks found"
+msgstr "Nessun incarico trovato"
+
+msgid "You can add one by going on a contact profile and clicking the -add task- button"
+msgstr "Puoi aggiungerne uno andando sul profilo di un contatto e cliccando il bottone -aggiungi incarico-"
+
+msgid "Internet Explorer is not supported. Please use Google Chrome"
+msgstr "Internet Explorer non é supportato. Perfavore usa Google Chrome"
+
+msgid "The image you are attempting to upload exceedes the maximum height or width"
+msgstr "L'immagine che stai cercando di caricare eccede la massima altezza o larghezza"

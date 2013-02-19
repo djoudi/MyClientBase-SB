@@ -8,6 +8,15 @@ class Admin_Controller extends MX_Controller {
 		
 		parent::__construct();
 		
+		if(preg_match('/(?i)msie/',$_SERVER['HTTP_USER_AGENT'])) {
+			 
+			echo '<p class="zero">' . t("Internet Explorer is not supported. Please use Google Chrome") . '</p>';
+			
+			echo '<p class="zero"><a href="http://support.google.com/chrome/bin/answer.py?hl=en&answer=95346">' . t("Download Google Chrome") . '</a></p>';
+			
+			exit();
+		}
+			
 		//TODO ACLs should go somewhere here. When a module controller is loaded it always calls the parent constructor which is this class
 		
 		//$a = get_class($this);
